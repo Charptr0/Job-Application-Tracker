@@ -1,7 +1,7 @@
-const { authenticate } = require("./databaseAuth");
+const { init } = require("./databaseInit");
 
 module.exports = {
-    authenticate,
+    init,
 }
 
 

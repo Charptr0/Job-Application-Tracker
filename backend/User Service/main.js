@@ -1,5 +1,5 @@
 const express = require("express");
-const db = require("./Utils/db/index");
+const db = require("./Utils/db");
 require("dotenv").config();
 
 const app = express();
@@ -11,7 +11,7 @@ app.get("/", (req, res) => {
 });
 
 
-db.authenticate().then((err) => {
+db.init().then((err) => {
     if (err) {
         console.log(err);
         return;
