@@ -10,4 +10,4 @@ RUN npm install
 
 EXPOSE 4001
 
-CMD ["nodemon", "main.js"]
+CMD ["npm", "run", "dev"]
