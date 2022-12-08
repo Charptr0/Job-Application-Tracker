@@ -1,6 +1,8 @@
 const { Sequelize, STRING } = require("sequelize");
 const { findUserById, findUserByEmail } = require("./databaseFetch");
 const { insertUser } = require("./databaseInsert");
+const { deleteUserByEmail, deleteUserById } = require("./databaseDelete");
+
 require("dotenv").config();
 
 // create a postgres db
@@ -51,4 +53,6 @@ module.exports = {
     findUserById,
     findUserByEmail,
     insertUser,
+    deleteUserByEmail,
+    deleteUserById,
 }
