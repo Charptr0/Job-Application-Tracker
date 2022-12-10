@@ -1,5 +1,5 @@
-import { useRef } from "react";
-import axios from "axios";
+import { useRef, useState } from "react";
+import axios, { AxiosError } from "axios";
 
 interface RequestObject {
     username: string,
@@ -13,8 +13,14 @@ export default function Register() {
     const passwordRef = useRef<HTMLInputElement>(null);
     const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
+    const [submitButtonDisabled, setButtonDisabled] = useState(false);
+
+
     async function submitHandler(e: any) {
         e.preventDefault();
+
+        // disable the submit button
+        setButtonDisabled(true);
 
         const username = usernameRef.current?.value;
         const email = emailRef.current?.value;
@@ -33,16 +39,25 @@ export default function Register() {
             password,
         }
 
-        const res = await axios.post("http://localhost:4001/insertUser", req);
+        try {
+            await axios.put("http://localhost:4001/insertUser", req);
+            console.log(`Success`);
 
-        // registration unsuccessful
-        if (res.status !== 200) {
-            console.log(`problem`);
-            return;
+        } catch (err: any) {
+            const statusCode: number = err.response.status;
+
+            // duplicate number
+            if (statusCode === 400) {
+                console.log(`Email already exist`);
+            }
+
+            else {
+                console.log(`Internal Server Error`);
+            }
         }
 
-        console.log(`success`);
-
+        // re-enable the submit button
+        setButtonDisabled(false);
     }
 
     return (
@@ -62,7 +77,7 @@ export default function Register() {
                 <label>Confirm Password</label><br></br>
                 <input type="password" ref={confirmPasswordRef} /><br></br>
 
-                <button>Submit</button><br></br>
+                <button disabled={submitButtonDisabled}>Register</button><br></br>
             </form>
         </div>
     )

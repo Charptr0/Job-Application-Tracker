@@ -55,6 +55,11 @@ async function insertUser(req, res, next) {
         password: encryptedPassword
     }
 
+    // check if email already exists
+    if (await db.findUserByEmail(db.User, email) !== null) {
+        return res.status(400).send();
+    }
+
     // insert into database
     try {
         await db.insertUser(db.User, user);
@@ -78,15 +83,19 @@ async function verifyLogin(req, res, next) {
 
     // user not found
     if (user === null) {
-        return res.status(403).send();
+        return res.status(400).send();
     }
 
     // check password
-    if (encryption.verifyPassword(user.password, password)) {
-        return res.send();
+    if (!encryption.verifyPassword(user.password, password)) {
+        return res.status(400).send();;
     }
 
-    return res.status(403).json();
+    return res.json({
+        id: user.id,
+        email: user.email,
+        username: user.username
+    });
 }
 
 /**
@@ -149,6 +158,21 @@ async function deleteUserById(req, res, next) {
     }
 }
 
+/**
+ * Controller for checking if a email exists in the database
+ */
+async function checkEmailExist(req, res, next) {
+    if (await db.checkEmail(db.User, req.body.email)) {
+        return res.json({
+            result: "Email already exists"
+        });
+    }
+
+    return res.json({
+        result: 'Email does not exist'
+    })
+}
+
 module.exports = {
     findUserById,
     findUserByEmail,
@@ -156,4 +180,5 @@ module.exports = {
     verifyLogin,
     deleteUserByEmail,
     deleteUserById,
+    checkEmailExist,
 }

@@ -1,5 +1,5 @@
 const { Sequelize, STRING } = require("sequelize");
-const { findUserById, findUserByEmail } = require("./databaseFetch");
+const { findUserById, findUserByEmail, userAlreadyExists } = require("./databaseFetch");
 const { insertUser } = require("./databaseInsert");
 const { deleteUserByEmail, deleteUserById } = require("./databaseDelete");
 
@@ -55,4 +55,5 @@ module.exports = {
     insertUser,
     deleteUserByEmail,
     deleteUserById,
+    userAlreadyExists,
 }
