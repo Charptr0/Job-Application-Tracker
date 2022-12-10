@@ -26,7 +26,20 @@ async function findUserByEmail(table, email) {
     return user;
 }
 
+/**
+ * Checks if a user exist in the database
+ * @param {*} table the database table to query 
+ * @param {*} email the email of the user
+ * @returns true if the user already exist
+ */
+async function userAlreadyExists(table, email) {
+    const user = await findUserByEmail(table, email);
+
+    return user !== null;
+}
+
 module.exports = {
     findUserById,
     findUserByEmail,
+    userAlreadyExists,
 }

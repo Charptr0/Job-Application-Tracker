@@ -11,7 +11,7 @@ router.post("/findUserById", controller.findUserById);
 router.post("/findUserByEmail", controller.findUserByEmail);
 
 // insert a user into the database
-router.post("/insertUser", controller.insertUser);
+router.put("/insertUser", controller.insertUser);
 
 // verify the login info is correct
 router.post("/login", controller.verifyLogin);
@@ -21,5 +21,8 @@ router.delete("/deleteUserByEmail", controller.deleteUserByEmail);
 
 // delete a user from the database using its id
 router.delete("/deleteUserByEmail", controller.deleteUserById);
+
+// check if a email is in the database
+router.post("/checkEmail", controller.checkEmailExist);
 
 module.exports = router;

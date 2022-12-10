@@ -5,5 +5,6 @@ export default function Home() {
 
     return (<div>
         <button onClick={() => navigate("/register")}>Register</button>
+        <button onClick={() => navigate("/login")}>Login</button>
     </div>)
 }
