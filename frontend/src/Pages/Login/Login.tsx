@@ -1,7 +1,10 @@
 import axios from "axios";
 import { useRef, useState } from "react"
+import { useNavigate } from "react-router-dom";
+import styles from "./Login.module.scss";
 
 export default function Login() {
+    const navigate = useNavigate();
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -25,7 +28,7 @@ export default function Login() {
 
         try {
             const res = await axios.post("http://localhost:4001/login", req);
-            console.log(res.data);
+            navigate("/dashboard");
 
         } catch (err: any) {
             const statusCode: number = err.response.status;
@@ -44,17 +47,22 @@ export default function Login() {
         setSubmitButtonDisabled(false);
     }
 
-    return <div>
+    return <div id={styles.loginScreen}>
         <h1>Login</h1>
 
-        <form onSubmit={submitHandler}>
+        <form onSubmit={submitHandler} className={styles.form}>
+            <div id={styles.errorMessage}>Invalid Email or Password</div>
             <label>Email</label><br></br>
             <input type="email" ref={emailRef} /> <br></br>
 
             <label>Password</label><br></br>
             <input type="password" ref={passwordRef} /><br></br>
 
-            <button disabled={submitButtonDisabled}>Login</button><br></br>
+            <div className={styles.btnHolder}>
+                <button disabled={submitButtonDisabled}>Login</button>
+                <button disabled={submitButtonDisabled} type="button">Register</button>
+            </div>
+
         </form>
     </div>
 }
