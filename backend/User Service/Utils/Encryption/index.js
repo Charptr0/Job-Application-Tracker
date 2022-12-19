@@ -1,8 +1,10 @@
-const { encryptPassword } = require("./encrypt");
-const { verifyPassword } = require("./decrypt");
+const { encryptPassword, encryptJWT } = require("./encrypt");
+const { verifyPassword, decryptJWT } = require("./decrypt");
 
 
 module.exports = {
     encryptPassword,
+    encryptJWT,
     verifyPassword,
+    decryptJWT,
 }
