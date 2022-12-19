@@ -8,6 +8,10 @@ const jwt = require("jsonwebtoken");
  * Controller for findUserById route
  */
 async function findUserById(req, res, next) {
+    if (req.body?.id === undefined) {
+        return res.status(404).send();
+    }
+
     const user = await db.findUserById(db.User, req.body.id); // find the user
 
     // user not found
@@ -27,6 +31,10 @@ async function findUserById(req, res, next) {
  * Controller for findUserByEmail route
  */
 async function findUserByEmail(req, res, next) {
+    if (req.body?.email === undefined) {
+        return res.status(404).send();
+    }
+
     const user = await db.findUserByEmail(db.User, req.body.email); // find user by email
 
     if (user === null) {
@@ -44,6 +52,10 @@ async function findUserByEmail(req, res, next) {
  * Controller for insertUser route 
  */
 async function insertUser(req, res, next) {
+    if (req.body === undefined) {
+        return res.status(404).send();
+    }
+
     const username = req.body.username; // get username
     const email = req.body.email; // get email
     const password = req.body.password; // get password
