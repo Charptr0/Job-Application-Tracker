@@ -26,7 +26,7 @@ router.post("/auth", controller.authenticateUser);
 router.delete("/deleteUserByEmail", controller.deleteUserByEmail);
 
 // delete a user from the database using its id
-router.delete("/deleteUserByEmail", controller.deleteUserById);
+router.delete("/deleteUserById", controller.deleteUserById);
 
 // check if a email is in the database
 router.post("/checkEmail", controller.checkEmailExist);
