@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const controller = require("./controller");
+const controller = require("../Controller/userController");
 
-router.get('/', (req, res) => res.send());
+// get status of the user service
+router.get('/', controller.getStatus);
 
-// find a user in the database given its id
+// find a user by id
 router.post("/findUserById", controller.findUserById);
 
-// find a user in the database given its email
+// find a user by email
 router.post("/findUserByEmail", controller.findUserByEmail);
 
 // insert a user into the database
@@ -30,5 +31,6 @@ router.delete("/deleteUserById", controller.deleteUserById);
 
 // check if a email is in the database
 router.post("/checkEmail", controller.checkEmailExist);
+
 
 module.exports = router;

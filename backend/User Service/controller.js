@@ -8,6 +8,10 @@ const jwt = require("jsonwebtoken");
  * Controller for findUserById route
  */
 async function findUserById(req, res, next) {
+    if (req.body?.id === undefined) {
+        return res.status(400).send();
+    }
+
     const user = await db.findUserById(db.User, req.body.id); // find the user
 
     // user not found
@@ -27,6 +31,10 @@ async function findUserById(req, res, next) {
  * Controller for findUserByEmail route
  */
 async function findUserByEmail(req, res, next) {
+    if (req.body?.email === undefined) {
+        return res.status(400).send();
+    }
+
     const user = await db.findUserByEmail(db.User, req.body.email); // find user by email
 
     if (user === null) {
@@ -49,6 +57,10 @@ async function insertUser(req, res, next) {
     const password = req.body.password; // get password
     const id = v4().slice(0, 8); // generate random 8 digit id
     const encryptedPassword = encryption.encryptPassword(password); // encrypt the password
+
+    if (!username || !email || !password) {
+        return res.status(400).send();
+    }
 
     const user = {
         id,
@@ -79,6 +91,10 @@ async function insertUser(req, res, next) {
 async function verifyLogin(req, res, next) {
     const email = req.body.email;
     const password = req.body.password;
+
+    if (!email || !password) {
+        return res.status(400).send();
+    }
 
     // fetch user in database
     const user = await db.findUserByEmail(db.User, email);
@@ -112,13 +128,24 @@ async function verifyLogin(req, res, next) {
 async function verifyLoginWithGoogle(req, res, next) {
     const token = req.body.credential;
 
+    if (!token) {
+        return res.status(400).send();
+    }
+
     const encryptedToken = encryption.encryptJWT(token);
 
     return res.send(encryptedToken);
 }
 
+/**
+ * Controller for authenticate user w/o google Oauth 
+ */
 async function authenticateUser(req, res, next) {
     const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+        return res.status(400).send();
+    }
 
     const line = authHeader.split(" ");
 
@@ -146,6 +173,10 @@ async function authenticateUser(req, res, next) {
 async function deleteUserByEmail(req, res, next) {
     const email = req.body.email;
     const password = req.body.password;
+
+    if (!email || !password) {
+        return res.status(400).send();
+    }
 
     // confirm that user exists
     const user = await db.findUserByEmail(db.User, email);
@@ -177,6 +208,10 @@ async function deleteUserById(req, res, next) {
     const id = req.body.id;
     const password = req.body.password;
 
+    if (!id || !password) {
+        return res.status(400).send();
+    }
+
     // confirm that user exists
     const user = await db.findUserById(db.User, id);
 
@@ -204,6 +239,10 @@ async function deleteUserById(req, res, next) {
  * Controller for checking if a email exists in the database
  */
 async function checkEmailExist(req, res, next) {
+    if (!req.body.email) {
+        return res.status(400).send();
+    }
+
     if (await db.checkEmail(db.User, req.body.email)) {
         return res.json({
             result: "Email already exists"
