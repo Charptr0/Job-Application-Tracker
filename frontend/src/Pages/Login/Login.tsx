@@ -1,7 +1,6 @@
-import axios from "axios";
 import { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from '@react-oauth/google';
+import { loginUserRequest } from "../../Utils/Requests/login";
 import styles from "./Login.module.scss";
 
 export default function Login() {
@@ -31,7 +30,7 @@ export default function Login() {
         }
 
         try {
-            const res = await axios.post("http://localhost:4001/login", req);
+            const res = await loginUserRequest(req);
             localStorage.setItem("token", res.data);
             navigate("/dashboard");
 
@@ -51,23 +50,6 @@ export default function Login() {
         setSubmitButtonDisabled(false);
     }
 
-    async function googleLoginOnSuccess(credentialResponse: any) {
-
-        try {
-            const res = await axios.post("http://localhost:4001/loginOauth", credentialResponse);
-            console.log(credentialResponse);
-
-            localStorage.setItem("token", res.data);
-            navigate("/dashboard");
-
-        } catch (err: any) {
-
-        }
-    }
-
-    function googleLoginOnError() {
-
-    }
 
     return <div id={styles.loginScreen}>
         <h1>Login</h1>
@@ -86,6 +68,5 @@ export default function Login() {
             </div>
         </form>
 
-        <GoogleLogin onSuccess={googleLoginOnSuccess} onError={() => googleLoginOnError} />
     </div>
 }

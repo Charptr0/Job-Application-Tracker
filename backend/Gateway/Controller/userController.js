@@ -97,35 +97,36 @@ async function verifyLogin(req, res, next) {
     try {
         const result = await axios.post(process.env.USER_SERVICE_HOST + "/login", req.body);
 
-        return res.send(result.response.data);
+        return res.send(result.data);
 
     } catch (err) {
-        return res.status(getHTTPStatus(err)).send();
+        console.log(err);
+        return res.status(getHTTPStatus(err)).send(err);
     }
 
 }
 
 /**
- * Controller for logging user using google Oauth
- */
-async function verifyLoginWithGoogle(req, res, next) {
-    if (req.body === undefined) {
-        return res.status(400).send();
-    }
-
-
-}
-
-/**
- * Controller authenticating a user w/o google Oauth
+ * Controller authenticating a user
  */
 async function authenticateUser(req, res, next) {
-    if (req.body === undefined) {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
         return res.status(400).send();
     }
 
+    const line = authHeader.split(" ");
+
+    // no auth token provided
+    if (line.length < 2 || line[0] !== 'Bearer') {
+        return res.status(401).send();
+    }
+
+    const encryptedToken = line[1];
+
     try {
-        await axios.post(process.env.USER_SERVICE_HOST + "/auth", req.body);
+        await axios.post(process.env.USER_SERVICE_HOST + "/auth", { encryptedToken });
         return res.send();
 
     } catch (err) {
@@ -191,7 +192,6 @@ module.exports = {
     findUserByEmail,
     insertUser,
     verifyLogin,
-    verifyLoginWithGoogle,
     authenticateUser,
     deleteUserByEmail,
     deleteUserById,

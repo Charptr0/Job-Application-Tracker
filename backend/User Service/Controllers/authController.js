@@ -44,38 +44,10 @@ async function verifyLogin(req, res, next) {
 }
 
 /**
- * Controller for login with google route
- */
-async function verifyLoginWithGoogle(req, res, next) {
-    const token = req.body.credential;
-
-    if (!token) {
-        return res.status(400).send();
-    }
-
-    const encryptedToken = encryption.encryptJWT(token);
-
-    return res.send(encryptedToken);
-}
-
-/**
- * Controller for authenticate user w/o google Oauth 
+ * Controller for authenticate user
  */
 async function authenticateUser(req, res, next) {
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader) {
-        return res.status(400).send();
-    }
-
-    const line = authHeader.split(" ");
-
-    // no auth token provided
-    if (line.length < 2 || line[0] !== 'Bearer') {
-        return res.status(401).send();
-    }
-
-    const encryptedToken = line[1];
+    const encryptedToken = req.body.encryptedToken;
 
     // decrypt the jwt token
     const token = encryption.decryptJWT(encryptedToken);
@@ -91,5 +63,4 @@ async function authenticateUser(req, res, next) {
 module.exports = {
     authenticateUser,
     verifyLogin,
-    verifyLoginWithGoogle,
 }

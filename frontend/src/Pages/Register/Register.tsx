@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import axios, { AxiosError } from "axios";
+import { registerUserRequest } from "../../Utils/Requests/register";
 
 interface RequestObject {
     username: string,
@@ -40,7 +40,7 @@ export default function Register() {
         }
 
         try {
-            await axios.put("http://localhost:4001/insertUser", req);
+            await registerUserRequest(req);
             console.log(`Success`);
 
         } catch (err: any) {

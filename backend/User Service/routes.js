@@ -19,9 +19,6 @@ router.put("/insertUser", insertController.insertUser);
 // verify the login info is correct
 router.post("/login", authController.verifyLogin);
 
-// verify the login with google
-router.post("/loginOauth", authController.verifyLoginWithGoogle);
-
 // authenticate the user
 router.post("/auth", authController.authenticateUser);
 

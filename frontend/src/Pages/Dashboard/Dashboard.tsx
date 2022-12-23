@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom";
+import { authUserRequest } from "../../Utils/Requests/auth";
 
 export default function Dashboard() {
     const navigate = useNavigate();
@@ -9,23 +9,23 @@ export default function Dashboard() {
         const auth = async () => {
             const token = localStorage.getItem('token');
 
-            try {
-                const res = await axios.post("http://localhost:4001/auth", {}, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+            if (!token) {
+                navigate("/login");
+                return;
+            }
 
-                console.log(res.data);
+            try {
+                await authUserRequest(token);
+
             } catch (err: any) {
                 const statusCode: number = err.response.status;
 
                 // route back to login screen
                 if (statusCode === 401) {
-                    // localStorage.removeItem('token');
+                    localStorage.removeItem('token');
                     navigate("/login");
                 }
             }
-
-
         }
 
         auth();
