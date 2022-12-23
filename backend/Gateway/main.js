@@ -1,21 +1,30 @@
 const express = require('express');
 const cors = require('cors');
 const userRoutes = require('./Routes/userRoutes');
+const authRoutes = require('./Routes/authRoutes');
+const cookieParser = require('cookie-parser');
 require("dotenv").config();
 
 const app = express();
 
 app.use(express.json());
 app.use(cors({
-    origin: [process.env.FRONTEND_HOST]
+    origin: [process.env.FRONTEND_HOST],
+    credentials: true,
 }));
 
-const PORT = process.env.PORT || 4000;
-app.use("/user", userRoutes);
+app.use(cookieParser());
 
-app.get('/', (req, res) => {
-    res.send();
-});
+const PORT = process.env.PORT || 4000;
+
+app.use("/user", userRoutes);
+app.use("/auth", authRoutes);
+
+app.get('/', (req, res) => res.send());
+app.get("/test", (req, res) => {
+    console.log(req.cookies);
+    res.send()
+})
 
 function startServer() {
     app.listen(PORT, () => console.log(`Gateway listening on port ${PORT}`));

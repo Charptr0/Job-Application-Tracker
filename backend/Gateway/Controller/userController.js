@@ -97,40 +97,15 @@ async function verifyLogin(req, res, next) {
     try {
         const result = await axios.post(process.env.USER_SERVICE_HOST + "/login", req.body);
 
-        return res.send(result.response.data);
+        res.cookie("refreshToken", result.data.refreshToken, { httpOnly: true });
+
+        return res.send(result.data.accessToken);
 
     } catch (err) {
-        return res.status(getHTTPStatus(err)).send();
+        console.log(err);
+        return res.status(getHTTPStatus(err)).send(err);
     }
 
-}
-
-/**
- * Controller for logging user using google Oauth
- */
-async function verifyLoginWithGoogle(req, res, next) {
-    if (req.body === undefined) {
-        return res.status(400).send();
-    }
-
-
-}
-
-/**
- * Controller authenticating a user w/o google Oauth
- */
-async function authenticateUser(req, res, next) {
-    if (req.body === undefined) {
-        return res.status(400).send();
-    }
-
-    try {
-        await axios.post(process.env.USER_SERVICE_HOST + "/auth", req.body);
-        return res.send();
-
-    } catch (err) {
-        return res.status(getHTTPStatus(err)).send();
-    }
 }
 
 /**
@@ -191,8 +166,6 @@ module.exports = {
     findUserByEmail,
     insertUser,
     verifyLogin,
-    verifyLoginWithGoogle,
-    authenticateUser,
     deleteUserByEmail,
     deleteUserById,
     checkEmailExist,
