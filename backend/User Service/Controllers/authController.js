@@ -1,6 +1,5 @@
 const db = require("../Utils/db");
 const encryption = require("../Utils/encryption");
-const { v4 } = require("uuid");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
@@ -34,33 +33,17 @@ async function verifyLogin(req, res, next) {
         username: user.username
     }
 
-    // create a jwt that expires in 1 day
-    const token = jwt.sign(userInfo, process.env.JWT_SECRET, { expiresIn: "20s" });
-    const encryptedToken = encryption.encryptJWT(token);
+    // create access and refresh token
+    const accessToken = jwt.sign(userInfo, process.env.JWT_ACCESS_TOKEN_SECRET, { expiresIn: "20s" });
+    const refreshToken = jwt.sign(userInfo, process.env.JWT_REFRESH_TOKEN_SECRET, { expiresIn: "1m" });
 
-    // save token to database
-
-    return res.send(encryptedToken);
-}
-
-/**
- * Controller for authenticate user
- */
-async function authenticateUser(req, res, next) {
-    const encryptedToken = req.body.encryptedToken;
-
-    // decrypt the jwt token
-    const token = encryption.decryptJWT(encryptedToken);
-
-    try {
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-        return res.send(`Good`);
-    } catch (err) {
-        return res.status(401).send();
-    }
+    // send back to gateway
+    return res.json({
+        accessToken,
+        refreshToken,
+    });
 }
 
 module.exports = {
-    authenticateUser,
     verifyLogin,
 }

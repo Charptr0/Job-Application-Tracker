@@ -97,41 +97,15 @@ async function verifyLogin(req, res, next) {
     try {
         const result = await axios.post(process.env.USER_SERVICE_HOST + "/login", req.body);
 
-        return res.send(result.data);
+        res.cookie("refreshToken", result.data.refreshToken, { httpOnly: true });
+
+        return res.send(result.data.accessToken);
 
     } catch (err) {
         console.log(err);
         return res.status(getHTTPStatus(err)).send(err);
     }
 
-}
-
-/**
- * Controller authenticating a user
- */
-async function authenticateUser(req, res, next) {
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader) {
-        return res.status(400).send();
-    }
-
-    const line = authHeader.split(" ");
-
-    // no auth token provided
-    if (line.length < 2 || line[0] !== 'Bearer') {
-        return res.status(401).send();
-    }
-
-    const encryptedToken = line[1];
-
-    try {
-        await axios.post(process.env.USER_SERVICE_HOST + "/auth", { encryptedToken });
-        return res.send();
-
-    } catch (err) {
-        return res.status(getHTTPStatus(err)).send();
-    }
 }
 
 /**
@@ -192,7 +166,6 @@ module.exports = {
     findUserByEmail,
     insertUser,
     verifyLogin,
-    authenticateUser,
     deleteUserByEmail,
     deleteUserById,
     checkEmailExist,

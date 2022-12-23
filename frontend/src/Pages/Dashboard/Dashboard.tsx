@@ -22,7 +22,7 @@ export default function Dashboard() {
 
                 // route back to login screen
                 if (statusCode === 401) {
-                    localStorage.removeItem('token');
+                    // localStorage.removeItem('token');
                     navigate("/login");
                 }
             }

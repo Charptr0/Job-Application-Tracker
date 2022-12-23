@@ -1,5 +1,7 @@
+import axios from "axios";
 import React, { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom";
+import { authUserRequest } from "../../Utils/Requests/auth";
 import { loginUserRequest } from "../../Utils/Requests/login";
 import styles from "./Login.module.scss";
 
@@ -43,7 +45,10 @@ export default function Login() {
 
         try {
             const res = await loginUserRequest(req);
+            console.log(res);
+
             localStorage.setItem("token", res.data);
+
             navigate("/dashboard");
 
         } catch (err: any) {

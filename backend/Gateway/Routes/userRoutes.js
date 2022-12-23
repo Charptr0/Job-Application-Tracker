@@ -17,9 +17,6 @@ router.put("/insertUser", controller.insertUser);
 // verify the login info is correct
 router.post("/login", controller.verifyLogin);
 
-// authenticate the user
-router.post("/auth", controller.authenticateUser);
-
 // delete a user from the database using its email
 router.delete("/deleteUserByEmail", controller.deleteUserByEmail);
 
