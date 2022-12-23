@@ -1,33 +1,45 @@
-import { useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { loginUserRequest } from "../../Utils/Requests/login";
 import styles from "./Login.module.scss";
+
+interface LoginErrorMessageType {
+    visible: boolean;
+    message: string;
+}
 
 export default function Login() {
     const navigate = useNavigate();
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
 
+    const [loginErrorMessage, setLoginErrorMessage] = useState<LoginErrorMessageType>({
+        visible: false,
+        message: ""
+    });
+
     const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
 
-    async function submitHandler(e: any) {
+    async function submitHandler(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         // disable submit button
         setSubmitButtonDisabled(true);
+        setLoginErrorMessage({ visible: false, message: "" });
 
         const email = emailRef.current?.value;
         const password = passwordRef.current?.value;
 
         if (!email || !password) {
+            setLoginErrorMessage({
+                visible: true,
+                message: "Invalid Email or Password"
+            });
             setSubmitButtonDisabled(false);
             return;
         };
 
-        const req = {
-            email,
-            password
-        }
+        const req = { email, password }
 
         try {
             const res = await loginUserRequest(req);
@@ -37,13 +49,20 @@ export default function Login() {
         } catch (err: any) {
             const statusCode: number = err.response.status;
 
-            // duplicate number
+            // invalid email or password
             if (statusCode === 400) {
-                console.log(`Email or password not correct`);
+                setLoginErrorMessage({
+                    visible: true,
+                    message: "Invalid Email or Password"
+                });
             }
 
+            // server email
             else {
-                console.log(`Internal Server Error`);
+                setLoginErrorMessage({
+                    visible: true,
+                    message: "Internal Server Error"
+                });
             }
         }
 
@@ -55,7 +74,7 @@ export default function Login() {
         <h1>Login</h1>
 
         <form onSubmit={submitHandler} className={styles.form}>
-            <div id={styles.errorMessage}>Invalid Email or Password</div>
+            {loginErrorMessage.visible && <div id={styles.errorMessage}>{loginErrorMessage.message}</div>}
             <label>Email</label><br></br>
             <input type="email" ref={emailRef} /> <br></br>
 
@@ -64,7 +83,7 @@ export default function Login() {
 
             <div className={styles.btnHolder}>
                 <button disabled={submitButtonDisabled}>Login</button>
-                <button disabled={submitButtonDisabled} type="button">Register</button>
+                <button disabled={submitButtonDisabled} type="button" onClick={() => navigate("/register")}>Register</button>
             </div>
         </form>
 
