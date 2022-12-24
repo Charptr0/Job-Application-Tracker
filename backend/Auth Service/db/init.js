@@ -6,6 +6,9 @@ const redisClient = Redis.createClient({
     password: process.env.REDIS_PASSWORD,
 });
 
+/**
+ * Start the redis server
+ */
 async function init() {
     try {
         await redisClient.connect();

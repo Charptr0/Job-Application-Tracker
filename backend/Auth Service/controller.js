@@ -1,7 +1,6 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const Redis = require("redis");
-
+const { insertRefreshTokenToCache, } = require("./db");
 
 /**
  * Controller for authenticate user
@@ -9,35 +8,42 @@ const Redis = require("redis");
 async function authenticateUser(req, res, next) {
     const accessToken = req.body.accessToken;
     const refreshToken = req.body.refreshToken;
-    const userInfo = req.body.user;
 
-    function validateUser(userInfo, tokenUserInfo) {
-        if (userInfo.id === tokenUserInfo.id && userInfo.name === tokenUserInfo.name && userInfo.email === tokenUserInfo.email) {
-            return true;
-        }
+    // verify access token
+    jwt.verify(accessToken, process.env.JWT_ACCESS_TOKEN_SECRET, (err, accessToken) => {
+        if (!err) return res.send();
 
-        throw new Error("User information does not match with the token provided");
-    }
+        // access token invalid
+        if (!err.message.includes("expire")) return res.send(403).send();
 
-    // verify access token and refresh token are still valid
+        // verify that the refresh token
+        jwt.verify(refreshToken, process.env.JWT_REFRESH_TOKEN_SECRET, async (err, refreshToken) => {
+            if (err) return res.status(403).send();
+            return res.send();
+        });
+    });
+
+}
+
+/**
+ * Controller for adding refresh token to redis cache 
+ */
+async function addUserToCache(req, res, next) {
+    const refreshToken = req.body.refreshToken;
+    const id = req.body.id;
+
+    // add refresh token to cache
     try {
-        const decodedAccessToken = jwt.verify(accessToken, process.env.JWT_ACCESS_TOKEN_SECRET);
-        const decodedRefreshToken = jwt.verify(refreshToken, process.env.JWT_REFRESH_TOKEN_SECRET);
-
-        // validate the access token and refresh token has the correct user information
-        // validateUser(userInfo, decodedAccessToken);
-        // validateUser(userInfo, decodedRefreshToken);
+        await insertRefreshTokenToCache(id, refreshToken);
         return res.send();
 
     } catch (err) {
-        console.log(err);
-        return res.status(401).send();
+        console.error(err);
+        return res.status(500).send();
     }
-
-    // verify that the refresh token is still valid in the redis cache
-
 }
 
 module.exports = {
     authenticateUser,
+    addUserToCache,
 }

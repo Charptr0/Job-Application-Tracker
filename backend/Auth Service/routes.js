@@ -6,4 +6,7 @@ router.get('/', (req, res) => res.send());
 
 router.post('/auth', controller.authenticateUser);
 
+router.post('/addUserToCache', controller.addUserToCache);
+
+
 module.exports = router;

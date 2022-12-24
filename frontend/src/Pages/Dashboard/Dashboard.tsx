@@ -17,7 +17,7 @@ export default function Dashboard() {
             }
 
             try {
-                await authUserRequest(currentUser, token);
+                await authUserRequest(token);
 
             } catch (err: any) {
                 // route back to login screen
