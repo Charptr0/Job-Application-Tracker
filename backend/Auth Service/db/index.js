@@ -1,5 +1,5 @@
 const { init, redisClient } = require("./init");
-const { idExistInCache, refreshTokenExistInCache } = require("./exists");
+const { verifyTokenAndIdFromCache } = require("./verify");
 const { deleteRefreshTokenFromCache, deleteUserFromCache } = require("./delete");
 const { insertRefreshTokenToCache } = require("./insert");
 
@@ -7,8 +7,7 @@ const { insertRefreshTokenToCache } = require("./insert");
 module.exports = {
     init,
     redisClient,
-    idExistInCache,
-    refreshTokenExistInCache,
+    verifyTokenAndIdFromCache,
     deleteRefreshTokenFromCache,
     deleteUserFromCache,
     insertRefreshTokenToCache,

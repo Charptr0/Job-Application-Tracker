@@ -32,11 +32,8 @@ async function authenticateUser(req, res, next) {
         return res.status(401).send();
     }
 
-    // get user info
-    const user = req.body.user;
-
     try {
-        await axios.post(process.env.AUTH_SERVICE_HOST + "/auth", { accessToken, refreshToken, user });
+        await axios.post(process.env.AUTH_SERVICE_HOST + "/auth", { accessToken, refreshToken });
         return res.send();
 
     } catch (err) {
