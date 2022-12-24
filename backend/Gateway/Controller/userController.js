@@ -99,7 +99,12 @@ async function verifyLogin(req, res, next) {
 
         res.cookie("refreshToken", result.data.refreshToken, { httpOnly: true });
 
-        return res.send(result.data.accessToken);
+        return res.json({
+            accessToken: result.data.accessToken,
+            id: result.data.id,
+            email: result.data.email,
+            username: result.data.username,
+        });
 
     } catch (err) {
         console.log(err);

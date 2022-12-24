@@ -33,7 +33,7 @@ async function authenticateUser(req, res, next) {
     }
 
     // get user info
-    const user = {};
+    const user = req.body.user;
 
     try {
         await axios.post(process.env.AUTH_SERVICE_HOST + "/auth", { accessToken, refreshToken, user });

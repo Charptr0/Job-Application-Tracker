@@ -27,8 +27,10 @@ async function authenticateUser(req, res, next) {
         // validate the access token and refresh token has the correct user information
         // validateUser(userInfo, decodedAccessToken);
         // validateUser(userInfo, decodedRefreshToken);
+        return res.send();
 
     } catch (err) {
+        console.log(err);
         return res.status(401).send();
     }
 

@@ -1,10 +1,8 @@
-import axios from "axios";
-import React, { useRef, useState } from "react"
+import React, { useContext, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom";
-import { authUserRequest } from "../../Utils/Requests/auth";
+import { UserContext } from "../../Context/UserContext";
 import { loginUserRequest } from "../../Utils/Requests/login";
 import styles from "./Login.module.scss";
-
 interface LoginErrorMessageType {
     visible: boolean;
     message: string;
@@ -14,6 +12,8 @@ export default function Login() {
     const navigate = useNavigate();
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
+
+    const { currentUser, updateUser } = useContext<any>(UserContext);
 
     const [loginErrorMessage, setLoginErrorMessage] = useState<LoginErrorMessageType>({
         visible: false,
@@ -45,9 +45,14 @@ export default function Login() {
 
         try {
             const res = await loginUserRequest(req);
-            console.log(res);
 
-            localStorage.setItem("token", res.data);
+            updateUser({
+                id: res.data.id,
+                username: res.data.username,
+                email: res.data.email,
+            });
+
+            localStorage.setItem("token", res.data.accessToken);
 
             navigate("/dashboard");
 

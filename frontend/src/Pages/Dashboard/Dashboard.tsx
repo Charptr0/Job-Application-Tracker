@@ -1,9 +1,12 @@
-import { useEffect } from "react"
+import { useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../Context/UserContext";
 import { authUserRequest } from "../../Utils/Requests/auth";
 
 export default function Dashboard() {
     const navigate = useNavigate();
+    const { currentUser, updateUser } = useContext<any>(UserContext);
+
 
     useEffect(() => {
         const auth = async () => {
@@ -14,7 +17,7 @@ export default function Dashboard() {
             }
 
             try {
-                await authUserRequest(token);
+                await authUserRequest(currentUser, token);
 
             } catch (err: any) {
                 // route back to login screen

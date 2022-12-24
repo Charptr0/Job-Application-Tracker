@@ -41,6 +41,9 @@ async function verifyLogin(req, res, next) {
     return res.json({
         accessToken,
         refreshToken,
+        id: userInfo.id,
+        email: userInfo.email,
+        username: userInfo.username
     });
 }
 
