@@ -8,7 +8,6 @@ export default function Dashboard() {
     useEffect(() => {
         const auth = async () => {
             const token = localStorage.getItem('token');
-
             if (!token) {
                 navigate("/login");
                 return;
@@ -18,13 +17,9 @@ export default function Dashboard() {
                 await authUserRequest(token);
 
             } catch (err: any) {
-                const statusCode: number = err.response.status;
-
                 // route back to login screen
-                if (statusCode === 401) {
-                    // localStorage.removeItem('token');
-                    navigate("/login");
-                }
+                localStorage.removeItem('token');
+                navigate("/login");
             }
         }
 

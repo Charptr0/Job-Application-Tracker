@@ -12,6 +12,22 @@ services:
       - "5432:5432"
     volumes:
       - "./backend/User Service/pgdata:/var/lib/postgresql/data"
+    env_file:
+      - .env
+
+  auth-db:
+    image: redis:alpine
+    restart: always
+    container_name: auth-db-container
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
+    ports:
+      - "6379:6379"
+    volumes:
+      - "./backend/Auth Service/redis_data:/data"
+    env_file:
+      - .env
 
   api-gateway:
     build: ./backend/Gateway
@@ -37,7 +53,7 @@ services:
   auth-service:
     build: ./backend/Auth Service
     depends_on:
-      - user-service
+      - auth-db
     container_name: auth-service-container
     ports:
       - "4002:4002"

@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const authRoute = require('./routes');
+const db = require("./db");
 require("dotenv").config();
 
 const app = express();
@@ -13,5 +14,6 @@ app.use(cors({
 
 app.use("/", authRoute);
 
-
-app.listen(PORT, () => console.log(`Auth Service listening on PORT ${PORT}`));
+db.init().then(() => {
+    app.listen(PORT, () => console.log(`Auth Service listening on PORT ${PORT}`));
+})

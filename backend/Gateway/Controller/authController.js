@@ -1,9 +1,16 @@
 const axios = require("axios");
 
+function getHTTPStatus(err) {
+    if (!err.response?.status) {
+        return 500;
+    }
+
+    return err.response.status;
+}
+
 async function authenticateUser(req, res, next) {
     // get access token
     const authHeader = req.headers.authorization;
-    console.log(req.cookies);
 
     if (!authHeader) {
         return res.status(400).send();
@@ -22,12 +29,14 @@ async function authenticateUser(req, res, next) {
     const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
-        console.log(`no refresh token provided`);
         return res.status(401).send();
     }
 
+    // get user info
+    const user = {};
+
     try {
-        await axios.post(process.env.AUTH_SERVICE_HOST + "/auth", { accessToken, refreshToken });
+        await axios.post(process.env.AUTH_SERVICE_HOST + "/auth", { accessToken, refreshToken, user });
         return res.send();
 
     } catch (err) {
