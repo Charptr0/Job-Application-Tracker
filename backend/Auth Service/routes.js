@@ -4,6 +4,9 @@ const controller = require("./controller");
 
 router.get('/', (req, res) => res.send());
 
-router.get('/auth', controller.authenticateUser);
+router.post('/auth', controller.authenticateUser);
+
+router.post('/addUserToCache', controller.addUserToCache);
+
 
 module.exports = router;

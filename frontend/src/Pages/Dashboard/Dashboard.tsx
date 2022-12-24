@@ -1,14 +1,16 @@
-import { useEffect } from "react"
+import { useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../Context/UserContext";
 import { authUserRequest } from "../../Utils/Requests/auth";
 
 export default function Dashboard() {
     const navigate = useNavigate();
+    const { currentUser, updateUser } = useContext<any>(UserContext);
+
 
     useEffect(() => {
         const auth = async () => {
             const token = localStorage.getItem('token');
-
             if (!token) {
                 navigate("/login");
                 return;
@@ -18,13 +20,9 @@ export default function Dashboard() {
                 await authUserRequest(token);
 
             } catch (err: any) {
-                const statusCode: number = err.response.status;
-
                 // route back to login screen
-                if (statusCode === 401) {
-                    // localStorage.removeItem('token');
-                    navigate("/login");
-                }
+                localStorage.removeItem('token');
+                navigate("/login");
             }
         }
 

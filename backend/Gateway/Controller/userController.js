@@ -95,14 +95,26 @@ async function verifyLogin(req, res, next) {
     }
 
     try {
-        const result = await axios.post(process.env.USER_SERVICE_HOST + "/login", req.body);
+        const resultFromUserService = await axios.post(process.env.USER_SERVICE_HOST + "/login", req.body);
 
-        res.cookie("refreshToken", result.data.refreshToken, { httpOnly: true });
+        const refreshToken = resultFromUserService.data.refreshToken;
+        const id = resultFromUserService.data.id;
 
-        return res.send(result.data.accessToken);
+        // add to redis cache
+        await axios.post(process.env.AUTH_SERVICE_HOST + "/addUserToCache", { refreshToken, id });
+
+        // send back the refresh token as httpOnly cookie
+        res.cookie("refreshToken", refreshToken, { httpOnly: true });
+
+        return res.json({
+            accessToken: resultFromUserService.data.accessToken,
+            id: id,
+            email: resultFromUserService.data.email,
+            username: resultFromUserService.data.username,
+        });
 
     } catch (err) {
-        console.log(err);
+        console.error(err);
         return res.status(getHTTPStatus(err)).send(err);
     }
 

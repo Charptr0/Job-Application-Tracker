@@ -21,10 +21,6 @@ app.use("/user", userRoutes);
 app.use("/auth", authRoutes);
 
 app.get('/', (req, res) => res.send());
-app.get("/test", (req, res) => {
-    console.log(req.cookies);
-    res.send()
-})
 
 function startServer() {
     app.listen(PORT, () => console.log(`Gateway listening on port ${PORT}`));
