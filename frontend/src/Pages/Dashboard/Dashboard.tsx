@@ -2,11 +2,22 @@ import { useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
 import { authUserRequest } from "../../Utils/Requests/auth";
+import { logoutRequest } from "../../Utils/Requests/logout";
 
 export default function Dashboard() {
     const navigate = useNavigate();
     const { currentUser, updateUser } = useContext<any>(UserContext);
 
+    async function logoutHandler() {
+        try {
+            await logoutRequest();
+            localStorage.removeItem('token');
+        } catch (err) {
+            console.error(err);
+        }
+
+        navigate("/login");
+    }
 
     useEffect(() => {
         const auth = async () => {
@@ -17,7 +28,11 @@ export default function Dashboard() {
             }
 
             try {
-                await authUserRequest(token);
+                const res = await authUserRequest(token);
+
+                if (res.data?.token) {
+                    localStorage.setItem('token', res.data.token);
+                }
 
             } catch (err: any) {
                 // route back to login screen
@@ -25,8 +40,11 @@ export default function Dashboard() {
                 navigate("/login");
             }
         }
-
         auth();
     }, [navigate]);
-    return <div>Dashboard</div>
+
+    return <div>
+        <h1>Dashboard</h1>
+        <button onClick={logoutHandler}>Logout</button>
+    </div>
 }

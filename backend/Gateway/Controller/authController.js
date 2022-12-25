@@ -8,6 +8,9 @@ function getHTTPStatus(err) {
     return err.response.status;
 }
 
+/**
+ * Controller to authenticate a user 
+ */
 async function authenticateUser(req, res, next) {
     // get access token
     const authHeader = req.headers.authorization;
@@ -41,6 +44,25 @@ async function authenticateUser(req, res, next) {
     }
 }
 
+/**
+ * Controller for logging out of a user 
+ */
+async function logout(req, res, next) {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+        return res.status(400).send();
+    }
+
+    try {
+        await axios.post(process.env.AUTH_SERVICE_HOST + "/logout", { refreshToken });
+        return res.send();
+    } catch (err) {
+        return res.status(getHTTPStatus(err)).send();
+    }
+}
+
 module.exports = {
     authenticateUser,
+    logout,
 }
