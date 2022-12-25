@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
 import { loginUserRequest } from "../../Utils/Requests/login";
 import styles from "./Login.module.scss";
+
 interface LoginErrorMessageType {
     visible: boolean;
     message: string;
@@ -67,7 +68,7 @@ export default function Login() {
                 });
             }
 
-            // server email
+            // server error
             else {
                 setLoginErrorMessage({
                     visible: true,
@@ -75,10 +76,8 @@ export default function Login() {
                 });
             }
         }
-
         setSubmitButtonDisabled(false);
     }
-
 
     return <div id={styles.loginScreen}>
         <h1>Login</h1>

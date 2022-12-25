@@ -8,5 +8,6 @@ router.post('/auth', controller.authenticateUser);
 
 router.post('/addUserToCache', controller.addUserToCache);
 
+router.post('/logout', controller.logout);
 
 module.exports = router;

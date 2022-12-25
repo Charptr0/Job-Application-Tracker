@@ -1,6 +1,6 @@
 const { init, redisClient } = require("./init");
 const { verifyTokenAndIdFromCache } = require("./verify");
-const { deleteRefreshTokenFromCache, deleteUserFromCache } = require("./delete");
+const { deleteRefreshTokenFromCache } = require("./delete");
 const { insertRefreshTokenToCache } = require("./insert");
 
 
@@ -9,6 +9,5 @@ module.exports = {
     redisClient,
     verifyTokenAndIdFromCache,
     deleteRefreshTokenFromCache,
-    deleteUserFromCache,
     insertRefreshTokenToCache,
 }
