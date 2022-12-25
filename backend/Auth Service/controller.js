@@ -11,7 +11,14 @@ async function authenticateUser(req, res, next) {
 
     // verify access token
     jwt.verify(accessToken, process.env.JWT_ACCESS_TOKEN_SECRET, (err, decodedAccessToken) => {
-        if (!err) return res.send();
+        if (!err) {
+            return res.json({
+                id: decodedAccessToken.id,
+                email: decodedAccessToken.email,
+                username: decodedAccessToken.username,
+                accessToken: accessToken,
+            });
+        };
 
         // access token invalid
         if (!err.message.includes("expire")) return res.send(500).send();
@@ -36,10 +43,10 @@ async function authenticateUser(req, res, next) {
                 }
 
                 // create a new access token
-                const newAccessToken = jwt.sign(user, process.env.JWT_ACCESS_TOKEN_SECRET, { expiresIn: "10s" });
+                const newAccessToken = jwt.sign(user, process.env.JWT_ACCESS_TOKEN_SECRET, { expiresIn: "5m" });
 
                 // send it back to the frontend
-                return res.send(newAccessToken);
+                return res.json({ ...user, accessToken: newAccessToken });
 
             } catch (err) {
                 console.error(err);

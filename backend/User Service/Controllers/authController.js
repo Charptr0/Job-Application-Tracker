@@ -34,8 +34,11 @@ async function verifyLogin(req, res, next) {
     }
 
     // create access and refresh token
-    const accessToken = jwt.sign(userInfo, process.env.JWT_ACCESS_TOKEN_SECRET, { expiresIn: "20s" });
-    const refreshToken = jwt.sign(userInfo, process.env.JWT_REFRESH_TOKEN_SECRET, { expiresIn: "1m" });
+    // access token last for 5 min
+    const accessToken = jwt.sign(userInfo, process.env.JWT_ACCESS_TOKEN_SECRET, { expiresIn: "5m" });
+
+    // refresh token last for 12 hr
+    const refreshToken = jwt.sign(userInfo, process.env.JWT_REFRESH_TOKEN_SECRET, { expiresIn: "12h" });
 
     // send back to gateway
     return res.json({

@@ -10,7 +10,7 @@ export async function authUserRequest(token: string) {
             withCredentials: true,
         });
 
-        return res.data;
+        return res;
 
     } catch (err) {
         throw err;
