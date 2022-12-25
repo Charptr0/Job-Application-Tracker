@@ -36,10 +36,11 @@ async function authenticateUser(req, res, next) {
     }
 
     try {
-        await axios.post(process.env.AUTH_SERVICE_HOST + "/auth", { accessToken, refreshToken });
-        return res.send();
+        const result = await axios.post(process.env.AUTH_SERVICE_HOST + "/auth", { accessToken, refreshToken });
+        return res.json(result.data);
 
     } catch (err) {
+        console.error(err);
         return res.status(getHTTPStatus(err)).send();
     }
 }
