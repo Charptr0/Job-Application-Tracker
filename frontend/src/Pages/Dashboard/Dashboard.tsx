@@ -68,10 +68,10 @@ export default function Dashboard() {
     return <div>
         <h1>Dashboard</h1>
         <h2>Cluster 1</h2>
-        <button onClick={() => showCreateApplicationScreen(true)}>+</button>
-        {createApplicationScreen && <CreateApplication />}
+        {createApplicationScreen && <CreateApplication setVisible={showCreateApplicationScreen} setApplication={setApplications} />}
 
-        {applications.length > 0 ? <ApplicationList /> : <div>No Application</div>}
+        {applications.length > 0 ? <ApplicationList applications={applications} /> : <div>No Application</div>}
+        <button onClick={() => showCreateApplicationScreen(true)}>+</button>
         <button onClick={logoutHandler}>Logout</button>
     </div>
 }
