@@ -15,8 +15,8 @@ interface IProps {
 }
 
 export default function ApplicationList(props: IProps) {
-    return <div>
-        <table>
+    return <div className={styles.flexContainer}>
+        <table className={styles.table}>
             <tr>
                 <th>Company Name</th>
                 <th>Job Title</th>

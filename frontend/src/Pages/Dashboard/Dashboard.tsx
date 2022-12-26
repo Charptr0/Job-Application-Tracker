@@ -5,6 +5,7 @@ import { authUserRequest } from "../../Utils/Requests/auth";
 import { logoutRequest } from "../../Utils/Requests/logout";
 import ApplicationList from "./Components/ApplicationList/ApplicationList";
 import CreateApplication from "./Components/CreateApplication/CreateApplication";
+import styles from "./Dashboard.module.scss";
 
 interface IApplication {
     companyName: string,
@@ -71,7 +72,9 @@ export default function Dashboard() {
         {createApplicationScreen && <CreateApplication setVisible={showCreateApplicationScreen} setApplication={setApplications} />}
 
         {applications.length > 0 ? <ApplicationList applications={applications} /> : <div>No Application</div>}
-        <button onClick={() => showCreateApplicationScreen(true)}>+</button>
+        <div className={styles.flexContainer}>
+            <button onClick={() => showCreateApplicationScreen(true)} id={styles.addNewAppBtn}>Add a New Application</button>
+        </div>
         <button onClick={logoutHandler}>Logout</button>
     </div>
 }
