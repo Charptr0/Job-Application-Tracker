@@ -6,17 +6,7 @@ import { logoutRequest } from "../../Utils/Requests/logout";
 import ApplicationList from "./Components/ApplicationList/ApplicationList";
 import CreateApplication from "./Components/CreateApplication/CreateApplication";
 import styles from "./Dashboard.module.scss";
-
-interface IApplication {
-    companyName: string,
-    jobTitle: string,
-    appLink: string,
-    location: string,
-    status: string,
-    dateSubmitted: string,
-    salary?: string,
-    notes?: string,
-}
+import { IApplication } from "./Utils/Interfaces/IApplication";
 
 export default function Dashboard() {
     const navigate = useNavigate();

@@ -1,16 +1,6 @@
 import React, { useRef } from "react";
 import styles from "./CreateApplication.module.scss";
-
-interface IApplication {
-    companyName: string,
-    jobTitle: string,
-    appLink: string,
-    location: string,
-    status: string,
-    dateSubmitted: string,
-    salary?: string,
-    notes?: string,
-}
+import { IApplication } from "../../Utils/Interfaces/IApplication";
 
 interface IProps {
     setVisible: Function,
@@ -24,6 +14,7 @@ export default function CreateApplication(props: IProps) {
         locationRef: useRef<HTMLInputElement>(null),
         dateSubmittedRef: useRef<HTMLInputElement>(null),
         salaryRef: useRef<HTMLInputElement>(null),
+        jobTypeRef: useRef<HTMLSelectElement>(null),
         applicationLinkRef: useRef<HTMLInputElement>(null),
         statusRef: useRef<HTMLSelectElement>(null),
         notesRef: useRef<HTMLTextAreaElement>(null),
@@ -34,6 +25,7 @@ export default function CreateApplication(props: IProps) {
 
         const companyName = formRefs.companyNameRef.current?.value;
         const jobTitle = formRefs.jobTitleRef.current?.value;
+        const jobType = formRefs.jobTypeRef.current?.value;
         const location = formRefs.locationRef.current?.value;
         const dateSubmitted = formRefs.dateSubmittedRef.current?.value;
         const salary = formRefs.salaryRef.current?.value;
@@ -41,7 +33,15 @@ export default function CreateApplication(props: IProps) {
         const status = formRefs.statusRef.current?.value;
         const notes = formRefs.notesRef.current?.value;
 
-        if (!companyName || !jobTitle || !location || !link || !status || !dateSubmitted) {
+        if (!companyName || !jobTitle || !location || !link || !status || !jobType) {
+            return;
+        }
+
+        // check to make sure the link is valid
+        const linkRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+
+        if (!link.match(linkRegex)) {
+            console.log(`not valid link`);
             return;
         }
 
@@ -50,6 +50,7 @@ export default function CreateApplication(props: IProps) {
             jobTitle: jobTitle,
             appLink: link,
             location: location,
+            jobType: jobType,
             dateSubmitted: dateSubmitted,
             salary: salary,
             status: status,
@@ -63,22 +64,32 @@ export default function CreateApplication(props: IProps) {
         <div id={styles.modal}>
             <h1>Create a New Record</h1>
             <form onSubmit={submitHandler} className={styles.container}>
-                <label>Company Name</label>
+                <label>Company Name*</label>
                 <input ref={formRefs.companyNameRef} placeholder="Google, Amazon, Microsoft..." />
 
-                <label>Position Name</label>
+                <label>Position Name*</label>
                 <input ref={formRefs.jobTitleRef} placeholder="Software Engineer, Data Scientist" />
 
-                <label>Location</label><br></br>
-                <input ref={formRefs.locationRef} placeholder="Remote, NYC, San Francisco, California" /><br></br>
+                <label>Location*</label><br></br>
+                <input ref={formRefs.locationRef} placeholder="Remote, NYC, San Francisco" /><br></br>
 
-                <label>Date Submitted</label><br></br>
-                <input ref={formRefs.dateSubmittedRef} placeholder="Remote, NYC, San Francisco, California" type="date" /><br></br>
+                <label>Application Link*</label><br></br>
+                <input ref={formRefs.applicationLinkRef} placeholder="https://google.com" /><br></br>
 
-                <label>Application Link</label><br></br>
-                <input ref={formRefs.applicationLinkRef} placeholder="http://google.com" /><br></br>
+                <label>Job Type*</label><br></br>
+                <select ref={formRefs.jobTypeRef}>
+                    <option>Full-Time</option>
+                    <option>Part-Time</option>
+                    <option>Full-Time Internship</option>
+                    <option>Part-Time Internship</option>
+                    <option>Temporary</option>
+                    <option>Contract</option>
+                    <option>Volunteer</option>
+                    <option>Unpaid Internship</option>
+                    <option>Other</option>
+                </select><br></br>
 
-                <label>Status</label><br></br>
+                <label>Status*</label><br></br>
                 <select ref={formRefs.statusRef}>
                     <option>Application Sent</option>
                     <option>Online Assessment (OA)</option>
@@ -94,11 +105,14 @@ export default function CreateApplication(props: IProps) {
                     <option>Ghosted</option>
                 </select><br></br>
 
+                <label>Date Submitted</label><br></br>
+                <input ref={formRefs.dateSubmittedRef} type="date" style={{ "width": "20%" }} /><br></br>
+
                 <label>Salary</label><br></br>
                 <input ref={formRefs.salaryRef} placeholder="89,000" type="number" /><br></br>
 
                 <label>Notes</label><br></br>
-                <textarea ref={formRefs.notesRef} /><br></br>
+                <textarea ref={formRefs.notesRef} style={{ "height": "100px" }} /><br></br>
 
                 <div className={styles.btnContainer}>
                     <button type="submit">Submit</button>

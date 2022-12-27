@@ -1,10 +1,9 @@
 :root {
-    --col1_size: 250px;
-    --col2_size: 250px;
+    --col1_size: 300px;
+    --col2_size: 300px;
     --col3_size: 250px;
-    --col4_size: 180px;
+    --col4_size: 150px;
     --col5_size: 200px;
-    --col6_size: 500px;
 }
 
 .flexContainer {
@@ -26,28 +25,24 @@
         height: 50px;
     }
 
-    .col1 {
+    .companyName {
         width: var(--col1_size);
     }
 
-    .col2 {
+    .jobTitle {
         width: var(--col2_size);
     }
 
-    .col3 {
+    .location {
         width: var(--col3_size);
     }
 
-    .col4 {
+    .appLink {
         width: var(--col4_size);
     }
 
-    .col5 {
+    .status {
         width: var(--col5_size);
-    }
-
-    .col6 {
-        width: var(--col6_size);
     }
 
 }
