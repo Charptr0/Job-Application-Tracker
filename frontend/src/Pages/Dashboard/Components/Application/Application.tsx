@@ -4,6 +4,8 @@ interface IApplication {
     appLink: string,
     location: string,
     status: string,
+    dateSubmitted: string,
+    salary?: string,
     notes?: string,
 }
 
@@ -19,6 +21,5 @@ export default function Application(props: IProps) {
         <td><a href={props.application.appLink}>Link</a></td>
         <td>{props.application.status}</td>
         {props.application.notes ? <td>{props.application.notes}</td> : <td>None</td>}
-        <td><button>Remove</button></td>
     </tr>
 }

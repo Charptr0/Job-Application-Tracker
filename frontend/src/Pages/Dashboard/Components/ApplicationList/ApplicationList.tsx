@@ -7,6 +7,8 @@ interface IApplication {
     appLink: string,
     location: string,
     status: string,
+    dateSubmitted: string,
+    salary?: string,
     notes?: string,
 }
 
@@ -17,18 +19,20 @@ interface IProps {
 export default function ApplicationList(props: IProps) {
     return <div className={styles.flexContainer}>
         <table className={styles.table}>
-            <tr>
-                <th className={styles.col1}>Company Name</th>
-                <th className={styles.col2}>Job Title</th>
-                <th className={styles.col3}>Location</th>
-                <th className={styles.col4}>Application Link</th>
-                <th className={styles.col5}>Status</th>
-                <th className={styles.col6}>Notes</th>
-            </tr>
+            <tbody>
+                <tr>
+                    <th className={styles.col1}>Company Name</th>
+                    <th className={styles.col2}>Job Title</th>
+                    <th className={styles.col3}>Location</th>
+                    <th className={styles.col4}>Application Link</th>
+                    <th className={styles.col5}>Status</th>
+                    <th className={styles.col6}>Notes</th>
+                </tr>
 
-            {props.applications.map((app: IApplication, i) => {
-                return <Application application={app} key={i} />
-            })}
+                {props.applications.map((app: IApplication, i) => {
+                    return <Application application={app} key={i} />
+                })}
+            </tbody>
         </table>
     </div>
 }

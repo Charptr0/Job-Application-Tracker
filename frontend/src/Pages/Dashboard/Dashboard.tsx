@@ -13,6 +13,8 @@ interface IApplication {
     appLink: string,
     location: string,
     status: string,
+    dateSubmitted: string,
+    salary?: string,
     notes?: string,
 }
 
