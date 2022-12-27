@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import styles from "./CreateApplication.module.scss";
+import modalStyles from "../../Utils/Styles/modal.module.scss";
 import { IApplication } from "../../Utils/Interfaces/IApplication";
 
 interface IProps {
@@ -18,7 +19,7 @@ export default function CreateApplication(props: IProps) {
         applicationLinkRef: useRef<HTMLInputElement>(null),
         statusRef: useRef<HTMLSelectElement>(null),
         notesRef: useRef<HTMLTextAreaElement>(null),
-    }
+    };
 
     function submitHandler(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -60,8 +61,8 @@ export default function CreateApplication(props: IProps) {
         props.setVisible(false);
     }
 
-    return <div id={styles.backdrop}>
-        <div id={styles.modal}>
+    return <div className={modalStyles.backdrop}>
+        <div className={modalStyles.modal}>
             <h1>Create a New Record</h1>
             <form onSubmit={submitHandler} className={styles.container}>
                 <label>Company Name*</label>

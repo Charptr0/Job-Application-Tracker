@@ -1,19 +1,35 @@
 import Application from "../Application/Application";
 import styles from "./ApplicationList.module.scss";
 import { IApplication } from "../../Utils/Interfaces/IApplication";
+import { useState } from "react";
+import JobDetails from "../JobDetails/JobDetails";
 
 interface IProps {
     applications: IApplication[],
 }
 
+interface IJobDetails {
+    visible: boolean,
+    application: IApplication | null,
+}
+
 export default function ApplicationList(props: IProps) {
 
+    const [showJobDetails, setShowJobDetails] = useState<IJobDetails>({
+        visible: false,
+        application: null
+    });
+
     async function openApplication(companyName: string) {
-        console.log(companyName);
+        setShowJobDetails({
+            visible: true,
+            application: props.applications.filter(app => app.companyName === companyName)[0]
+        });
     }
 
 
     return <div className={styles.flexContainer}>
+        {showJobDetails.visible && showJobDetails.application && <JobDetails application={showJobDetails.application} setVisible={setShowJobDetails} />}
         <table className={styles.table}>
             <tbody>
                 <tr>
