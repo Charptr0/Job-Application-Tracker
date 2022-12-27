@@ -71,7 +71,10 @@ export default function Dashboard() {
         <h2>Cluster 1</h2>
         {createApplicationScreen && <CreateApplication setVisible={showCreateApplicationScreen} setApplication={setApplications} />}
 
-        {applications.length > 0 ? <ApplicationList applications={applications} /> : <div>No Application</div>}
+        <div className={styles.flexContainer}>
+            {applications.length > 0 ? <ApplicationList applications={applications} /> : <div>No Application</div>}
+        </div>
+
         <div className={styles.flexContainer}>
             <button onClick={() => showCreateApplicationScreen(true)} id={styles.addNewAppBtn}>Add a New Application</button>
         </div>

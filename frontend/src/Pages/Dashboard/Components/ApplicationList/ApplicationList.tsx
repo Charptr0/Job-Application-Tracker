@@ -18,12 +18,12 @@ export default function ApplicationList(props: IProps) {
     return <div className={styles.flexContainer}>
         <table className={styles.table}>
             <tr>
-                <th>Company Name</th>
-                <th>Job Title</th>
-                <th>Location</th>
-                <th>Application Link</th>
-                <th>Status</th>
-                <th>Notes</th>
+                <th className={styles.col1}>Company Name</th>
+                <th className={styles.col2}>Job Title</th>
+                <th className={styles.col3}>Location</th>
+                <th className={styles.col4}>Application Link</th>
+                <th className={styles.col5}>Status</th>
+                <th className={styles.col6}>Notes</th>
             </tr>
 
             {props.applications.map((app: IApplication, i) => {

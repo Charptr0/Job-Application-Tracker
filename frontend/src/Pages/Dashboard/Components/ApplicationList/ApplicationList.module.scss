@@ -1,3 +1,12 @@
+:root {
+    --col1_size: 250px;
+    --col2_size: 250px;
+    --col3_size: 250px;
+    --col4_size: 180px;
+    --col5_size: 200px;
+    --col6_size: 500px;
+}
+
 .flexContainer {
     display: flex;
     align-items: center;
@@ -7,13 +16,38 @@
 .table {
     border-collapse: collapse;
     border: 2px solid black;
-    width: 70%;
     text-align: center;
-    font-size: 30px;
+    font-size: 22px;
+
 
     th,
     td {
         border: 2px solid black;
-        padding: 15px;
+        height: 50px;
     }
+
+    .col1 {
+        width: var(--col1_size);
+    }
+
+    .col2 {
+        width: var(--col2_size);
+    }
+
+    .col3 {
+        width: var(--col3_size);
+    }
+
+    .col4 {
+        width: var(--col4_size);
+    }
+
+    .col5 {
+        width: var(--col5_size);
+    }
+
+    .col6 {
+        width: var(--col6_size);
+    }
+
 }
