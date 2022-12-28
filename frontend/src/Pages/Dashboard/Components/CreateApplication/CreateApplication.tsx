@@ -1,5 +1,4 @@
 import React, { useRef } from "react";
-import styles from "./CreateApplication.module.scss";
 import modalStyles from "../../Utils/Styles/modal.module.scss";
 import { IApplication } from "../../Utils/Interfaces/IApplication";
 
@@ -64,7 +63,7 @@ export default function CreateApplication(props: IProps) {
     return <div className={modalStyles.backdrop}>
         <div className={modalStyles.modal}>
             <h1>Create a New Record</h1>
-            <form onSubmit={submitHandler} className={styles.container}>
+            <form onSubmit={submitHandler} className={modalStyles.container}>
                 <label>Company Name*</label>
                 <input ref={formRefs.companyNameRef} placeholder="Google, Amazon, Microsoft..." />
 
@@ -115,7 +114,7 @@ export default function CreateApplication(props: IProps) {
                 <label>Notes</label><br></br>
                 <textarea ref={formRefs.notesRef} style={{ "height": "100px" }} /><br></br>
 
-                <div className={styles.btnContainer}>
+                <div className={modalStyles.btnContainer}>
                     <button type="submit">Submit</button>
                     <button type="button" onClick={() => props.setVisible(false)}>Cancel</button>
                 </div>

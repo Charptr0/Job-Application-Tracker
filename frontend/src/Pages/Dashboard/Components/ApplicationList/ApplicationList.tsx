@@ -6,6 +6,7 @@ import JobDetails from "../JobDetails/JobDetails";
 
 interface IProps {
     applications: IApplication[],
+    setApplications: Function,
 }
 
 interface IJobDetails {
@@ -29,7 +30,13 @@ export default function ApplicationList(props: IProps) {
 
 
     return <div className={styles.flexContainer}>
-        {showJobDetails.visible && showJobDetails.application && <JobDetails application={showJobDetails.application} setVisible={setShowJobDetails} />}
+        {showJobDetails.visible && showJobDetails.application &&
+            <JobDetails
+                currentApplication={showJobDetails.application}
+                setApplicationDetails={setShowJobDetails}
+                applicationList={props.applications}
+                setApplications={props.setApplications}
+            />}
         <table className={styles.table}>
             <tbody>
                 <tr>

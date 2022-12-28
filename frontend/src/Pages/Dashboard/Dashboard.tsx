@@ -64,12 +64,14 @@ export default function Dashboard() {
         {createApplicationScreen && <CreateApplication setVisible={showCreateApplicationScreen} setApplication={setApplications} />}
 
         <div className={styles.flexContainer}>
-            {applications.length > 0 ? <ApplicationList applications={applications} /> : <div>No Application</div>}
+            {applications.length > 0 ? <ApplicationList applications={applications} setApplications={setApplications} /> : <div>No Application</div>}
         </div>
 
         <div className={styles.flexContainer}>
             <button onClick={() => showCreateApplicationScreen(true)} id={styles.addNewAppBtn}>Add a New Application</button>
         </div>
+
+        <button>Add a New Collection</button>
         <button onClick={logoutHandler}>Logout</button>
     </div>
 }
