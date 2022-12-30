@@ -6,29 +6,33 @@ import { logoutRequest } from "../../Utils/Requests/logout";
 import ApplicationList from "./Components/ApplicationList/ApplicationList";
 import CreateApplication from "./Components/CreateApplication/CreateApplication";
 import styles from "./Dashboard.module.scss";
-import { IApplication } from "./Utils/Interfaces/IApplication";
 
 export default function Dashboard() {
     const navigate = useNavigate();
     const { currentUser, updateUser } = useContext<any>(UserContext);
-    const [applications, setApplications] = useState<IApplication[]>([]);
     const [createApplicationScreen, showCreateApplicationScreen] = useState(false);
 
-
+    /**
+     * Log the user out
+     */
     async function logoutHandler() {
         try {
             await logoutRequest();
-            localStorage.removeItem('token');
+            localStorage.removeItem('token'); // remove token
         } catch (err) {
             console.error(err);
         }
 
+        // route back to login page
         navigate("/login");
     }
 
     useEffect(() => {
+        // authenticate user
         const auth = async () => {
             const token = localStorage.getItem('token');
+
+            // no token 
             if (!token) {
                 navigate("/login");
                 return;
@@ -37,6 +41,7 @@ export default function Dashboard() {
             try {
                 const res = await authUserRequest(token);
 
+                // auth successful
                 localStorage.setItem('token', res.data.accessToken);
                 updateUser({
                     id: res.data.id,
@@ -61,10 +66,10 @@ export default function Dashboard() {
     return <div>
         <h1>Dashboard</h1>
         <h2>Cluster 1</h2>
-        {createApplicationScreen && <CreateApplication setVisible={showCreateApplicationScreen} setApplication={setApplications} />}
+        {createApplicationScreen && <CreateApplication setVisible={showCreateApplicationScreen} />}
 
         <div className={styles.flexContainer}>
-            {applications.length > 0 ? <ApplicationList applications={applications} setApplications={setApplications} /> : <div>No Application</div>}
+            <ApplicationList />
         </div>
 
         <div className={styles.flexContainer}>

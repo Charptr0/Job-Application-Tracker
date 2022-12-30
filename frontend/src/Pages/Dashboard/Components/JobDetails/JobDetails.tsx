@@ -5,8 +5,6 @@ import { useRef, useState } from "react";
 interface IProps {
     currentApplication: IApplication,
     setApplicationDetails: Function,
-    applicationList: IApplication[],
-    setApplications: Function,
 }
 
 export default function JobDetails(props: IProps) {
@@ -64,14 +62,13 @@ export default function JobDetails(props: IProps) {
             location,
             dateSubmitted,
             salary,
-            appLink: link,
+            link,
             status,
             notes,
         }
 
         setViewMode(true);
         props.setApplicationDetails({ application: newApplicationDetails, visible: false });
-        props.setApplications([...props.applicationList, newApplicationDetails]);
     }
 
     return <div className={modalStyles.backdrop}>
@@ -95,7 +92,7 @@ export default function JobDetails(props: IProps) {
 
                 <div>
                     <h2>Application Link</h2>
-                    <div>{props.currentApplication.appLink}</div>
+                    <div>{props.currentApplication.link}</div>
                 </div>
 
                 <div>
@@ -142,7 +139,7 @@ export default function JobDetails(props: IProps) {
                     <input defaultValue={props.currentApplication.location} ref={formRefs.locationRef} />
 
                     <label>Application Link</label>
-                    <input defaultValue={props.currentApplication.appLink} ref={formRefs.applicationLinkRef} />
+                    <input defaultValue={props.currentApplication.link} ref={formRefs.applicationLinkRef} />
 
                     <label>Job Type</label>
                     <select defaultValue={props.currentApplication.jobType} ref={formRefs.jobTypeRef}>

@@ -27,6 +27,20 @@ services:
     env_file:
       - .env
 
+  app-db:
+    image: mongo
+    restart: always
+    container_name: app-db-container
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+    ports:
+      - "27017:27017"
+    env_file:
+      - .env
+    volumes:
+      - "./backend/App Service/mongodb_data_volume:/data/db"
+
   api-gateway:
     build: ./backend/Gateway
     container_name: api-gateway-container
@@ -52,9 +66,22 @@ services:
     build: ./backend/Auth Service
     depends_on:
       - auth-db
+      - api-gateway
     container_name: auth-service-container
     ports:
       - "4002:4002"
     volumes:
       - "./backend/Auth Service:/app"
       - "./backend/Auth Service/node_modules:/app/node_modules"
+
+  app-service:
+    build: ./backend/App Service
+    depends_on:
+      - app-db
+      - api-gateway
+    container_name: app-service-container
+    ports:
+      - "4003:4003"
+    volumes:
+      - "./backend/App Service:/app"
+      - "./backend/App Service/node_modules:/app/node_modules"

@@ -12,7 +12,7 @@ export default function Application(props: IProps) {
         <td>{props.application.jobTitle}</td>
         <td>{props.application.jobType}</td>
         <td>{props.application.location}</td>
-        <td><a href={props.application.appLink}>Link</a></td>
+        <td><a href={props.application.link}>Link</a></td>
         <td>{props.application.status}</td>
     </tr>)
 }

@@ -1,7 +1,7 @@
 export interface IApplication {
     companyName: string,
     jobTitle: string,
-    appLink: string,
+    link: string,
     location: string,
     status: string,
     jobType: string,
