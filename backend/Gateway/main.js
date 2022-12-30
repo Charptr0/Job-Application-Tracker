@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const userRoutes = require('./Routes/userRoutes');
 const authRoutes = require('./Routes/authRoutes');
+const appRoutes = require('./Routes/appRoutes');
 const cookieParser = require('cookie-parser');
 require("dotenv").config();
 
@@ -19,6 +20,7 @@ const PORT = process.env.PORT || 4000;
 
 app.use("/user", userRoutes);
 app.use("/auth", authRoutes);
+app.use("/app", appRoutes);
 
 app.get('/', (req, res) => res.send());
 

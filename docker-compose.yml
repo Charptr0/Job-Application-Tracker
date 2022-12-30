@@ -38,6 +38,8 @@ services:
       - "27017:27017"
     env_file:
       - .env
+    volumes:
+      - "./backend/App Service/mongodb_data_volume:/data/db"
 
   api-gateway:
     build: ./backend/Gateway
@@ -83,4 +85,3 @@ services:
     volumes:
       - "./backend/App Service:/app"
       - "./backend/App Service/node_modules:/app/node_modules"
-      - "./backend/App Service/mongodb_data_volume:/data/db"
