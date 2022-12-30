@@ -1,13 +1,16 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import modalStyles from "../../Utils/Styles/modal.module.scss";
 import { IApplication } from "../../Utils/Interfaces/IApplication";
+import { addApplicationRequest } from "../../../../Utils/Requests/addApplication";
+import { UserContext } from "../../../../Context/UserContext";
 
 interface IProps {
     setVisible: Function,
-    setApplication: Function,
 }
 
 export default function CreateApplication(props: IProps) {
+    const { currentUser, updateUser } = useContext<any>(UserContext);
+
     const formRefs = {
         companyNameRef: useRef<HTMLInputElement>(null),
         jobTitleRef: useRef<HTMLInputElement>(null),
@@ -20,18 +23,18 @@ export default function CreateApplication(props: IProps) {
         notesRef: useRef<HTMLTextAreaElement>(null),
     };
 
-    function submitHandler(e: React.FormEvent<HTMLFormElement>) {
+    async function submitHandler(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         const companyName = formRefs.companyNameRef.current?.value;
         const jobTitle = formRefs.jobTitleRef.current?.value;
         const jobType = formRefs.jobTypeRef.current?.value;
         const location = formRefs.locationRef.current?.value;
-        const dateSubmitted = formRefs.dateSubmittedRef.current?.value;
-        const salary = formRefs.salaryRef.current?.value;
+        const dateSubmitted = formRefs.dateSubmittedRef.current?.value || "";
+        const salary = formRefs.salaryRef.current?.value || "";
         const link = formRefs.applicationLinkRef?.current?.value;
         const status = formRefs.statusRef.current?.value;
-        const notes = formRefs.notesRef.current?.value;
+        const notes = formRefs.notesRef.current?.value || "";
 
         if (!companyName || !jobTitle || !location || !link || !status || !jobType) {
             return;
@@ -45,19 +48,28 @@ export default function CreateApplication(props: IProps) {
             return;
         }
 
-        props.setApplication((prev: IApplication[]): IApplication[] => [...prev, {
+        const application: IApplication = {
             companyName: companyName,
             jobTitle: jobTitle,
-            appLink: link,
+            link: link,
             location: location,
             jobType: jobType,
             dateSubmitted: dateSubmitted,
             salary: salary,
             status: status,
             notes: notes,
-        }]);
+
+        }
+
+        // add to database
+        try {
+            await addApplicationRequest(currentUser.id, "placeholder", application);
+        } catch (err) {
+            console.log(`Server err`);
+        }
 
         props.setVisible(false);
+        window.location.reload();
     }
 
     return <div className={modalStyles.backdrop}>

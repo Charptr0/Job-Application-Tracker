@@ -1,20 +1,38 @@
 import Application from "../Application/Application";
 import styles from "./ApplicationList.module.scss";
 import { IApplication } from "../../Utils/Interfaces/IApplication";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import JobDetails from "../JobDetails/JobDetails";
+import { UserContext } from "../../../../Context/UserContext";
+import { fetchAllApplicationsRequest } from "../../../../Utils/Requests/fetchAllApplications";
 
-interface IProps {
-    applications: IApplication[],
-    setApplications: Function,
-}
 
 interface IJobDetails {
     visible: boolean,
     application: IApplication | null,
 }
 
-export default function ApplicationList(props: IProps) {
+export default function ApplicationList() {
+    const [applications, setApplications] = useState<IApplication[]>([]);
+    const [loading, setLoading] = useState(true);
+    const { currentUser, updateUser } = useContext<any>(UserContext);
+
+    useEffect(() => {
+        const fetchApplication = async () => {
+            // get the current user id
+            const userId = currentUser.id;
+            try {
+                const applications = await fetchAllApplicationsRequest(userId);
+                setApplications(applications);
+                setLoading(false);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        fetchApplication();
+    }, [currentUser.id])
 
     const [showJobDetails, setShowJobDetails] = useState<IJobDetails>({
         visible: false,
@@ -24,18 +42,19 @@ export default function ApplicationList(props: IProps) {
     async function openApplication(companyName: string) {
         setShowJobDetails({
             visible: true,
-            application: props.applications.filter(app => app.companyName === companyName)[0]
+            application: applications.filter(app => app.companyName === companyName)[0]
         });
     }
 
+    if (loading) {
+        return <div>Loading...</div>
+    }
 
     return <div className={styles.flexContainer}>
         {showJobDetails.visible && showJobDetails.application &&
             <JobDetails
                 currentApplication={showJobDetails.application}
                 setApplicationDetails={setShowJobDetails}
-                applicationList={props.applications}
-                setApplications={props.setApplications}
             />}
         <table className={styles.table}>
             <tbody>
@@ -48,7 +67,7 @@ export default function ApplicationList(props: IProps) {
                     <th className={styles.status}>Status</th>
                 </tr>
 
-                {props.applications.map((app: IApplication, i) => {
+                {applications.length > 0 && applications.map((app: IApplication, i) => {
                     return <Application application={app} key={i} onClick={() => openApplication(app.companyName)} />
                 })}
             </tbody>
