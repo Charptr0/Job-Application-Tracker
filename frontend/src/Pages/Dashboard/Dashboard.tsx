@@ -6,17 +6,7 @@ import { logoutRequest } from "../../Utils/Requests/logout";
 import ApplicationList from "./Components/ApplicationList/ApplicationList";
 import CreateApplication from "./Components/CreateApplication/CreateApplication";
 import styles from "./Dashboard.module.scss";
-
-interface IApplication {
-    companyName: string,
-    jobTitle: string,
-    appLink: string,
-    location: string,
-    status: string,
-    dateSubmitted: string,
-    salary?: string,
-    notes?: string,
-}
+import { IApplication } from "./Utils/Interfaces/IApplication";
 
 export default function Dashboard() {
     const navigate = useNavigate();
@@ -74,12 +64,14 @@ export default function Dashboard() {
         {createApplicationScreen && <CreateApplication setVisible={showCreateApplicationScreen} setApplication={setApplications} />}
 
         <div className={styles.flexContainer}>
-            {applications.length > 0 ? <ApplicationList applications={applications} /> : <div>No Application</div>}
+            {applications.length > 0 ? <ApplicationList applications={applications} setApplications={setApplications} /> : <div>No Application</div>}
         </div>
 
         <div className={styles.flexContainer}>
             <button onClick={() => showCreateApplicationScreen(true)} id={styles.addNewAppBtn}>Add a New Application</button>
         </div>
+
+        <button>Add a New Collection</button>
         <button onClick={logoutHandler}>Logout</button>
     </div>
 }
