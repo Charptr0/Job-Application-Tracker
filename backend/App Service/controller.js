@@ -44,7 +44,7 @@ async function getAllUserApplications(req, res, next) {
 
         else {
             return res.json({
-                applications,
+                applications
             })
         }
 

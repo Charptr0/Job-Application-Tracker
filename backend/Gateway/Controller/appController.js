@@ -49,7 +49,8 @@ async function getAllUserApplications(req, res, next) {
 
     try {
         const response = await axios.post(process.env.APP_SERVICE_HOST + "/getAllUserApps", { userId });
-        return res.json({ applications: response.applications });
+
+        return res.json({ applications: response.data.applications });
 
     } catch (err) {
         console.error(err);
