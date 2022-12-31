@@ -6,5 +6,6 @@ router.get('/', (req, res) => res.send());
 
 router.post('/addApp', controller.addApplication);
 router.post('/getAllUserApps', controller.getAllUserApplications);
+router.post('/deleteApp', controller.deleteApplication);
 
 module.exports = router;

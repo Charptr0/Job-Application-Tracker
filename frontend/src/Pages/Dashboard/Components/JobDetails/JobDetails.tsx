@@ -1,6 +1,8 @@
 import modalStyles from "../../Utils/Styles/modal.module.scss";
 import { IApplication } from "../../Utils/Interfaces/IApplication";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
+import { removeApplicationRequest } from "../../../../Utils/Requests/removeApplication";
+import { UserContext } from "../../../../Context/UserContext";
 
 interface IProps {
     currentApplication: IApplication,
@@ -9,6 +11,7 @@ interface IProps {
 
 export default function JobDetails(props: IProps) {
     const [viewMode, setViewMode] = useState(true);
+    const { currentUser, updateUser } = useContext<any>(UserContext);
 
     const formRefs = {
         companyNameRef: useRef<HTMLInputElement>(null),
@@ -27,7 +30,17 @@ export default function JobDetails(props: IProps) {
     }
 
     async function removeRecordHandler() {
+        const applicationId = props.currentApplication._id;
+        if (!applicationId) {
+            return;
+        }
 
+        try {
+            await removeApplicationRequest(currentUser.id, applicationId);
+            window.location.reload();
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     async function submitHandler(e: React.FormEvent<HTMLFormElement>) {

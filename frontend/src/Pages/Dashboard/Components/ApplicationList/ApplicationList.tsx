@@ -39,10 +39,10 @@ export default function ApplicationList() {
         application: null
     });
 
-    async function openApplication(companyName: string) {
+    async function openApplication(applicationId: string) {
         setShowJobDetails({
             visible: true,
-            application: applications.filter(app => app.companyName === companyName)[0]
+            application: applications.filter(app => app._id === applicationId)[0]
         });
     }
 
@@ -68,7 +68,7 @@ export default function ApplicationList() {
                 </tr>
 
                 {applications.length > 0 && applications.map((app: IApplication, i) => {
-                    return <Application application={app} key={i} onClick={() => openApplication(app.companyName)} />
+                    return <Application application={app} key={i} onClick={() => openApplication(app._id || "")} />
                 })}
             </tbody>
         </table>
