@@ -3,6 +3,7 @@ import { IApplication } from "../../Utils/Interfaces/IApplication";
 import { useContext, useRef, useState } from "react";
 import { removeApplicationRequest } from "../../../../Utils/Requests/removeApplication";
 import { UserContext } from "../../../../Context/UserContext";
+import { editApplicationRequest } from "../../../../Utils/Requests/editApplication";
 
 interface IProps {
     currentApplication: IApplication,
@@ -46,15 +47,20 @@ export default function JobDetails(props: IProps) {
     async function submitHandler(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
+        const applicationId = props.currentApplication._id;
+        if (!applicationId) {
+            return;
+        }
+
         const companyName = formRefs.companyNameRef.current?.value;
         const jobTitle = formRefs.jobTitleRef.current?.value;
         const jobType = formRefs.jobTypeRef.current?.value;
         const location = formRefs.locationRef.current?.value;
-        const dateSubmitted = formRefs.dateSubmittedRef.current?.value;
-        const salary = formRefs.salaryRef.current?.value;
+        const dateSubmitted = formRefs.dateSubmittedRef.current?.value || "";
+        const salary = formRefs.salaryRef.current?.value || "";
         const link = formRefs.applicationLinkRef?.current?.value;
         const status = formRefs.statusRef.current?.value;
-        const notes = formRefs.notesRef.current?.value;
+        const notes = formRefs.notesRef.current?.value || "";
 
         if (!companyName || !jobTitle || !location || !link || !status || !jobType) {
             return;
@@ -68,20 +74,25 @@ export default function JobDetails(props: IProps) {
             return;
         }
 
-        const newApplicationDetails: IApplication = {
-            companyName,
-            jobTitle,
-            jobType,
-            location,
-            dateSubmitted,
-            salary,
-            link,
-            status,
-            notes,
+        const newApplication: IApplication = {
+            companyName: companyName,
+            jobTitle: jobTitle,
+            link: link,
+            location: location,
+            jobType: jobType,
+            dateSubmitted: dateSubmitted,
+            salary: salary,
+            status: status,
+            notes: notes,
+            _id: props.currentApplication._id
         }
 
-        setViewMode(true);
-        props.setApplicationDetails({ application: newApplicationDetails, visible: false });
+        try {
+            await editApplicationRequest(currentUser.id, "placeholder", newApplication);
+            window.location.reload();
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     return <div className={modalStyles.backdrop}>

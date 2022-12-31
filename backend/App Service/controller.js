@@ -62,6 +62,36 @@ async function getAllUserApplications(req, res, next) {
     }
 }
 
+async function editApplication(req, res, next) {
+    // construct the application request
+    const applicationReq = {
+        _id: req.body._id,
+        collectionName: req.body.collectionName,
+        companyName: req.body.companyName,
+        jobTitle: req.body.jobTitle,
+        jobType: req.body.jobType,
+        location: req.body.location,
+        dateSubmitted: req.body.dateSubmitted,
+        salary: req.body.salary,
+        link: req.body.link,
+        status: req.body.status,
+        notes: req.body.notes,
+    }
+
+    const userId = req.body.userId;
+
+
+    // make changes to db
+    try {
+        await db.updateApplication(userId, applicationReq);
+        return res.send();
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send();
+    }
+}
+
 async function deleteApplication(req, res, next) {
     const userId = req.body.userId;
     const applicationId = req.body.applicationId;
@@ -86,4 +116,5 @@ module.exports = {
     addApplication,
     getAllUserApplications,
     deleteApplication,
+    editApplication,
 }
