@@ -7,5 +7,6 @@ export interface IApplication {
     jobType: string,
     dateSubmitted?: string,
     salary?: string,
-    notes?: string
+    notes?: string,
+    _id?: string,
 }
