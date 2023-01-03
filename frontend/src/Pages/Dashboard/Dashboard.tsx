@@ -9,12 +9,14 @@ import ApplicationList from "./Components/ApplicationList/ApplicationList";
 import CreateApplication from "./Components/CreateApplication/CreateApplication";
 import CreateCollection from "./Components/CreateCollection/CreateCollection";
 import styles from "./Dashboard.module.scss";
+import RemoveCollection from "./RemoveCollection/RemoveCollection";
 
 export default function Dashboard() {
     const navigate = useNavigate();
     const { currentUser, updateUser } = useContext<any>(UserContext);
     const [createApplicationScreen, showCreateApplicationScreen] = useState(false);
     const [createNewCollection, showCreateNewCollection] = useState(false);
+    const [removeCollection, showRemoveCollection] = useState(false);
 
     /**
      * Log the user out
@@ -72,6 +74,8 @@ export default function Dashboard() {
         <h1>Dashboard</h1>
         {createApplicationScreen && <CreateApplication setVisible={showCreateApplicationScreen} />}
         {createNewCollection && <CreateCollection setVisible={showCreateNewCollection} />}
+        {removeCollection && <RemoveCollection setVisible={showRemoveCollection} />}
+
 
         <div className={styles.flexContainer}>
             <ApplicationList />
@@ -82,6 +86,7 @@ export default function Dashboard() {
         </div>
 
         <button onClick={() => showCreateNewCollection(true)}>Add a New Collection</button>
+        <button onClick={() => showRemoveCollection(true)}>Remove Collection</button>
         <button onClick={logoutHandler}>Logout</button>
     </div>
 }

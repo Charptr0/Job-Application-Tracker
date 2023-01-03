@@ -153,11 +153,26 @@ async function deleteApplication(req, res, next) {
     }
 }
 
+async function deleteCollection(req, res, next) {
+    const userId = req.body.userId;
+    const collectionName = req.body.collectionName;
+
+    try {
+        await db.deleteCollection(userId, collectionName);
+        return res.send();
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send();
+    }
+}
+
 module.exports = {
     addApplication,
     addCollection,
     getAllUserApplications,
     deleteApplication,
+    deleteCollection,
     editApplication,
     getAllUserCollections,
 }

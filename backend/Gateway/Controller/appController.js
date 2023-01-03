@@ -150,11 +150,30 @@ async function deleteApplication(req, res, next) {
     }
 }
 
+async function deleteCollection(req, res, next) {
+    const userId = req.body.userId;
+    const collectionName = req.body.collectionName;
+
+    if (!userId || !collectionName) {
+        return res.status(400).send();
+    }
+
+    try {
+        await axios.post(process.env.APP_SERVICE_HOST + "/deleteCollection", { userId, collectionName });
+        return res.send();
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send();
+    }
+}
+
 module.exports = {
     addApplication,
     addCollection,
     getAllUserApplications,
     getAllUserCollections,
     deleteApplication,
+    deleteCollection,
     editApplication,
 }

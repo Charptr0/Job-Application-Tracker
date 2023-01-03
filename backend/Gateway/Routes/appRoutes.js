@@ -8,5 +8,6 @@ router.post('/getAllUserApps', controller.getAllUserApplications);
 router.post('/getAllUserCollections', controller.getAllUserCollections);
 router.post('/editApp', controller.editApplication);
 router.post('/deleteApp', controller.deleteApplication);
+router.post('/deleteCollection', controller.deleteCollection);
 
 module.exports = router;
