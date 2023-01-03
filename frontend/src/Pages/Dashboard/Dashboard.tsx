@@ -65,7 +65,6 @@ export default function Dashboard() {
 
     return <div>
         <h1>Dashboard</h1>
-        <h2>Cluster 1</h2>
         {createApplicationScreen && <CreateApplication setVisible={showCreateApplicationScreen} />}
 
         <div className={styles.flexContainer}>

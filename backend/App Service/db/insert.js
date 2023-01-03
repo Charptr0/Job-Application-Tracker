@@ -13,6 +13,7 @@ async function addApplication(userId, applicationReq) {
         if (user === null) {
             const newUser = new User({
                 userId: userId,
+                collections: [applicationReq.collectionName],
                 applications: [{
                     collectionName: applicationReq.collectionName,
                     companyName: applicationReq.companyName,
@@ -45,6 +46,8 @@ async function addApplication(userId, applicationReq) {
                 status: applicationReq.status,
                 notes: applicationReq.status,
             });
+
+            user.collections.push(applicationReq.collectionName);
 
             await user.save();
         }

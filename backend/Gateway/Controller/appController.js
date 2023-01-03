@@ -61,6 +61,24 @@ async function getAllUserApplications(req, res, next) {
     }
 }
 
+async function getAllUserCollections(req, res, next) {
+    const userId = req.body.userId;
+
+    if (!userId) {
+        return res.status(400).send();
+    }
+
+    try {
+        const response = await axios.post(process.env.APP_SERVICE_HOST + "/getAllUserCollections", { userId });
+
+        return res.json({ collections: response.data.collections });
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send();
+    }
+}
+
 async function editApplication(req, res, next) {
     // get all application attributes
     const collectionName = req.body?.collectionName;
@@ -117,6 +135,7 @@ async function deleteApplication(req, res, next) {
 module.exports = {
     addApplication,
     getAllUserApplications,
+    getAllUserCollections,
     deleteApplication,
     editApplication,
 }

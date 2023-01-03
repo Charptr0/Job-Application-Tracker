@@ -62,6 +62,32 @@ async function getAllUserApplications(req, res, next) {
     }
 }
 
+async function getAllUserCollections(req, res, next) {
+    const userId = req.body.userId;
+
+    // fetch all collections
+    try {
+        const collections = await db.fetchAllCollections(userId);
+
+        // no application found
+        if (collections === null) {
+            return res.json({
+                collections: []
+            });
+        }
+
+        else {
+            return res.json({
+                collections
+            })
+        }
+
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
 async function editApplication(req, res, next) {
     // construct the application request
     const applicationReq = {
@@ -117,4 +143,5 @@ module.exports = {
     getAllUserApplications,
     deleteApplication,
     editApplication,
+    getAllUserCollections,
 }

@@ -1,4 +1,5 @@
 export interface IApplication {
+    collectionName?: string,
     companyName: string,
     jobTitle: string,
     link: string,

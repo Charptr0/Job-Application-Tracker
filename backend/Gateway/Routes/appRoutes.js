@@ -4,6 +4,7 @@ const controller = require("../Controller/appController");
 
 router.post('/addApp', controller.addApplication);
 router.post('/getAllUserApps', controller.getAllUserApplications);
+router.post('/getAllUserCollections', controller.getAllUserCollections);
 router.post('/editApp', controller.editApplication);
 router.post('/deleteApp', controller.deleteApplication);
 
