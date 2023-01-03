@@ -47,8 +47,31 @@ async function addApplication(userId, applicationReq) {
                 notes: applicationReq.status,
             });
 
-            user.collections.push(applicationReq.collectionName);
+            await user.save();
+        }
 
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function addCollection(userId, collectionName) {
+    try {
+        // first check if the user exists
+        const user = await User.findOne({ userId: userId });
+
+        if (user === null) {
+            const newUser = new User({
+                userId: userId,
+                collections: [collectionName],
+                applications: [],
+            });
+
+            await newUser.save();
+        }
+
+        else {
+            user.collections.push(collectionName);
             await user.save();
         }
 
@@ -59,4 +82,5 @@ async function addApplication(userId, applicationReq) {
 
 module.exports = {
     addApplication,
+    addCollection,
 }

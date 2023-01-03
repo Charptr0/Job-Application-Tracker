@@ -35,6 +35,7 @@ export default function ApplicationList() {
             // get the current user id
             const userId = currentUser.id;
             try {
+                // get all applications
                 const resApplications = await fetchAllApplicationsRequest(userId);
                 // all applications are stored
                 setApplications(resApplications);
@@ -50,6 +51,7 @@ export default function ApplicationList() {
                     setFilteredApplications(resApplications.filter((app: IApplication) => app.collectionName === defaultCollection));
                 }
 
+                // get all collections
                 const resCollections = await fetchAllCollectionsRequest(userId);
                 setCollections(resCollections);
 
@@ -102,10 +104,10 @@ export default function ApplicationList() {
             <h2>Switch Collection</h2>
             <select onClick={switchCollectionHandler} ref={collectionRef}>
                 <option>All</option>
-                {collections.length > 0 && collections.map(collection => <option>{collection}</option>)}
+                {collections.length > 0 && collections.map((collection, i) => <option key={i}>{collection}</option>)}
             </select>
         </div>
-        <h2>Current Collection: {currentCollection}</h2>
+        <h2>Current Collection: <span id="current-collection">{currentCollection}</span></h2>
         {showJobDetails.visible && showJobDetails.application &&
             <JobDetails
                 currentApplication={showJobDetails.application}

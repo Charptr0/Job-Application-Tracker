@@ -40,6 +40,24 @@ async function addApplication(req, res, next) {
     }
 }
 
+async function addCollection(req, res, next) {
+    const userId = req.body?.userId;
+    const collectionName = req.body?.collectionName;
+
+    if (!userId || !collectionName) {
+        return res.status(400).send();
+    }
+
+    try {
+        await axios.post(process.env.APP_SERVICE_HOST + "/addCollection", { userId, collectionName });
+        return res.send();
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send();
+    }
+}
+
 /**
  * Controller for getting all application in the db from a certain user 
  */
@@ -134,6 +152,7 @@ async function deleteApplication(req, res, next) {
 
 module.exports = {
     addApplication,
+    addCollection,
     getAllUserApplications,
     getAllUserCollections,
     deleteApplication,
