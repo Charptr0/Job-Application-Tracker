@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
 import { authUserRequest } from "../../Utils/Requests/auth";
 import { logoutRequest } from "../../Utils/Requests/logout";
+import { getToken } from "../../Utils/Storage/getToken";
+import { setToken } from "../../Utils/Storage/setToken";
 import ApplicationList from "./Components/ApplicationList/ApplicationList";
 import CreateApplication from "./Components/CreateApplication/CreateApplication";
 import CreateCollection from "./Components/CreateCollection/CreateCollection";
@@ -32,7 +34,7 @@ export default function Dashboard() {
     useEffect(() => {
         // authenticate user
         const auth = async () => {
-            const token = localStorage.getItem('token');
+            const token = getToken();
 
             // no token 
             if (!token) {
@@ -44,7 +46,8 @@ export default function Dashboard() {
                 const res = await authUserRequest(token);
 
                 // auth successful
-                localStorage.setItem('token', res.data.accessToken);
+                setToken(res.data.accessToken);
+
                 updateUser({
                     id: res.data.id,
                     username: res.data.username,
@@ -60,10 +63,6 @@ export default function Dashboard() {
         }
         auth();
     }, [navigate, updateUser]);
-
-    async function addNewCollectionHandler() {
-
-    }
 
     if (!currentUser) {
         return <div>Loading...</div>

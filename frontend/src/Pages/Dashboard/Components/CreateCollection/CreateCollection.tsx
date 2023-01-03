@@ -1,6 +1,7 @@
 import { useContext, useRef } from "react";
 import { UserContext } from "../../../../Context/UserContext";
 import { addCollectionRequest } from "../../../../Utils/Requests/addCollection";
+import { setCollection } from "../../../../Utils/Storage/setCollection";
 import modalStyles from "../../Utils/Styles/modal.module.scss";
 
 interface IProps {
@@ -13,9 +14,6 @@ export default function CreateCollection(props: IProps) {
 
     async function submitHandler() {
         const collectionName = collectionNameRef.current?.value;
-        const currentCollectionNameHolder: HTMLSpanElement | null = document.getElementById("current-collection");
-
-        if (!currentCollectionNameHolder) return;
 
         if (!collectionName || collectionName.toLowerCase() === 'all') {
             return;
@@ -23,7 +21,7 @@ export default function CreateCollection(props: IProps) {
 
         try {
             await addCollectionRequest(currentUser.id, collectionName);
-            window.location.reload();
+            setCollection(collectionName);
         } catch (err) {
             console.error(err);
         }

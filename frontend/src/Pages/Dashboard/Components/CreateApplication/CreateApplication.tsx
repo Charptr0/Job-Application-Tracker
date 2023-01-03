@@ -26,6 +26,7 @@ export default function CreateApplication(props: IProps) {
     async function submitHandler(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
+        const currentCollectionName: string | undefined = document.getElementById("current-collection")?.innerHTML;
         const companyName = formRefs.companyNameRef.current?.value;
         const jobTitle = formRefs.jobTitleRef.current?.value;
         const jobType = formRefs.jobTypeRef.current?.value;
@@ -36,7 +37,7 @@ export default function CreateApplication(props: IProps) {
         const status = formRefs.statusRef.current?.value;
         const notes = formRefs.notesRef.current?.value || "";
 
-        if (!companyName || !jobTitle || !location || !link || !status || !jobType) {
+        if (!companyName || !jobTitle || !location || !link || !status || !jobType || !currentCollectionName) {
             return;
         }
 
@@ -63,7 +64,7 @@ export default function CreateApplication(props: IProps) {
 
         // add to database
         try {
-            await addApplicationRequest(currentUser.id, "placeholder", application);
+            await addApplicationRequest(currentUser.id, currentCollectionName, application);
         } catch (err) {
             console.log(`Server err`);
         }

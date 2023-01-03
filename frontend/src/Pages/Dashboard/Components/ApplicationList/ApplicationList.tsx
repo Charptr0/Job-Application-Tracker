@@ -6,6 +6,8 @@ import JobDetails from "../JobDetails/JobDetails";
 import { UserContext } from "../../../../Context/UserContext";
 import { fetchAllApplicationsRequest } from "../../../../Utils/Requests/fetchAllApplications";
 import { fetchAllCollectionsRequest } from "../../../../Utils/Requests/fetchAllCollections";
+import { setCollection } from "../../../../Utils/Storage/setCollection";
+import { getCollection } from "../../../../Utils/Storage/getCollection";
 
 
 interface IJobDetails {
@@ -31,7 +33,7 @@ export default function ApplicationList() {
     const collectionRef = useRef<HTMLSelectElement>(null);
 
     useEffect(() => {
-        const fetchApplication = async () => {
+        const fetchApplicationAndCollection = async () => {
             // get the current user id
             const userId = currentUser.id;
             try {
@@ -41,7 +43,7 @@ export default function ApplicationList() {
                 setApplications(resApplications);
 
                 // display ONLY applications with the correct collection
-                const defaultCollection = localStorage.getItem('collection') || "All";
+                const defaultCollection = getCollection() || "All";
 
                 if (defaultCollection === "All") {
                     setFilteredApplications(resApplications);
@@ -54,6 +56,7 @@ export default function ApplicationList() {
                 // get all collections
                 const resCollections = await fetchAllCollectionsRequest(userId);
                 setCollections(resCollections);
+                setCurrentCollection(defaultCollection);
 
                 setLoading(false);
 
@@ -62,7 +65,7 @@ export default function ApplicationList() {
             }
         }
 
-        fetchApplication();
+        fetchApplicationAndCollection();
     }, [currentUser.id])
 
     const [showJobDetails, setShowJobDetails] = useState<IJobDetails>({
@@ -88,10 +91,13 @@ export default function ApplicationList() {
         if (selectedCollection === 'All') {
             setFilteredApplications(applications);
             setCurrentCollection("All");
+            setCollection(selectedCollection);
             return;
         }
 
         setCurrentCollection(selectedCollection);
+        setCollection(selectedCollection);
+
         setFilteredApplications(applications.filter((app: IApplication) => app.collectionName === selectedCollection));
     }
 
@@ -103,6 +109,7 @@ export default function ApplicationList() {
         <div>
             <h2>Switch Collection</h2>
             <select onClick={switchCollectionHandler} ref={collectionRef}>
+                <option></option>
                 <option>All</option>
                 {collections.length > 0 && collections.map((collection, i) => <option key={i}>{collection}</option>)}
             </select>

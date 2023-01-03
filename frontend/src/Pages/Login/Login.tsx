@@ -2,6 +2,7 @@ import React, { useContext, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
 import { loginUserRequest } from "../../Utils/Requests/login";
+import { setToken } from "../../Utils/Storage/setToken";
 import styles from "./Login.module.scss";
 
 interface LoginErrorMessageType {
@@ -53,7 +54,7 @@ export default function Login() {
                 email: res.data.email,
             });
 
-            localStorage.setItem("token", res.data.accessToken);
+            setToken(res.data.accessToken);
 
             navigate("/dashboard");
 
