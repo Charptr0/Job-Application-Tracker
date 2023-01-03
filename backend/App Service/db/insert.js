@@ -13,6 +13,7 @@ async function addApplication(userId, applicationReq) {
         if (user === null) {
             const newUser = new User({
                 userId: userId,
+                collections: [applicationReq.collectionName],
                 applications: [{
                     collectionName: applicationReq.collectionName,
                     companyName: applicationReq.companyName,
@@ -54,6 +55,32 @@ async function addApplication(userId, applicationReq) {
     }
 }
 
+async function addCollection(userId, collectionName) {
+    try {
+        // first check if the user exists
+        const user = await User.findOne({ userId: userId });
+
+        if (user === null) {
+            const newUser = new User({
+                userId: userId,
+                collections: [collectionName],
+                applications: [],
+            });
+
+            await newUser.save();
+        }
+
+        else {
+            user.collections.push(collectionName);
+            await user.save();
+        }
+
+    } catch (err) {
+        throw err;
+    }
+}
+
 module.exports = {
     addApplication,
+    addCollection,
 }

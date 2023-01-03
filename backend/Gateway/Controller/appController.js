@@ -40,6 +40,24 @@ async function addApplication(req, res, next) {
     }
 }
 
+async function addCollection(req, res, next) {
+    const userId = req.body?.userId;
+    const collectionName = req.body?.collectionName;
+
+    if (!userId || !collectionName) {
+        return res.status(400).send();
+    }
+
+    try {
+        await axios.post(process.env.APP_SERVICE_HOST + "/addCollection", { userId, collectionName });
+        return res.send();
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send();
+    }
+}
+
 /**
  * Controller for getting all application in the db from a certain user 
  */
@@ -54,6 +72,24 @@ async function getAllUserApplications(req, res, next) {
         const response = await axios.post(process.env.APP_SERVICE_HOST + "/getAllUserApps", { userId });
 
         return res.json({ applications: response.data.applications });
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send();
+    }
+}
+
+async function getAllUserCollections(req, res, next) {
+    const userId = req.body.userId;
+
+    if (!userId) {
+        return res.status(400).send();
+    }
+
+    try {
+        const response = await axios.post(process.env.APP_SERVICE_HOST + "/getAllUserCollections", { userId });
+
+        return res.json({ collections: response.data.collections });
 
     } catch (err) {
         console.error(err);
@@ -114,9 +150,30 @@ async function deleteApplication(req, res, next) {
     }
 }
 
+async function deleteCollection(req, res, next) {
+    const userId = req.body.userId;
+    const collectionName = req.body.collectionName;
+
+    if (!userId || !collectionName) {
+        return res.status(400).send();
+    }
+
+    try {
+        await axios.post(process.env.APP_SERVICE_HOST + "/deleteCollection", { userId, collectionName });
+        return res.send();
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send();
+    }
+}
+
 module.exports = {
     addApplication,
+    addCollection,
     getAllUserApplications,
+    getAllUserCollections,
     deleteApplication,
+    deleteCollection,
     editApplication,
 }

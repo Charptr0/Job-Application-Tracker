@@ -33,6 +33,21 @@ async function addApplication(req, res, next) {
     }
 }
 
+async function addCollection(req, res, next) {
+    const userId = req.body.userId;
+    const collectionName = req.body.collectionName;
+
+    try {
+        await db.addCollection(userId, collectionName);
+        return res.send();
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send();
+    }
+
+}
+
 /**
  * Controller for getting all application in the db from a certain user 
  */
@@ -53,6 +68,32 @@ async function getAllUserApplications(req, res, next) {
         else {
             return res.json({
                 applications
+            })
+        }
+
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
+async function getAllUserCollections(req, res, next) {
+    const userId = req.body.userId;
+
+    // fetch all collections
+    try {
+        const collections = await db.fetchAllCollections(userId);
+
+        // no application found
+        if (collections === null) {
+            return res.json({
+                collections: []
+            });
+        }
+
+        else {
+            return res.json({
+                collections
             })
         }
 
@@ -112,9 +153,26 @@ async function deleteApplication(req, res, next) {
     }
 }
 
+async function deleteCollection(req, res, next) {
+    const userId = req.body.userId;
+    const collectionName = req.body.collectionName;
+
+    try {
+        await db.deleteCollection(userId, collectionName);
+        return res.send();
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send();
+    }
+}
+
 module.exports = {
     addApplication,
+    addCollection,
     getAllUserApplications,
     deleteApplication,
+    deleteCollection,
     editApplication,
+    getAllUserCollections,
 }

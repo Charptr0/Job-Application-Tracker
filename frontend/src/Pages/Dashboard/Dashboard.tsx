@@ -3,14 +3,20 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
 import { authUserRequest } from "../../Utils/Requests/auth";
 import { logoutRequest } from "../../Utils/Requests/logout";
+import { getToken } from "../../Utils/Storage/getToken";
+import { setToken } from "../../Utils/Storage/setToken";
 import ApplicationList from "./Components/ApplicationList/ApplicationList";
 import CreateApplication from "./Components/CreateApplication/CreateApplication";
+import CreateCollection from "./Components/CreateCollection/CreateCollection";
 import styles from "./Dashboard.module.scss";
+import RemoveCollection from "./RemoveCollection/RemoveCollection";
 
 export default function Dashboard() {
     const navigate = useNavigate();
     const { currentUser, updateUser } = useContext<any>(UserContext);
     const [createApplicationScreen, showCreateApplicationScreen] = useState(false);
+    const [createNewCollection, showCreateNewCollection] = useState(false);
+    const [removeCollection, showRemoveCollection] = useState(false);
 
     /**
      * Log the user out
@@ -30,7 +36,7 @@ export default function Dashboard() {
     useEffect(() => {
         // authenticate user
         const auth = async () => {
-            const token = localStorage.getItem('token');
+            const token = getToken();
 
             // no token 
             if (!token) {
@@ -42,7 +48,8 @@ export default function Dashboard() {
                 const res = await authUserRequest(token);
 
                 // auth successful
-                localStorage.setItem('token', res.data.accessToken);
+                setToken(res.data.accessToken);
+
                 updateUser({
                     id: res.data.id,
                     username: res.data.username,
@@ -65,8 +72,10 @@ export default function Dashboard() {
 
     return <div>
         <h1>Dashboard</h1>
-        <h2>Cluster 1</h2>
         {createApplicationScreen && <CreateApplication setVisible={showCreateApplicationScreen} />}
+        {createNewCollection && <CreateCollection setVisible={showCreateNewCollection} />}
+        {removeCollection && <RemoveCollection setVisible={showRemoveCollection} />}
+
 
         <div className={styles.flexContainer}>
             <ApplicationList />
@@ -76,7 +85,8 @@ export default function Dashboard() {
             <button onClick={() => showCreateApplicationScreen(true)} id={styles.addNewAppBtn}>Add a New Application</button>
         </div>
 
-        <button>Add a New Collection</button>
+        <button onClick={() => showCreateNewCollection(true)}>Add a New Collection</button>
+        <button onClick={() => showRemoveCollection(true)}>Remove Collection</button>
         <button onClick={logoutHandler}>Logout</button>
     </div>
 }
