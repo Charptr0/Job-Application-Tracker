@@ -2,7 +2,7 @@
     --title-font-size: 70px;
 }
 
-.container:first-child {
+.gridContainer {
     display: grid;
     grid-template-columns: 1.5fr 1fr;
     height: 100vh;
@@ -12,12 +12,14 @@
 }
 
 .container {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    background: white;
-    place-items: center;
-    margin: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 50px;
     margin-bottom: 200px;
+
 
     h2 {
         font-size: 40px;
@@ -42,6 +44,26 @@
     p {
         width: 80%;
     }
+}
+
+footer {
+    background-color: rgb(49, 49, 49);
+    color: white;
+    height: 80px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+
+    div {
+        margin: 10px;
+    }
+
+    img {
+        margin-top: 5px;
+    }
+
 }
 
 @media only screen and (max-width: 800px) {
