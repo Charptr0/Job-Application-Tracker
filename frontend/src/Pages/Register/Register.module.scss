@@ -1,0 +1,38 @@
+#registerScreen {
+    display: flex;
+    flex-direction: column;
+
+    h1 {
+        font-size: 50px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        label {
+            margin-top: 10px;
+            margin-bottom: -10px;
+            font-size: 30px;
+            align-self: flex-start;
+        }
+
+        input {
+            height: 40px;
+            width: 400px;
+            font-size: 30px;
+            border-radius: 15px;
+        }
+    }
+}
+
+
+.btn {
+    margin: 10px;
+    width: 200px;
+    height: 50px;
+    font-size: 15px;
+    border-radius: 50px;
+    cursor: pointer;
+}

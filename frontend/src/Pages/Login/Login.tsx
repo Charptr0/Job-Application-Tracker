@@ -10,7 +10,11 @@ interface LoginErrorMessageType {
     message: string;
 }
 
-export default function Login() {
+interface IProps {
+    setVisible: Function;
+}
+
+export default function Login(props: IProps) {
     const navigate = useNavigate();
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
@@ -91,11 +95,8 @@ export default function Login() {
             <label>Password</label><br></br>
             <input type="password" ref={passwordRef} /><br></br>
 
-            <div className={styles.btnHolder}>
-                <button disabled={submitButtonDisabled}>Login</button>
-                <button disabled={submitButtonDisabled} type="button" onClick={() => navigate("/register")}>Register</button>
-            </div>
+            <button disabled={submitButtonDisabled} className={styles.btn}>Login</button>
+            <button disabled={submitButtonDisabled} className={styles.btn} type="button" onClick={() => props.setVisible(false)}>Create a New Account</button>
         </form>
-
     </div>
 }

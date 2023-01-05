@@ -29,8 +29,8 @@ export default function Dashboard() {
             console.error(err);
         }
 
-        // route back to login page
-        navigate("/login");
+        // route back to the main page
+        navigate("/");
     }
 
     useEffect(() => {
@@ -40,7 +40,7 @@ export default function Dashboard() {
 
             // no token 
             if (!token) {
-                navigate("/login");
+                navigate("/");
                 return;
             }
 
@@ -60,7 +60,7 @@ export default function Dashboard() {
                 // route back to login screen
                 localStorage.removeItem('token');
                 updateUser({});
-                navigate("/login");
+                navigate("/");
             }
         }
         auth();

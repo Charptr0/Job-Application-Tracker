@@ -1,0 +1,20 @@
+.gridContainer {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    place-items: center;
+    height: 100vh;
+    background: linear-gradient(45deg, rgb(55, 78, 248), rgb(73, 192, 251));
+}
+
+.mainContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    border-right: 2px solid black;
+
+    p {
+        width: 80%;
+    }
+}
