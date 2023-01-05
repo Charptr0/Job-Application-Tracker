@@ -1,9 +1,28 @@
-.gridContainer {
+:root {
+    --title-font-size: 70px;
+}
+
+.container:first-child {
     display: grid;
     grid-template-columns: 1.5fr 1fr;
-    place-items: center;
     height: 100vh;
+    place-items: center;
+    margin: 0 !important;
     background: linear-gradient(45deg, rgb(55, 78, 248), rgb(73, 192, 251));
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    background: white;
+    place-items: center;
+    margin: 100px;
+    margin-bottom: 200px;
+
+    h2 {
+        font-size: 40px;
+        text-align: center;
+    }
 }
 
 .mainContent {
@@ -11,10 +30,34 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 30px;
     border-right: 2px solid black;
+    font-size: 30px;
+    text-align: center;
+    width: 80%;
+
+    h1 {
+        font-size: var(--title-font-size);
+    }
 
     p {
         width: 80%;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    :root {
+        --title-font-size: 50px;
+    }
+
+    .gridContainer {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .mainContent {
+        border-right: none;
+        border-bottom: 2px solid black;
+        width: 100%;
     }
 }

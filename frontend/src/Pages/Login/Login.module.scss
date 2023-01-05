@@ -1,10 +1,19 @@
+:root {
+    --input-width-size: 500px;
+    --input-height-size: 45px;
+    --input-font-size: 30px;
+    --label-font-size: 30px;
+
+    --title-font-size: 50px;
+}
+
 #loginScreen {
     display: flex;
     flex-direction: column;
     align-items: center;
 
     h1 {
-        font-size: 50px;
+        font-size: var(--title-font-size);
     }
 
 }
@@ -15,9 +24,10 @@
     align-items: center;
     text-align: center;
 
-    height: 50px;
-    width: 300px;
-    background-color: rgb(255, 161, 29);
+    font-size: 25px;
+    height: 60px;
+    width: 350px;
+    background-color: rgb(255, 162, 0);
     border-radius: 20px;
     color: red;
 
@@ -30,15 +40,14 @@
 
     label {
         margin-top: 10px;
-        margin-bottom: -10px;
-        font-size: 30px;
+        font-size: var(--label-font-size);
         align-self: flex-start;
     }
 
     input {
-        height: 40px;
-        width: 400px;
-        font-size: 30px;
+        height: var(--input-height-size);
+        width: var(--input-width-size);
+        font-size: var(--input-font-size);
         border-radius: 15px;
     }
 }
@@ -50,4 +59,40 @@
     font-size: 15px;
     border-radius: 50px;
     cursor: pointer;
+}
+
+@media only screen and (max-width: 1220px) {
+    :root {
+        --input-width-size: 300px
+    }
+}
+
+
+@media only screen and (max-width: 1000px) {
+    :root {
+        --input-width-size: 250px;
+        --input-height-size: 35px;
+        --input-font-size: 20px;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    :root {
+        --input-width-size: 400px;
+        --label-font-size: 25px;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    :root {
+        --input-width-size: 400px;
+        --label-font-size: 25px;
+    }
+}
+
+@media only screen and (max-width: 470px) {
+    :root {
+        --input-width-size: 300px;
+        --label-font-size: 25px;
+    }
 }
