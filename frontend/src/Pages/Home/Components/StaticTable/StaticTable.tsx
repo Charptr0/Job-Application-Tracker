@@ -1,10 +1,6 @@
 import { useState } from "react";
+import { randomJobApplication } from "../../Utils/randomJobApplication";
 import styles from "./StaticTable.module.scss";
-import { randomCompanyName } from "./Utils/randomCompanyName";
-import { randomJobTitle } from "./Utils/randomJobTitle";
-import { randomJobType } from "./Utils/randomJobType";
-import { randomLocation } from "./Utils/randomLocation";
-import { randomStatus } from "./Utils/randomStatus";
 
 interface ISampleApplication {
     companyName: string;
@@ -18,13 +14,7 @@ export default function StaticTable() {
     const [sampleApplications, setSampleApplications] = useState<ISampleApplication[]>([]);
 
     function createApplicationHandler() {
-        setSampleApplications(prev => [...prev, {
-            companyName: randomCompanyName(),
-            jobTitle: randomJobTitle(),
-            jobType: randomJobType(),
-            location: randomLocation(),
-            status: randomStatus(),
-        }])
+        setSampleApplications(prev => [...prev, randomJobApplication()])
     }
 
     return (
