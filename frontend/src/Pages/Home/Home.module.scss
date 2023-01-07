@@ -50,11 +50,13 @@ footer {
     background-color: rgb(49, 49, 49);
     color: white;
     height: 80px;
+    margin: 0;
 
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 25px;
+    text-align: center;
 
     div {
         margin: 10px;
@@ -96,5 +98,9 @@ footer {
     .mainContent {
         border-right: none;
         width: 100%;
+    }
+
+    footer {
+        font-size: 18px;
     }
 }
