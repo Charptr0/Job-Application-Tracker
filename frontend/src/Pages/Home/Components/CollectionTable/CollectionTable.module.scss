@@ -5,33 +5,21 @@
     font-size: 25px;
 }
 
-.table {
-    border-collapse: collapse;
-    font-size: 22px;
-    width: var(--table-width-size);
-    margin-top: 20px;
-
-    th,
-    td {
-        border: 1px solid black;
-        height: 50px;
-        text-align: center;
+@media only screen and (max-width: 1050px) {
+    .selectCollection {
+        width: 600px;
     }
 }
 
-.btnContainer {
-    text-align: center;
-    margin-top: 20px;
+@media only screen and (max-width: 625px) {
+    .selectCollection {
+        width: 400px;
+    }
+}
 
-    button {
-        margin: 30px;
+@media only screen and (max-width: 420px) {
+    .selectCollection {
         width: 200px;
-        height: 40px;
-        border-radius: 10px;
         font-size: 20px;
-        border: 1px solid black;
-        cursor: pointer;
-        background-color: transparent;
-
     }
 }
