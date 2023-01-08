@@ -1,9 +1,30 @@
+:root {
+    --title-font-size: 70px;
+}
+
 .gridContainer {
     display: grid;
     grid-template-columns: 1.5fr 1fr;
-    place-items: center;
     height: 100vh;
+    place-items: center;
+    margin: 0 !important;
     background: linear-gradient(45deg, rgb(55, 78, 248), rgb(73, 192, 251));
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 50px;
+    margin-bottom: 200px;
+
+
+    h2 {
+        font-size: 40px;
+        text-align: center;
+    }
 }
 
 .mainContent {
@@ -11,10 +32,75 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 30px;
     border-right: 2px solid black;
+    font-size: 30px;
+    text-align: center;
+    width: 80%;
+
+    h1 {
+        font-size: var(--title-font-size);
+    }
 
     p {
         width: 80%;
+    }
+}
+
+footer {
+    background-color: rgb(49, 49, 49);
+    color: white;
+    height: 80px;
+    margin: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    text-align: center;
+
+    div {
+        margin: 10px;
+    }
+
+    img {
+        margin-top: 5px;
+    }
+
+}
+
+@media only screen and (max-width: 800px) {
+    :root {
+        --title-font-size: 50px;
+    }
+
+    .gridContainer {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .mainContent {
+        border-right: none;
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    :root {
+        --title-font-size: 50px;
+    }
+
+    .gridContainer {
+        height: 100%;
+        width: auto;
+    }
+
+    .mainContent {
+        border-right: none;
+        width: 100%;
+    }
+
+    footer {
+        font-size: 18px;
     }
 }

@@ -1,0 +1,25 @@
+.selectCollection {
+    width: 1000px;
+    height: 50px;
+    border-radius: 15px;
+    font-size: 25px;
+}
+
+@media only screen and (max-width: 1050px) {
+    .selectCollection {
+        width: 600px;
+    }
+}
+
+@media only screen and (max-width: 625px) {
+    .selectCollection {
+        width: 400px;
+    }
+}
+
+@media only screen and (max-width: 420px) {
+    .selectCollection {
+        width: 200px;
+        font-size: 20px;
+    }
+}

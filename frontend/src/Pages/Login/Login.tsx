@@ -63,7 +63,17 @@ export default function Login(props: IProps) {
             navigate("/dashboard");
 
         } catch (err: any) {
-            const statusCode: number = err.response.status;
+            const statusCode: number = err.response?.status;
+
+            if (!statusCode) {
+                setLoginErrorMessage({
+                    visible: true,
+                    message: "Internal Server Error"
+                });
+
+                setSubmitButtonDisabled(false);
+                return;
+            }
 
             // invalid email or password
             if (statusCode === 400) {
@@ -88,7 +98,7 @@ export default function Login(props: IProps) {
         <h1>Login</h1>
 
         <form onSubmit={submitHandler} className={styles.form}>
-            {loginErrorMessage.visible && <div id={styles.errorMessage}>{loginErrorMessage.message}</div>}
+            {loginErrorMessage.visible && <div className={styles.errorMessage}>{loginErrorMessage.message}</div>}
             <label>Email</label><br></br>
             <input type="email" ref={emailRef} /> <br></br>
 

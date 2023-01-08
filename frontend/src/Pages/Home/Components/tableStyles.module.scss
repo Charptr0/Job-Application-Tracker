@@ -1,0 +1,97 @@
+:root {
+    --table-width-size: 1500px;
+}
+
+.btnContainer {
+    text-align: center;
+    margin-top: 20px;
+
+    button {
+        margin: 30px;
+        width: 200px;
+        height: 40px;
+        border-radius: 10px;
+        font-size: 20px;
+        border: 1px solid black;
+        cursor: pointer;
+        background-color: transparent;
+
+    }
+}
+
+.table {
+    border-collapse: collapse;
+    font-size: 22px;
+    width: var(--table-width-size);
+    margin-top: 20px;
+
+    th,
+    td {
+        border: 1px solid black;
+        height: 50px;
+        text-align: center;
+    }
+}
+
+@media only screen and (max-width: 1560px) {
+    :root {
+        --table-width-size: 1200px;
+    }
+}
+
+@media only screen and (max-width: 1250px) {
+    :root {
+        --table-width-size: 1000px;
+    }
+}
+
+@media only screen and (max-width: 1050px) {
+    :root {
+        --table-width-size: 800px;
+
+    }
+
+    .table {
+        font-size: 15px;
+    }
+
+    .col5 {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 825px) {
+    :root {
+        --table-width-size: 600px;
+    }
+}
+
+@media only screen and (max-width: 625px) {
+    :root {
+        --table-width-size: 400px;
+    }
+
+    .col3 {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 625px) {
+    :root {
+        --table-width-size: 400px;
+    }
+
+    .col3 {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 420px) {
+    :root {
+        --table-width-size: 320px;
+    }
+
+    .table {
+        font-size: 12px;
+    }
+}
