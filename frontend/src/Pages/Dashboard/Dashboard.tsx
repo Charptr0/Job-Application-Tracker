@@ -8,8 +8,8 @@ import { setToken } from "../../Utils/Storage/setToken";
 import ApplicationList from "./Components/ApplicationList/ApplicationList";
 import CreateApplication from "./Components/CreateApplication/CreateApplication";
 import CreateCollection from "./Components/CreateCollection/CreateCollection";
+import RemoveCollection from "./Components/RemoveCollection/RemoveCollection";
 import styles from "./Dashboard.module.scss";
-import RemoveCollection from "./RemoveCollection/RemoveCollection";
 
 export default function Dashboard() {
     const navigate = useNavigate();
