@@ -158,24 +158,24 @@ export default function ApplicationList() {
     return <div>
         <div>
             <h2>Switch Collection</h2>
-            <select onClick={switchCollectionHandler} ref={collectionRef}>
-                <option></option>
-                <option>All</option>
-                {collections.length > 0 && collections.map((collection, i) => <option key={i}>{collection}</option>)}
+            <select onClick={switchCollectionHandler} ref={collectionRef} className={styles.switchCollection}>
+                <option className={styles.switchCollectionOption}></option>
+                <option className={styles.switchCollectionOption}>All</option>
+                {collections.length > 0 && collections.map((collection, i) => <option key={i} className={styles.switchCollectionOption}>{collection}</option>)}
             </select>
         </div>
         <div>
             <h2>Filter Result</h2>
-            <select ref={filterTypeRef} onClick={filterTypeHandler}>
-                <option></option>
-                <option>Company Name</option>
-                <option>Job Title</option>
-                <option>Location</option>
-                <option>Job Type</option>
-                <option>Status</option>
-                <option>Date Submitted</option>
+            <select ref={filterTypeRef} onClick={filterTypeHandler} className={styles.filterSelections}>
+                <option className={styles.filterOptions}></option>
+                <option className={styles.filterOptions}>Company Name</option>
+                <option className={styles.filterOptions}>Job Title</option>
+                <option className={styles.filterOptions}>Location</option>
+                <option className={styles.filterOptions}>Job Type</option>
+                <option className={styles.filterOptions}>Status</option>
+                <option className={styles.filterOptions}>Date Submitted</option>
             </select>
-            <input ref={filterInputRef} onChange={filterInputOnChangeHandler} />
+            <input ref={filterInputRef} onChange={filterInputOnChangeHandler} className={styles.filterInput} />
         </div>
         <h2>Current Collection: <span id="current-collection">{currentCollection}</span></h2>
         {showJobDetails.visible && showJobDetails.application &&

@@ -1,0 +1,43 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(28, 89, 255);
+
+
+    .title {
+        margin-left: 20px;
+        font-size: 25px;
+    }
+
+    .user {
+        font-size: 25px;
+        cursor: pointer;
+        padding: 20px;
+
+        &:hover {
+            transition: 0.5s;
+            background-color: rgb(8, 74, 253);
+        }
+    }
+}
+
+.userOptions {
+    position: absolute;
+    right: 0px;
+    top: 70px;
+    width: 100px;
+    text-align: center;
+    background-color: rgb(226, 226, 226);
+    font-size: 20px;
+
+    div {
+        padding: 10px;
+        cursor: pointer;
+
+        &:hover {
+            transition: 0.5s;
+            background-color: rgb(155, 154, 154);
+        }
+    }
+}
