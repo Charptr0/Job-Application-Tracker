@@ -4,6 +4,7 @@ import { useContext, useRef, useState } from "react";
 import { removeApplicationRequest } from "../../../../Utils/Requests/removeApplication";
 import { UserContext } from "../../../../Context/UserContext";
 import { editApplicationRequest } from "../../../../Utils/Requests/editApplication";
+import styles from "./JobDetails.module.scss";
 
 interface IProps {
     currentApplication: IApplication,
@@ -52,6 +53,8 @@ export default function JobDetails(props: IProps) {
             return;
         }
 
+        console.log(props.currentApplication.collectionName);
+
         const companyName = formRefs.companyNameRef.current?.value;
         const jobTitle = formRefs.jobTitleRef.current?.value;
         const jobType = formRefs.jobTypeRef.current?.value;
@@ -62,7 +65,7 @@ export default function JobDetails(props: IProps) {
         const status = formRefs.statusRef.current?.value;
         const notes = formRefs.notesRef.current?.value || "";
 
-        if (!companyName || !jobTitle || !location || !link || !status || !jobType) {
+        if (!companyName || !jobTitle || !location || !link || !status || !jobType || !props.currentApplication.collectionName) {
             return;
         }
 
@@ -88,7 +91,7 @@ export default function JobDetails(props: IProps) {
         }
 
         try {
-            await editApplicationRequest(currentUser.id, "placeholder", newApplication);
+            await editApplicationRequest(currentUser.id, props.currentApplication.collectionName, newApplication);
             window.location.reload();
         } catch (err) {
             console.log(err);
@@ -99,54 +102,53 @@ export default function JobDetails(props: IProps) {
         {viewMode ?
             <div className={modalStyles.modal}>
                 <h1>View your Record</h1>
-                <div>
-                    <h2>Company Name</h2>
-                    <div>{props.currentApplication.companyName}</div>
+                <div className={styles.outerContainer}>
+                    <div className={styles.innerContainer}>
+                        <div className={styles.title}>Company Name</div>
+                        <div className={styles.desc}>{props.currentApplication.companyName}</div>
+                    </div>
+
+                    <div className={styles.innerContainer}>
+                        <div className={styles.title}>Job Title</div>
+                        <div className={styles.desc}>{props.currentApplication.jobTitle}</div>
+                    </div>
+                    <div className={styles.innerContainer}>
+                        <div className={styles.title}>Job Type</div>
+                        <div className={styles.desc}>{props.currentApplication.jobType}</div>
+                    </div>
+
+                    <div className={styles.innerContainer}>
+                        <div className={styles.title}>Status</div>
+                        <div className={styles.desc}>{props.currentApplication.status}</div>
+                    </div>
+                    <div className={styles.innerContainer}>
+                        <div className={styles.title}>Location</div>
+                        <div className={styles.desc}>{props.currentApplication.location}</div>
+                    </div>
+
+                    <div className={styles.innerContainer}>
+                        <div className={styles.title}>Date Submitted</div>
+                        {props.currentApplication.dateSubmitted ? <div className={styles.desc}>{props.currentApplication.dateSubmitted}</div> : <div className={styles.desc}>N/A</div>}
+                    </div>
                 </div>
 
-                <div>
-                    <h2>Job Title</h2>
-                    <div>{props.currentApplication.jobTitle}</div>
+                <div className={styles.innerContainer}>
+                    <div className={styles.title}>Application Link</div>
+                    <div className={styles.desc}>{props.currentApplication.link}</div>
                 </div>
 
-                <div>
-                    <h2>Location</h2>
-                    <div>{props.currentApplication.location}</div>
+                <div className={styles.innerContainer}>
+                    <div className={styles.title}>Salary</div>
+                    {props.currentApplication.salary ? <div className={styles.desc}>{props.currentApplication.salary}</div> : <div className={styles.desc}>N/A</div>}
                 </div>
 
-                <div>
-                    <h2>Application Link</h2>
-                    <div>{props.currentApplication.link}</div>
+                <div className={styles.innerContainer}>
+                    <div className={styles.title}>Notes</div>
+                    {props.currentApplication.notes ? <div className={styles.desc}>{props.currentApplication.notes}</div> : <div className={styles.desc}>N/A</div>}
                 </div>
-
-                <div>
-                    <h2>Job Type</h2>
-                    <div>{props.currentApplication.jobType}</div>
-                </div>
-
-                <div>
-                    <h2>Status</h2>
-                    <div>{props.currentApplication.status}</div>
-                </div>
-
-                <div>
-                    <h2>Date Submitted</h2>
-                    {props.currentApplication.dateSubmitted ? <div>{props.currentApplication.dateSubmitted}</div> : <div>N/A</div>}
-                </div>
-
-                <div>
-                    <h2>Salary</h2>
-                    {props.currentApplication.salary ? <div>{props.currentApplication.salary}</div> : <div>N/A</div>}
-                </div>
-
-                <div>
-                    <h2>Notes</h2>
-                    {props.currentApplication.notes ? <div>{props.currentApplication.notes}</div> : <div>N/A</div>}
-                </div>
-
-                <div>
-                    <button type="button" onClick={() => setViewMode(false)}>Edit Record</button>
+                <div className={styles.btnContainer}>
                     <button type="button" onClick={removeRecordHandler}>Remove Record</button>
+                    <button type="button" onClick={() => setViewMode(false)}>Edit Record</button>
                     <button type="button" onClick={() => props.setApplicationDetails({ ...props.currentApplication, visible: false })}>Done</button>
                 </div>
             </div> :

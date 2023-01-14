@@ -128,8 +128,8 @@ export default function CreateApplication(props: IProps) {
                 <textarea ref={formRefs.notesRef} style={{ "height": "100px" }} /><br></br>
 
                 <div className={modalStyles.btnContainer}>
-                    <button type="submit">Submit</button>
                     <button type="button" onClick={() => props.setVisible(false)}>Cancel</button>
+                    <button type="submit">Submit</button>
                 </div>
             </form>
         </div>
