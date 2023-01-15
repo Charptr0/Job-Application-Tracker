@@ -91,10 +91,10 @@ export default function CreateApplication(props: IProps) {
 
                 <label>Job Type*</label><br></br>
                 <select ref={formRefs.jobTypeRef}>
-                    <option>Full-Time</option>
-                    <option>Part-Time</option>
-                    <option>Full-Time Internship</option>
-                    <option>Part-Time Internship</option>
+                    <option>Full Time</option>
+                    <option>Part Time</option>
+                    <option>Full Time Internship</option>
+                    <option>Part Time Internship</option>
                     <option>Temporary</option>
                     <option>Contract</option>
                     <option>Volunteer</option>

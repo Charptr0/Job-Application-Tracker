@@ -46,3 +46,36 @@
     }
 
 }
+
+.switchCollection {
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 20px;
+    cursor: pointer;
+
+    .switchCollectionOption {
+        height: 40px;
+        border-radius: 30px;
+        cursor: pointer;
+    }
+}
+
+.filterSelections {
+    width: 20%;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+
+    .filterOptions {
+        height: 40px;
+        border-radius: 30px;
+        cursor: pointer;
+    }
+}
+
+.filterInput {
+    width: 79%;
+    height: 35px;
+    font-size: 20px;
+}

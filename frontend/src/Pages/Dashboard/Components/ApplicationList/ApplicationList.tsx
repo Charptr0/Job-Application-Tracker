@@ -15,6 +15,10 @@ interface IJobDetails {
     application: IApplication | null,
 }
 
+function filterApplicationByCollection(applications: IApplication[], collectionName: string) {
+    return applications.filter(app => app.collectionName === collectionName);
+}
+
 export default function ApplicationList() {
     // applications states
     const [applications, setApplications] = useState<IApplication[]>([]);
@@ -26,11 +30,16 @@ export default function ApplicationList() {
     // collection states
     const [currentCollection, setCurrentCollection] = useState("All");
     const [collections, setCollections] = useState<string[]>([]);
+    const collectionRef = useRef<HTMLSelectElement>(null);
+
+    // filter
+    const filterTypeRef = useRef<HTMLSelectElement>(null);
+    const filterInputRef = useRef<HTMLInputElement>(null);
+    const [currentFilterType, setCurrentFilterType] = useState("");
 
     // context
     const { currentUser, updateUser } = useContext<any>(UserContext);
 
-    const collectionRef = useRef<HTMLSelectElement>(null);
 
     useEffect(() => {
         const fetchApplicationAndCollection = async () => {
@@ -50,7 +59,7 @@ export default function ApplicationList() {
                 }
 
                 else {
-                    setFilteredApplications(resApplications.filter((app: IApplication) => app.collectionName === defaultCollection));
+                    setFilteredApplications(filterApplicationByCollection(resApplications, defaultCollection));
                 }
 
                 // get all collections
@@ -101,6 +110,47 @@ export default function ApplicationList() {
         setFilteredApplications(applications.filter((app: IApplication) => app.collectionName === selectedCollection));
     }
 
+    /**
+     *  Update the current filter type
+     */
+    function filterTypeHandler() {
+        const filterType = filterTypeRef.current?.value;
+        const inputRef = filterInputRef.current;
+
+        if (!filterType || filterType === currentFilterType) return;
+        if (!inputRef) return;
+
+        setCurrentFilterType(filterType);
+
+        inputRef.value = "";
+    }
+
+    function filterInputOnChangeHandler() {
+        const value = filterInputRef.current?.value;
+        const filterType = filterTypeRef.current?.value;
+
+        if (value === undefined) return;
+        if (!filterType) return;
+
+        const appsBeforeFiltering = currentCollection === "All" ? applications : filterApplicationByCollection(applications, currentCollection);
+
+        if (value === "") {
+            setFilteredApplications(appsBeforeFiltering);
+            return;
+        }
+
+        setFilteredApplications(appsBeforeFiltering.filter(app => {
+            switch (currentFilterType) {
+                case "Company Name": return app.companyName.toLowerCase().includes(value);
+                case "Job Title": return app.jobTitle.toLowerCase().includes(value);
+                case "Location": return app.location.toLowerCase().includes(value);
+                case "Job Type": return app.jobType.toLowerCase().includes(value);
+                case "Status": return app.status.toLowerCase().includes(value);
+                default: return false;
+            }
+        }));
+    }
+
     if (loading) {
         return <div>Loading...</div>
     }
@@ -108,11 +158,24 @@ export default function ApplicationList() {
     return <div>
         <div>
             <h2>Switch Collection</h2>
-            <select onClick={switchCollectionHandler} ref={collectionRef}>
-                <option></option>
-                <option>All</option>
-                {collections.length > 0 && collections.map((collection, i) => <option key={i}>{collection}</option>)}
+            <select onClick={switchCollectionHandler} ref={collectionRef} className={styles.switchCollection}>
+                <option className={styles.switchCollectionOption}></option>
+                <option className={styles.switchCollectionOption}>All</option>
+                {collections.length > 0 && collections.map((collection, i) => <option key={i} className={styles.switchCollectionOption}>{collection}</option>)}
             </select>
+        </div>
+        <div>
+            <h2>Filter Result</h2>
+            <select ref={filterTypeRef} onClick={filterTypeHandler} className={styles.filterSelections}>
+                <option className={styles.filterOptions}></option>
+                <option className={styles.filterOptions}>Company Name</option>
+                <option className={styles.filterOptions}>Job Title</option>
+                <option className={styles.filterOptions}>Location</option>
+                <option className={styles.filterOptions}>Job Type</option>
+                <option className={styles.filterOptions}>Status</option>
+                <option className={styles.filterOptions}>Date Submitted</option>
+            </select>
+            <input ref={filterInputRef} onChange={filterInputOnChangeHandler} className={styles.filterInput} />
         </div>
         <h2>Current Collection: <span id="current-collection">{currentCollection}</span></h2>
         {showJobDetails.visible && showJobDetails.application &&

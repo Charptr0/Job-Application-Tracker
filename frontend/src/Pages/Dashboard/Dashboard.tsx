@@ -8,8 +8,9 @@ import { setToken } from "../../Utils/Storage/setToken";
 import ApplicationList from "./Components/ApplicationList/ApplicationList";
 import CreateApplication from "./Components/CreateApplication/CreateApplication";
 import CreateCollection from "./Components/CreateCollection/CreateCollection";
+import Navbar from "./Components/Navbar/Navbar";
+import RemoveCollection from "./Components/RemoveCollection/RemoveCollection";
 import styles from "./Dashboard.module.scss";
-import RemoveCollection from "./RemoveCollection/RemoveCollection";
 
 export default function Dashboard() {
     const navigate = useNavigate();
@@ -71,7 +72,7 @@ export default function Dashboard() {
     }
 
     return <div>
-        <h1>Dashboard</h1>
+        <Navbar logoutHandler={logoutHandler} />
         {createApplicationScreen && <CreateApplication setVisible={showCreateApplicationScreen} />}
         {createNewCollection && <CreateCollection setVisible={showCreateNewCollection} />}
         {removeCollection && <RemoveCollection setVisible={showRemoveCollection} />}
@@ -87,6 +88,5 @@ export default function Dashboard() {
 
         <button onClick={() => showCreateNewCollection(true)}>Add a New Collection</button>
         <button onClick={() => showRemoveCollection(true)}>Remove Collection</button>
-        <button onClick={logoutHandler}>Logout</button>
     </div>
 }

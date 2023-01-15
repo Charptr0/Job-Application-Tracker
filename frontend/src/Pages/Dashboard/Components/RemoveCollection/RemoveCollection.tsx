@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { UserContext } from "../../../Context/UserContext";
-import { removeCollectionRequest } from "../../../Utils/Requests/removeCollection";
-import { setCollection } from "../../../Utils/Storage/setCollection";
-import modalStyles from "../../Dashboard/Utils/Styles/modal.module.scss";
+import { UserContext } from "../../../../Context/UserContext";
+import { removeCollectionRequest } from "../../../../Utils/Requests/removeCollection";
+import { setCollection } from "../../../../Utils/Storage/setCollection";
+import modalStyles from "../../../Dashboard/Utils/Styles/modal.module.scss";
 
 interface IProps {
     setVisible: Function,
