@@ -10,11 +10,18 @@
     height: 85%;
     border: 2px solid black;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
     z-index: 15;
 
     h1 {
         font-size: 35px;
     }
+}
+
+.smallModal {
+    @extend .modal;
+    height: 400px;
+    overflow: hidden;
 }
 
 .backdrop {
@@ -53,5 +60,15 @@
         width: 300px;
         height: 50px;
         margin: 20px;
+        cursor: pointer;
+        font-size: 25px;
+        background: transparent;
+        border-radius: 8px;
+        border: 1px solid black;
+
+        &:hover {
+            transition: 0.5s;
+            background-color: rgb(240, 240, 240);
+        }
     }
 }

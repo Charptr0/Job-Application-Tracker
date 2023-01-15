@@ -12,7 +12,7 @@ export default function RemoveCollection(props: IProps) {
     const { currentUser, updateUser } = useContext<any>(UserContext);
 
     async function confirmRemoveHandler() {
-        const collectionName = document.getElementById("current-collection")?.innerHTML;
+        const collectionName = document.getElementById("current-collection")?.textContent;
 
         if (!collectionName) return;
 

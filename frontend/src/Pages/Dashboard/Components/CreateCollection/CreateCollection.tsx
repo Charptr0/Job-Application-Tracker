@@ -3,6 +3,7 @@ import { UserContext } from "../../../../Context/UserContext";
 import { addCollectionRequest } from "../../../../Utils/Requests/addCollection";
 import { setCollection } from "../../../../Utils/Storage/setCollection";
 import modalStyles from "../../Utils/Styles/modal.module.scss";
+import styles from "./CreateCollection.module.scss";
 
 interface IProps {
     setVisible: Function,
@@ -30,15 +31,16 @@ export default function CreateCollection(props: IProps) {
     }
 
     return <div className={modalStyles.backdrop}>
-        <div className={modalStyles.modal}>
+        <div className={modalStyles.smallModal}>
             <h1>Create a New Collection</h1>
-            <form onSubmit={submitHandler}>
-                <label>Collection Name</label>
-                <input ref={collectionNameRef} />
+            <form onSubmit={submitHandler} className={styles.form}>
+                <label>Enter a New Collection Name</label><br></br>
+                <input ref={collectionNameRef} /> <br></br>
 
-                <button>Create</button>
-                <button type="button" onClick={() => props.setVisible(false)}>Cancel</button>
-
+                <div className={styles.btnContainer}><br></br>
+                    <button type="button" onClick={() => props.setVisible(false)}>Cancel</button>
+                    <button>Create</button>
+                </div>
             </form>
 
         </div>
