@@ -83,10 +83,9 @@ export default function Dashboard() {
         </div>
 
         <div className={styles.flexContainer}>
-            <button onClick={() => showCreateApplicationScreen(true)} id={styles.addNewAppBtn}>Add a New Application</button>
+            <button onClick={() => showCreateApplicationScreen(true)} className={styles.btnStyles}>Add a New Application</button>
+            <button onClick={() => showCreateNewCollection(true)} className={styles.btnStyles} >Add a New Collection</button>
+            <button onClick={() => showRemoveCollection(true)} className={styles.btnStyles}>Remove Collection</button>
         </div>
-
-        <button onClick={() => showCreateNewCollection(true)}>Add a New Collection</button>
-        <button onClick={() => showRemoveCollection(true)}>Remove Collection</button>
     </div>
 }

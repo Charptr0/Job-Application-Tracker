@@ -1,8 +1,10 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useReducer, useRef, useState } from "react";
 import modalStyles from "../../Utils/Styles/modal.module.scss";
 import { IApplication } from "../../Utils/Interfaces/IApplication";
 import { addApplicationRequest } from "../../../../Utils/Requests/addApplication";
 import { UserContext } from "../../../../Context/UserContext";
+import styles from "./CreateApplication.module.scss";
+import { applicationWarningMessagesInitState, applicationWarningMessagesReducer, APPLICATION_WARNING_MESSAGES_ERR_TYPE } from "../../Utils/Reducers/applicationWarningMessageReducer";
 
 interface IProps {
     setVisible: Function,
@@ -10,6 +12,10 @@ interface IProps {
 
 export default function CreateApplication(props: IProps) {
     const { currentUser, updateUser } = useContext<any>(UserContext);
+    const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
+
+    const [state, dispatch] = useReducer(applicationWarningMessagesReducer, applicationWarningMessagesInitState);
+
 
     const formRefs = {
         companyNameRef: useRef<HTMLInputElement>(null),
@@ -26,7 +32,9 @@ export default function CreateApplication(props: IProps) {
     async function submitHandler(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
-        const currentCollectionName: string | undefined = document.getElementById("current-collection")?.innerHTML;
+        setSubmitButtonDisabled(true);
+
+        const currentCollectionName: string | null | undefined = document.getElementById("current-collection")?.textContent;
         const companyName = formRefs.companyNameRef.current?.value;
         const jobTitle = formRefs.jobTitleRef.current?.value;
         const jobType = formRefs.jobTypeRef.current?.value;
@@ -37,7 +45,27 @@ export default function CreateApplication(props: IProps) {
         const status = formRefs.statusRef.current?.value;
         const notes = formRefs.notesRef.current?.value || "";
 
-        if (!companyName || !jobTitle || !location || !link || !status || !jobType || !currentCollectionName) {
+        if (!companyName) {
+            dispatch({ type: APPLICATION_WARNING_MESSAGES_ERR_TYPE.NO_COMPANY_NAME });
+            setSubmitButtonDisabled(false);
+            return;
+        }
+
+        if (!jobTitle) {
+            dispatch({ type: APPLICATION_WARNING_MESSAGES_ERR_TYPE.NO_POSITION_NAME });
+            setSubmitButtonDisabled(false);
+            return;
+        }
+
+        if (!location) {
+            dispatch({ type: APPLICATION_WARNING_MESSAGES_ERR_TYPE.NO_LOCATION });
+            setSubmitButtonDisabled(false);
+            return;
+        }
+
+        if (!link) {
+            dispatch({ type: APPLICATION_WARNING_MESSAGES_ERR_TYPE.NO_LINK });
+            setSubmitButtonDisabled(false);
             return;
         }
 
@@ -45,7 +73,24 @@ export default function CreateApplication(props: IProps) {
         const linkRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
         if (!link.match(linkRegex)) {
-            console.log(`not valid link`);
+            dispatch({ type: APPLICATION_WARNING_MESSAGES_ERR_TYPE.INVALID_LINK });
+            setSubmitButtonDisabled(false);
+            return;
+        }
+
+        if (!jobType) {
+            dispatch({ type: APPLICATION_WARNING_MESSAGES_ERR_TYPE.NO_JOB_TYPE });
+            setSubmitButtonDisabled(false);
+            return;
+        }
+
+        if (!status) {
+            dispatch({ type: APPLICATION_WARNING_MESSAGES_ERR_TYPE.NO_STATUS });
+            setSubmitButtonDisabled(false);
+            return;
+        }
+
+        if (!currentCollectionName) {
             return;
         }
 
@@ -79,18 +124,23 @@ export default function CreateApplication(props: IProps) {
             <form onSubmit={submitHandler} className={modalStyles.container}>
                 <label>Company Name*</label>
                 <input ref={formRefs.companyNameRef} placeholder="Google, Amazon, Microsoft..." />
+                {state.companyName.visible && <div className={styles.warningMessage}>{state.companyName.message}</div>}
 
                 <label>Position Name*</label>
                 <input ref={formRefs.jobTitleRef} placeholder="Software Engineer, Data Scientist" />
+                {state.positionName.visible && <div className={styles.warningMessage}>{state.positionName.message}</div>}
 
-                <label>Location*</label><br></br>
-                <input ref={formRefs.locationRef} placeholder="Remote, NYC, San Francisco" /><br></br>
+                <label>Location*</label>
+                <input ref={formRefs.locationRef} placeholder="Remote, NYC, San Francisco" />
+                {state.location.visible && <div className={styles.warningMessage}>{state.location.message}</div>}
 
-                <label>Application Link*</label><br></br>
-                <input ref={formRefs.applicationLinkRef} placeholder="https://google.com" /><br></br>
+                <label>Application Link*</label>
+                <input ref={formRefs.applicationLinkRef} placeholder="https://google.com" />
+                {state.link.visible && <div className={styles.warningMessage}>{state.link.message}</div>}
 
-                <label>Job Type*</label><br></br>
+                <label>Job Type*</label>
                 <select ref={formRefs.jobTypeRef}>
+                    <option></option>
                     <option>Full Time</option>
                     <option>Part Time</option>
                     <option>Full Time Internship</option>
@@ -100,10 +150,12 @@ export default function CreateApplication(props: IProps) {
                     <option>Volunteer</option>
                     <option>Unpaid Internship</option>
                     <option>Other</option>
-                </select><br></br>
+                </select>
+                {state.jobType.visible && <div className={styles.warningMessage}>{state.jobType.message}</div>}
 
-                <label>Status*</label><br></br>
+                <label>Status*</label>
                 <select ref={formRefs.statusRef}>
+                    <option></option>
                     <option>Application Sent</option>
                     <option>Online Assessment (OA)</option>
                     <option>Phone Interview</option>
@@ -116,20 +168,21 @@ export default function CreateApplication(props: IProps) {
                     <option>Offer</option>
                     <option>Declined</option>
                     <option>Ghosted</option>
-                </select><br></br>
+                </select>
+                {state.status.visible && <div className={styles.warningMessage}>{state.status.message}</div>}
 
-                <label>Date Submitted</label><br></br>
-                <input ref={formRefs.dateSubmittedRef} type="date" style={{ "width": "20%" }} /><br></br>
+                <label>Date Submitted</label>
+                <input ref={formRefs.dateSubmittedRef} type="date" style={{ "width": "20%" }} />
 
-                <label>Salary</label><br></br>
-                <input ref={formRefs.salaryRef} placeholder="89,000" type="number" /><br></br>
+                <label>Salary</label>
+                <input ref={formRefs.salaryRef} placeholder="89,000" type="number" />
 
-                <label>Notes</label><br></br>
-                <textarea ref={formRefs.notesRef} style={{ "height": "100px" }} /><br></br>
+                <label>Notes</label>
+                <textarea ref={formRefs.notesRef} style={{ "height": "100px" }} />
 
                 <div className={modalStyles.btnContainer}>
-                    <button type="submit">Submit</button>
                     <button type="button" onClick={() => props.setVisible(false)}>Cancel</button>
+                    <button type="submit" disabled={submitButtonDisabled}>Submit</button>
                 </div>
             </form>
         </div>

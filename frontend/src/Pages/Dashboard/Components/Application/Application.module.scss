@@ -3,6 +3,23 @@
 
     &:hover {
         transition: 0.5s;
-        background-color: grey;
+        background-color: rgb(220, 220, 220);
+    }
+}
+
+.rejected {
+    background-color: rgb(255, 52, 52);
+
+    &:hover {
+        background-color: rgb(255, 82, 82) !important;
+    }
+}
+
+.offer {
+    background-color: rgb(2, 174, 2);
+
+    &:hover {
+        background-color: rgb(2, 212, 2) !important;
+
     }
 }

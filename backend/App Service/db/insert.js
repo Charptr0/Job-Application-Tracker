@@ -24,7 +24,7 @@ async function addApplication(userId, applicationReq) {
                     salary: applicationReq.salary,
                     link: applicationReq.link,
                     status: applicationReq.status,
-                    notes: applicationReq.status,
+                    notes: applicationReq.notes,
                 }]
             });
 
@@ -44,7 +44,7 @@ async function addApplication(userId, applicationReq) {
                 salary: applicationReq.salary,
                 link: applicationReq.link,
                 status: applicationReq.status,
-                notes: applicationReq.status,
+                notes: applicationReq.notes,
             });
 
             await user.save();
