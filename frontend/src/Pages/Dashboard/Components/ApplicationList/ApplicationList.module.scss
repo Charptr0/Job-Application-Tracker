@@ -4,6 +4,11 @@
     --col3_size: 250px;
     --col4_size: 150px;
     --col5_size: 200px;
+
+    --switch-collection-input-size: 100%;
+    --filter-input-size: 79%;
+    --filter-select-size: 20%;
+
 }
 
 .flexContainer {
@@ -48,7 +53,7 @@
 }
 
 .switchCollection {
-    width: 100%;
+    width: var(--switch-collection-input-size);
     height: 40px;
     border-radius: 10px;
     font-size: 20px;
@@ -62,7 +67,7 @@
 }
 
 .filterSelections {
-    width: 20%;
+    width: var(--filter-select-size);
     height: 40px;
     font-size: 20px;
     cursor: pointer;
@@ -75,7 +80,41 @@
 }
 
 .filterInput {
-    width: 79%;
+    width: var(--filter-input-size);
     height: 35px;
     font-size: 20px;
+}
+
+@media screen and (max-width: 1530px) {
+    :root {
+        --switch-collection-input-size: 1000px;
+        --filter-input-size: 650px;
+        --filter-select-size: 344px;
+    }
+}
+
+@media screen and (max-width: 1010px) {
+    :root {
+        --switch-collection-input-size: 650px;
+        --filter-input-size: 390px;
+        --filter-select-size: 250px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    :root {
+        --switch-collection-input-size: 500px;
+        --filter-input-size: 344px;
+        --filter-select-size: 144px;
+
+    }
+}
+
+@media screen and (max-width: 500px) {
+    :root {
+        --switch-collection-input-size: 300px;
+        --filter-input-size: 195px;
+        --filter-select-size: 100px;
+
+    }
 }

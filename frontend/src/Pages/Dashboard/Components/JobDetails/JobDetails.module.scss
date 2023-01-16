@@ -1,3 +1,10 @@
+.mainTitle {
+    font-size: 40px;
+    margin-top: 30px;
+    font-weight: bold;
+}
+
+
 .outerContainer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -40,4 +47,36 @@
 .warningMessage {
     color: red;
     font-size: 20px;
+}
+
+@media screen and (max-width: 800px) {
+    .outerContainer {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .btnContainer {
+        flex-direction: column;
+        align-items: center;
+
+        button {
+            margin: 20px;
+        }
+    }
+}
+
+@media screen and (max-width: 370px) {
+    .innerContainer {
+        .title {
+            font-size: 30px;
+        }
+
+        .desc {
+            font-size: 25px;
+        }
+    }
+
+    .mainTitle {
+        font-size: 35px;
+    }
 }

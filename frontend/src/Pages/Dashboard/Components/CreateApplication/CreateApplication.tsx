@@ -172,7 +172,7 @@ export default function CreateApplication(props: IProps) {
                 {state.status.visible && <div className={styles.warningMessage}>{state.status.message}</div>}
 
                 <label>Date Submitted</label>
-                <input ref={formRefs.dateSubmittedRef} type="date" style={{ "width": "20%" }} />
+                <input ref={formRefs.dateSubmittedRef} type="date" style={{ "width": "30%" }} />
 
                 <label>Salary</label>
                 <input ref={formRefs.salaryRef} placeholder="89,000" type="number" />

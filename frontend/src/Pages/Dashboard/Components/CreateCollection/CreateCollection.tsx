@@ -61,7 +61,7 @@ export default function CreateCollection(props: IProps) {
 
     return <div className={modalStyles.backdrop}>
         <div className={modalStyles.smallModal}>
-            <h1>Create a New Collection</h1>
+            <div className={styles.title}>Create a New Collection</div>
             <form onSubmit={submitHandler} className={styles.form}>
                 <label>New Collection Name</label><br></br>
                 <input ref={collectionNameRef} /> <br></br>

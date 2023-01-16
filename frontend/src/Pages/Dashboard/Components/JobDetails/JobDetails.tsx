@@ -148,7 +148,7 @@ export default function JobDetails(props: IProps) {
     return <div className={modalStyles.backdrop}>
         {viewMode ?
             <div className={modalStyles.modal}>
-                <h1>View your Record</h1>
+                <div className={styles.mainTitle}>View your Record</div>
                 <div className={styles.outerContainer}>
                     <div className={styles.innerContainer}>
                         <div className={styles.title}>Company Name</div>
@@ -250,7 +250,7 @@ export default function JobDetails(props: IProps) {
                     {state.status.visible && <div className={styles.warningMessage}>{state.status.message}</div>}
 
                     <label>Date Submitted</label>
-                    <input defaultValue={props.currentApplication.dateSubmitted} type="date" style={{ "width": "20%" }} />
+                    <input defaultValue={props.currentApplication.dateSubmitted} type="date" style={{ "width": "30%" }} />
 
                     <label>Salary</label>
                     <input defaultValue={props.currentApplication.salary} type="number" />
