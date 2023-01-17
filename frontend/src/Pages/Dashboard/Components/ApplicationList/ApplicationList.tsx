@@ -27,6 +27,9 @@ export default function ApplicationList() {
     // loading states
     const [loading, setLoading] = useState(true);
 
+    // filter modes
+    const [enterDateMode, setEnterDateMode] = useState(false);
+
     // collection states
     const [currentCollection, setCurrentCollection] = useState("All");
     const [collections, setCollections] = useState<string[]>([]);
@@ -40,6 +43,10 @@ export default function ApplicationList() {
     // context
     const { currentUser, updateUser } = useContext<any>(UserContext);
 
+    const [showJobDetails, setShowJobDetails] = useState<IJobDetails>({
+        visible: false,
+        application: null
+    });
 
     useEffect(() => {
         const fetchApplicationAndCollection = async () => {
@@ -76,11 +83,6 @@ export default function ApplicationList() {
 
         fetchApplicationAndCollection();
     }, [currentUser.id])
-
-    const [showJobDetails, setShowJobDetails] = useState<IJobDetails>({
-        visible: false,
-        application: null
-    });
 
     async function openApplication(applicationId: string) {
         setShowJobDetails({
@@ -123,6 +125,10 @@ export default function ApplicationList() {
         setCurrentFilterType(filterType);
 
         inputRef.value = "";
+
+        // switch to date format if date submitted is chosen
+        filterType.includes("Date") ? inputRef.type = "date" : inputRef.type = "text";
+
     }
 
     function filterInputOnChangeHandler() {
@@ -146,8 +152,33 @@ export default function ApplicationList() {
                 case "Location": return app.location.toLowerCase().includes(value);
                 case "Job Type": return app.jobType.toLowerCase().includes(value);
                 case "Status": return app.status.toLowerCase().includes(value);
-                default: return false;
+                default: break;
             }
+
+            // check if the filter option are dates
+            if (currentFilterType.toLowerCase() === "date submitted (before)") {
+                console.log(`here`);
+
+                if (!app.dateSubmitted) return false;
+
+                const appSubmittedDate = new Date(app.dateSubmitted);
+                const filteredDate = new Date(value);
+
+                return filteredDate >= appSubmittedDate;
+            }
+
+            else if (currentFilterType.toLowerCase() === "date submitted (after)") {
+                console.log(`here`);
+
+                if (!app.dateSubmitted) return false;
+
+                const appSubmittedDate = new Date(app.dateSubmitted);
+                const filteredDate = new Date(value);
+
+                return filteredDate <= appSubmittedDate;
+            }
+
+            return false;
         }));
     }
 
