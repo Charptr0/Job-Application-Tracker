@@ -157,15 +157,15 @@ export default function ApplicationList() {
 
     return <div>
         <div>
-            <h2>Switch Collection</h2>
+            <div className={styles.title}>Switch Collection</div>
             <select onClick={switchCollectionHandler} ref={collectionRef} className={styles.switchCollection}>
                 <option className={styles.switchCollectionOption}></option>
                 <option className={styles.switchCollectionOption}>All</option>
                 {collections.length > 0 && collections.map((collection, i) => <option key={i} className={styles.switchCollectionOption}>{collection}</option>)}
             </select>
         </div>
-        <div>
-            <h2>Filter Result</h2>
+        <div className={styles.filterContainer}>
+            <div className={styles.title}>Filter Result</div>
             <select ref={filterTypeRef} onClick={filterTypeHandler} className={styles.filterSelections}>
                 <option className={styles.filterOptions}></option>
                 <option className={styles.filterOptions}>Company Name</option>
@@ -173,11 +173,12 @@ export default function ApplicationList() {
                 <option className={styles.filterOptions}>Location</option>
                 <option className={styles.filterOptions}>Job Type</option>
                 <option className={styles.filterOptions}>Status</option>
-                <option className={styles.filterOptions}>Date Submitted</option>
+                <option className={styles.filterOptions}>Date Submitted (Before)</option>
+                <option className={styles.filterOptions}>Date Submitted (After)</option>
             </select>
             <input ref={filterInputRef} onChange={filterInputOnChangeHandler} className={styles.filterInput} />
         </div>
-        <h2>Current Collection: <span id="current-collection">{currentCollection}</span></h2>
+        <div className={styles.title}>Current Collection: <span id="current-collection">{currentCollection}</span></div>
         {showJobDetails.visible && showJobDetails.application &&
             <JobDetails
                 currentApplication={showJobDetails.application}
@@ -190,7 +191,7 @@ export default function ApplicationList() {
                     <tr>
                         <th className={styles.companyName}>Company Name</th>
                         <th className={styles.jobTitle}>Job Title</th>
-                        <th className={styles.jobTitle}>Job Type</th>
+                        <th className={styles.jobType}>Job Type</th>
                         <th className={styles.location}>Location</th>
                         <th className={styles.appLink}>Application Link</th>
                         <th className={styles.status}>Status</th>

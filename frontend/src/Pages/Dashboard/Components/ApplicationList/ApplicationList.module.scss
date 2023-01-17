@@ -4,6 +4,7 @@
     --col3_size: 250px;
     --col4_size: 150px;
     --col5_size: 200px;
+    --col6_size: 200px;
 
     --switch-collection-input-size: 100%;
     --filter-input-size: 79%;
@@ -15,6 +16,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.title {
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
 }
 
 .table {
@@ -38,16 +47,20 @@
         width: var(--col2_size);
     }
 
-    .location {
+    .jobType {
         width: var(--col3_size);
     }
 
-    .appLink {
+    .location {
         width: var(--col4_size);
     }
 
-    .status {
+    .appLink {
         width: var(--col5_size);
+    }
+
+    .status {
+        width: var(--col6_size);
     }
 
 }
@@ -90,14 +103,41 @@
         --switch-collection-input-size: 1000px;
         --filter-input-size: 650px;
         --filter-select-size: 344px;
+
+        --col1_size: 250px;
+        --col2_size: 250px;
+        --col3_size: 200px;
+        --col6_size: 150px;
     }
 }
 
-@media screen and (max-width: 1010px) {
+@media screen and (max-width: 1280px) {
+    :root {
+        --col1_size: 180px;
+        --col2_size: 180px;
+        --col3_size: 150px;
+        --col4_size: 120px;
+        --col6_size: 140px;
+    }
+
+    .table {
+        font-size: 20px;
+    }
+}
+
+
+@media screen and (max-width: 1050px) {
     :root {
         --switch-collection-input-size: 650px;
         --filter-input-size: 390px;
         --filter-select-size: 250px;
+
+        --col1_size: 150px;
+        --col2_size: 150px;
+        --col3_size: 100px;
+        --col4_size: 100px;
+        --col5_size: 120px;
+        --col6_size: 120px;
     }
 }
 
@@ -107,14 +147,107 @@
         --filter-input-size: 344px;
         --filter-select-size: 144px;
 
+        --col1_size: 120px;
+        --col2_size: 120px;
+        --col3_size: 80px;
+        --col4_size: 80px;
+        --col5_size: 100px;
+    }
+
+    .table {
+        font-size: 18px;
     }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 670px) {
+    :root {
+        --col1_size: 80px;
+        --col2_size: 80px;
+        --col3_size: 80px;
+        --col4_size: 80px;
+        --col5_size: 50px;
+    }
+}
+
+@media screen and (max-width: 580px) {
     :root {
         --switch-collection-input-size: 300px;
         --filter-input-size: 195px;
         --filter-select-size: 100px;
 
+        --col1_size: 80px;
+        --col2_size: 80px;
+        --col3_size: 80px;
+        --col4_size: 50px;
+        --col5_size: 50px;
+        --col6_size: 70px;
+    }
+
+    .table {
+        font-size: 18px;
+
+        .appLink {
+            display: none;
+        }
+
+        .location {
+            display: none;
+        }
+    }
+}
+
+@media screen and (max-width: 350px) {
+    :root {
+        --switch-collection-input-size: 305px;
+        --filter-input-size: 300px;
+        --filter-select-size: 308px;
+
+        --col1_size: 80px;
+        --col2_size: 80px;
+        --col3_size: 20px;
+        --col4_size: 50px;
+        --col5_size: 50px;
+
+    }
+
+    .filterContainer {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .table {
+        font-size: 15px;
+
+        th,
+        td {
+            height: 40px;
+            border: 1px solid black;
+        }
+
+        .appLink {
+            display: none;
+        }
+
+        .location {
+            display: none;
+        }
+    }
+}
+
+@media screen and (max-width: 330px) {
+    :root {
+        --switch-collection-input-size: 180px;
+        --filter-input-size: 180px;
+        --filter-select-size: 188px;
+    }
+
+    .table {
+        .jobType {
+            display: none;
+        }
+    }
+
+    .title {
+        font-size: 20px;
     }
 }
