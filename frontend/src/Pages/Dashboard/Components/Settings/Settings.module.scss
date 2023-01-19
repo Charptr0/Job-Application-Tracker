@@ -1,0 +1,99 @@
+.settingContainer {
+    h2 {
+        font-size: 50px;
+        text-align: center;
+    }
+}
+
+.changeOptionsContainer {
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+
+    select {
+        height: 30px;
+        width: 1000px;
+        font-size: 20px;
+        cursor: pointer;
+
+    }
+
+    option {
+        font-size: 20px;
+        cursor: pointer;
+    }
+}
+
+.flexContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .innerContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        flex-direction: row;
+
+        margin-top: 50px;
+        margin-bottom: 50px;
+
+        border-radius: 8px;
+        background-color: rgb(230, 230, 230);
+        width: 800px;
+        height: 200px;
+        text-align: center;
+
+        label {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        input {
+            margin-left: 5px;
+            height: 30px;
+            width: 500px;
+            font-size: 20px;
+            border-radius: 10px;
+        }
+    }
+}
+
+.flexCol {
+    flex-direction: column !important;
+
+    input {
+        margin-top: 10px !important;
+    }
+}
+
+.confirmActionContainer {
+    text-align: center;
+
+    label {
+        font-weight: bold;
+        font-size: 25px;
+
+    }
+
+    input {
+        margin-left: 5px;
+        height: 25px;
+        width: 500px;
+        font-size: 20px;
+        border-radius: 10px;
+    }
+
+    .btnContainer {
+        button {
+            margin: 50px;
+            width: 250px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+    }
+
+}
