@@ -172,6 +172,64 @@ async function checkEmailExist(req, res, next) {
     }
 }
 
+async function updateUserEmail(req, res, next) {
+    const userId = req.body.id;
+    const newEmail = req.body.email;
+    const reqPassword = req.body.password;
+
+    if (!userId || !newEmail || !reqPassword) return res.status(400).send();
+
+    try {
+        // call user service
+        await axios.post(process.env.USER_SERVICE_HOST + "/updateUserEmail", { userId, newEmail, reqPassword });
+
+        // clear all tokens associated with this account
+        await axios.post(process.env.AUTH_SERVICE_HOST + "/removeTokenById", { userId });
+
+        return res.send();
+    } catch (err) {
+        return res.status(getHTTPStatus(err)).send();
+    }
+}
+
+async function updateUserUsername(req, res, next) {
+    const userId = req.body.id;
+    const newUsername = req.body.username;
+    const reqPassword = req.body.password;
+
+    if (!userId || !newUsername || !reqPassword) return res.status(400).send();
+
+    try {
+        await axios.post(process.env.USER_SERVICE_HOST + "/updateUserUsername", { userId, newUsername, reqPassword });
+
+        await axios.post(process.env.AUTH_SERVICE_HOST + "/removeTokenById", { userId });
+
+        return res.send();
+    } catch (err) {
+        return res.status(getHTTPStatus(err)).send();
+    }
+}
+
+async function updateUserPassword(req, res, next) {
+    const userId = req.body.id;
+    const newPassword = req.body.newPassword;
+    const reqPassword = req.body.reqPassword;;
+
+    if (!userId || !newPassword || !reqPassword) return res.status(400).send();
+
+    try {
+        await axios.post(process.env.USER_SERVICE_HOST + "/updateUserPassword", { userId, newPassword, reqPassword });
+
+        await axios.post(process.env.AUTH_SERVICE_HOST + "/removeTokenById", { userId });
+
+        return res.send();
+    } catch (err) {
+        console.error(err);
+        return res.status(getHTTPStatus(err)).send();
+    }
+
+}
+
 module.exports = {
     getStatus,
     findUserById,
@@ -181,5 +239,7 @@ module.exports = {
     deleteUserByEmail,
     deleteUserById,
     checkEmailExist,
-
+    updateUserEmail,
+    updateUserUsername,
+    updateUserPassword,
 }

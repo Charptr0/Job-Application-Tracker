@@ -10,4 +10,6 @@ router.post('/addUserToCache', controller.addUserToCache);
 
 router.post('/logout', controller.logout);
 
+router.post("/removeTokenById", controller.removeTokenById);
+
 module.exports = router;

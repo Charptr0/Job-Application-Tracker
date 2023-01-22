@@ -10,6 +10,7 @@ import CreateApplication from "./Components/CreateApplication/CreateApplication"
 import CreateCollection from "./Components/CreateCollection/CreateCollection";
 import Navbar from "./Components/Navbar/Navbar";
 import RemoveCollection from "./Components/RemoveCollection/RemoveCollection";
+import Settings from "./Components/Settings/Settings";
 import styles from "./Dashboard.module.scss";
 
 export default function Dashboard() {
@@ -18,6 +19,7 @@ export default function Dashboard() {
     const [createApplicationScreen, showCreateApplicationScreen] = useState(false);
     const [createNewCollection, showCreateNewCollection] = useState(false);
     const [removeCollection, showRemoveCollection] = useState(false);
+    const [settings, showSettings] = useState(false);
 
     /**
      * Log the user out
@@ -71,12 +73,18 @@ export default function Dashboard() {
         return <div>Loading...</div>
     }
 
+    if (settings) {
+        return <>
+            <Navbar logoutHandler={logoutHandler} displaySettings={() => showSettings(true)} hideSettings={() => showSettings(false)} />
+            <Settings hideSettings={() => showSettings(false)} />
+        </>
+    }
+
     return <div>
-        <Navbar logoutHandler={logoutHandler} />
+        <Navbar logoutHandler={logoutHandler} displaySettings={() => showSettings(true)} hideSettings={() => showSettings(false)} />
         {createApplicationScreen && <CreateApplication setVisible={showCreateApplicationScreen} />}
         {createNewCollection && <CreateCollection setVisible={showCreateNewCollection} />}
         {removeCollection && <RemoveCollection setVisible={showRemoveCollection} />}
-
 
         <div className={styles.flexContainer}>
             <ApplicationList />
