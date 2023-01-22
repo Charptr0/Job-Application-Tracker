@@ -24,6 +24,15 @@
     }
 }
 
+.wrapper {
+    border-radius: 8px;
+    background-color: rgb(230, 230, 230);
+    width: 800px;
+    height: 250px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
 .flexContainer {
     display: flex;
     justify-content: center;
@@ -35,15 +44,10 @@
         align-items: center;
         flex-direction: column;
         flex-direction: row;
-
-        margin-top: 50px;
-        margin-bottom: 50px;
-
-        border-radius: 8px;
-        background-color: rgb(230, 230, 230);
-        width: 800px;
-        height: 200px;
         text-align: center;
+
+        margin-top: 100px;
+        margin-bottom: 50px;
 
         label {
             font-size: 25px;
@@ -62,6 +66,7 @@
 
 .flexCol {
     flex-direction: column !important;
+    margin-top: 60px !important;
 
     input {
         margin-top: 10px !important;
@@ -96,4 +101,21 @@
         }
     }
 
+}
+
+.passwordContainer {
+    flex-direction: column !important;
+    margin-top: 40px !important;
+}
+
+.warningMessage {
+    color: red;
+    text-align: center;
+    margin-top: -30px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.passwordWarningMessage {
+    margin-top: -50px !important;
 }

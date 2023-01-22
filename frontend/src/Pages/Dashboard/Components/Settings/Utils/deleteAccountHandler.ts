@@ -1,5 +1,5 @@
-export function deleteAccountHandler(confirmationMessage: string) {
-    if (confirmationMessage !== "I Agree") return;
+export function deleteAccountHandler(confirmationMessage: string, username: string) {
+    if (confirmationMessage !== username) return;
 
     console.log(`here`);
 
