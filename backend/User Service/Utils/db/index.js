@@ -2,7 +2,7 @@ const { Auth, OAuthUser, User, init } = require("./init");
 const { findUserById, findUserByEmail, userAlreadyExists } = require("./databaseFetch");
 const { insertRegularUser, insertToken } = require("./databaseInsert");
 const { deleteUserByEmail, deleteUserById } = require("./databaseDelete");
-const { updateUserEmail } = require("./databaseUpdate");
+const { updateUserEmail, updateUserUsername } = require("./databaseUpdate");
 
 
 module.exports = {
@@ -18,4 +18,5 @@ module.exports = {
     deleteUserById,
     userAlreadyExists,
     updateUserEmail,
+    updateUserUsername
 }

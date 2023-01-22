@@ -28,4 +28,6 @@ router.delete("/deleteUserById", deleteController.deleteUserById);
 
 router.post("/updateUserEmail", updateController.updateUserEmail);
 
+router.post("/updateUserUsername", updateController.updateUserUsername);
+
 module.exports = router;

@@ -13,6 +13,20 @@ async function updateUserEmail(id, newEmail) {
     }
 }
 
+/**
+ * Update a user username with their id
+ * @param {string} id the id of the user
+ * @param {string} newUsername the new username
+ */
+async function updateUserUsername(id, newUsername) {
+    try {
+        await User.update({ username: newUsername }, { where: { id: id } });
+    } catch (err) {
+        throw err;
+    }
+}
+
 module.exports = {
     updateUserEmail,
+    updateUserUsername,
 }

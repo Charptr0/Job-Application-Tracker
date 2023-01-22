@@ -30,7 +30,7 @@ router.post("/checkEmail", controller.checkEmailExist);
 router.post("/updateUserEmail", controller.updateUserEmail);
 
 // change the user's username
-router.post("/updateUserUsername", controller.updateUserEmail);
+router.post("/updateUserUsername", controller.updateUserUsername);
 
 // change the user's password
 router.post("/updateUserPassword", controller.updateUserEmail);
