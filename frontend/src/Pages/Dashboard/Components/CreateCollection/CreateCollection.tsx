@@ -12,7 +12,7 @@ interface IProps {
 
 export default function CreateCollection(props: IProps) {
     const collectionNameRef = useRef<HTMLInputElement>(null);
-    const { currentUser, updateUser } = useContext<any>(UserContext);
+    const { currentUser } = useContext<any>(UserContext);
 
     const [disableSubmitButton, setDisableSubmitButton] = useState(false);
     const [warningMessage, setWarningMessage] = useState("");
@@ -51,6 +51,7 @@ export default function CreateCollection(props: IProps) {
             // make request to create new collection
             await addCollectionRequest(currentUser.id, collectionName);
             setCollection(collectionName);
+            window.location.reload();
         } catch (err) {
             console.error(err);
         }
