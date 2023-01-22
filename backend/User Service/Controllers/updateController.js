@@ -62,8 +62,12 @@ async function updateUserPassword(req, res, next) {
     // make sure that the password matches
     if (!encryption.verifyPassword(user.password, reqPassword)) return res.status(401).send();
 
-    try {
+    // encrypt the password
+    const encryptedNewPassword = encryption.encryptPassword(newPassword);
 
+    try {
+        await db.updateUserPassword(id, encryptedNewPassword);
+        return res.send();
     } catch (err) {
         console.error(err);
         return res.status(500).send();
@@ -73,4 +77,6 @@ async function updateUserPassword(req, res, next) {
 module.exports = {
     updateUserEmail,
     updateUserUsername,
+    updateUserEmail,
+    updateUserPassword,
 }

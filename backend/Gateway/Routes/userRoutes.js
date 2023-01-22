@@ -33,6 +33,6 @@ router.post("/updateUserEmail", controller.updateUserEmail);
 router.post("/updateUserUsername", controller.updateUserUsername);
 
 // change the user's password
-router.post("/updateUserPassword", controller.updateUserEmail);
+router.post("/updateUserPassword", controller.updateUserPassword);
 
 module.exports = router;

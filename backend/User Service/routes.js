@@ -26,8 +26,13 @@ router.delete("/deleteUserByEmail", deleteController.deleteUserByEmail);
 // delete a user from the database using its id
 router.delete("/deleteUserById", deleteController.deleteUserById);
 
+// update a user's email 
 router.post("/updateUserEmail", updateController.updateUserEmail);
 
+// update a user's username
 router.post("/updateUserUsername", updateController.updateUserUsername);
+
+// update a user's password
+router.post("/updateUserPassword", updateController.updateUserPassword);
 
 module.exports = router;

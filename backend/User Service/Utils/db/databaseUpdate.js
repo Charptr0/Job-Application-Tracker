@@ -26,7 +26,21 @@ async function updateUserUsername(id, newUsername) {
     }
 }
 
+/**
+ * 
+ * @param {string} id the id of the user
+ * @param {string} newPassword the new password 
+ */
+async function updateUserPassword(id, newPassword) {
+    try {
+        await User.update({ password: newPassword }, { where: { id: id } });
+    } catch (err) {
+        throw err;
+    }
+}
+
 module.exports = {
     updateUserEmail,
     updateUserUsername,
+    updateUserPassword,
 }
