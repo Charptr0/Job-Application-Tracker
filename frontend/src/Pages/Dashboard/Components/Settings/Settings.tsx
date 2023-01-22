@@ -1,8 +1,11 @@
-import { useContext, useReducer, useRef, useState } from "react"
+import { useContext, useRef, useState } from "react"
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../../Context/UserContext";
+import { changeEmailRequest } from "../../../../Utils/Requests/changeEmail";
+import { changePasswordRequest } from "../../../../Utils/Requests/changePassword";
+import { changeUsernameRequest } from "../../../../Utils/Requests/changeUsername";
+import { deleteUserRequest } from "../../../../Utils/Requests/deleteUser";
 import styles from "./Settings.module.scss";
-import { deleteAccountHandler } from "./Utils/deleteAccountHandler";
-import { emailHandler } from "./Utils/emailHandler";
 
 enum SettingTypes {
     NONE, EMAIL, USERNAME, PASSWORD, DELETE_ACCOUNT
@@ -13,6 +16,8 @@ interface IProps {
 }
 
 export default function Settings(props: IProps) {
+    const navigate = useNavigate();
+
     const { currentUser } = useContext<any>(UserContext);
     const settingOptionRef = useRef<HTMLSelectElement>(null);
     const [prevOption, setPrevOption] = useState("");
@@ -52,25 +57,73 @@ export default function Settings(props: IProps) {
         setWarningMessage("");
 
         const currentSetting = settingMode;
+        const currentPassword = settingRef.passwordRef.current?.value;
+        if (!currentPassword) {
+            alert("You must enter your current password in order to perform this action");
+            return;
+        }
 
         switch (currentSetting) {
             case SettingTypes.EMAIL:
                 const newEmail = settingRef.emailRef.current?.value;
-                if (!newEmail === null) return;
+
+                if (newEmail === null || newEmail === undefined) return;
                 if (newEmail === "") return setWarningMessage("This field cannot be empty");
 
+
+                try {
+                    await changeEmailRequest(currentUser.id, newEmail, currentPassword);
+                    navigate("/");
+                } catch (err) {
+                    console.log(err);
+                }
+
                 return;
-            case SettingTypes.USERNAME: return emailHandler();
+            case SettingTypes.USERNAME:
+                const newUsername = settingRef.usernameRef.current?.value;
+                if (newUsername === undefined || newUsername === null) return;
+                if (newUsername === "") return setWarningMessage("This field cannot be empty");
+
+                try {
+                    await changeUsernameRequest(currentUser.id, newUsername, currentPassword);
+                    navigate("/");
+                } catch (err) {
+                    console.log(err);
+                }
+
+                return;
             case SettingTypes.PASSWORD:
-                const newPassword = settingRef.passwordRef.current?.value;
+                const newPassword = settingRef.newPasswordRef.current?.value;
                 const confirmPassword = settingRef.confirmPasswordRef.current?.value;
 
-                if (newPassword === null || confirmPassword === null) return;
-
+                if (newPassword === undefined || newPassword === null) return;
+                if (confirmPassword === undefined || confirmPassword === null) return;
                 if (newPassword === "" || confirmPassword === "") return setWarningMessage("One of these field is empty");
+                if (newPassword.length < 8) return setWarningMessage("Password must be at least 8 characters");
                 if (newPassword !== confirmPassword) return setWarningMessage("Password does not match");
+
+                try {
+                    await changePasswordRequest(currentUser.id, newPassword, currentPassword);
+                    navigate("/");
+                } catch (err) {
+                    console.log(err);
+                }
+
                 return;
-            case SettingTypes.DELETE_ACCOUNT: return deleteAccountHandler("I Agree", currentUser.username);
+            case SettingTypes.DELETE_ACCOUNT:
+                const confirmMessage = settingRef.deleteAccountRef.current?.value;
+
+                if (confirmMessage === undefined || confirmMessage === null) return;
+                if (confirmMessage !== currentUser.username) return setWarningMessage("Username does not match");
+
+                try {
+                    await deleteUserRequest(currentUser.id, currentPassword);
+                    navigate("/");
+                } catch (err) {
+                    console.log(err);
+                }
+
+                return;
             default: return;
         }
 

@@ -164,7 +164,7 @@ async function updateUserEmail(req, res, next) {
 
     try {
         // call user service
-        await axios.delete(process.env.USER_SERVICE_HOST + "/updateUserEmail", { userId, newEmail, reqPassword });
+        await axios.post(process.env.USER_SERVICE_HOST + "/updateUserEmail", { userId, newEmail, reqPassword });
 
         // clear all tokens associated with this account
         await axios.post(process.env.AUTH_SERVICE_HOST + "/removeTokenById", { userId });
@@ -215,7 +215,7 @@ async function updateUserPassword(req, res, next) {
 
 async function deleteUserById(req, res, next) {
     const userId = req.body.id;
-    const reqPassword = req.body.reqPassword;
+    const reqPassword = req.body.password;
 
     if (!userId || !reqPassword) return res.status(400).send();
 
