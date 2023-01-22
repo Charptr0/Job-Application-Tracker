@@ -26,5 +26,13 @@ router.delete("/deleteUserById", controller.deleteUserById);
 // check if a email is in the database
 router.post("/checkEmail", controller.checkEmailExist);
 
+// change the user's email
+router.post("/updateUserEmail", controller.updateUserEmail);
+
+// change the user's username
+router.post("/updateUserUsername", controller.updateUserEmail);
+
+// change the user's password
+router.post("/updateUserPassword", controller.updateUserEmail);
 
 module.exports = router;

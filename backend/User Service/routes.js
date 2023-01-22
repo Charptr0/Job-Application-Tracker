@@ -4,6 +4,7 @@ const authController = require("./Controllers/authController");
 const deleteController = require("./Controllers/deleteController");
 const fetchController = require("./Controllers/fetchController");
 const insertController = require("./Controllers/insertController");
+const updateController = require("./Controllers/updateController");
 
 router.get('/', (req, res) => res.send());
 
@@ -24,5 +25,7 @@ router.delete("/deleteUserByEmail", deleteController.deleteUserByEmail);
 
 // delete a user from the database using its id
 router.delete("/deleteUserById", deleteController.deleteUserById);
+
+router.post("/updateUserEmail", updateController.updateUserEmail);
 
 module.exports = router;

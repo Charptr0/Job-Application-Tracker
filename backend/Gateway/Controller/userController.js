@@ -172,6 +172,26 @@ async function checkEmailExist(req, res, next) {
     }
 }
 
+async function updateUserEmail(req, res, next) {
+    const userId = req.body.id;
+    const newEmail = req.body.email;
+    const reqPassword = req.body.password;
+
+    if (!userId || !newEmail || !reqPassword) return res.status(400).send();
+
+    try {
+        // call user service
+        await axios.post(process.env.USER_SERVICE_HOST + "/updateUserEmail", { userId, newEmail, reqPassword });
+
+        // clear all tokens associated with this account
+        await axios.post(process.env.AUTH_SERVICE_HOST + "/removeTokenById", { userId });
+
+        return res.send();
+    } catch (err) {
+        return res.status(getHTTPStatus(err)).send();
+    }
+}
+
 module.exports = {
     getStatus,
     findUserById,
@@ -181,5 +201,5 @@ module.exports = {
     deleteUserByEmail,
     deleteUserById,
     checkEmailExist,
-
+    updateUserEmail,
 }

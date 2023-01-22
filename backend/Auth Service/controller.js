@@ -1,6 +1,6 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const { insertRefreshTokenToCache, verifyTokenAndIdFromCache, deleteRefreshTokenFromCache } = require("./db");
+const { insertRefreshTokenToCache, verifyTokenAndIdFromCache, deleteRefreshTokenFromCache, deleteAllRefreshTokens } = require("./db");
 
 /**
  * Controller for authenticate user
@@ -95,8 +95,21 @@ async function logout(req, res, next) {
     }
 }
 
+async function removeTokenById(req, res, next) {
+    const userId = req.body.userId;
+
+    try {
+        await deleteAllRefreshTokens(userId);
+        return res.send();
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send();
+    }
+}
+
 module.exports = {
     authenticateUser,
     addUserToCache,
     logout,
+    removeTokenById,
 }

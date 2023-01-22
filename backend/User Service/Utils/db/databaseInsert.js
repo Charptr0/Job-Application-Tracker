@@ -1,4 +1,4 @@
-const { OAuthUser, User, Auth } = require("../db/init");
+const { User, Auth } = require("../db/init");
 
 async function insertRegularUser(userInfo) {
     try {
