@@ -58,7 +58,20 @@ async function deleteCollection(userId, collectionName) {
     }
 }
 
+/**
+ * Delete the user from the application database
+ * @param {string} userId the id of the user
+ */
+async function deleteUser(userId) {
+    try {
+        await User.deleteOne({ userId: userId });
+    } catch (err) {
+        throw err;
+    }
+}
+
 module.exports = {
     deleteApplication,
     deleteCollection,
+    deleteUser,
 }

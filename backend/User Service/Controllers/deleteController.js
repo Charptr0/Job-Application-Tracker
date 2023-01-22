@@ -40,15 +40,15 @@ async function deleteUserByEmail(req, res, next) {
  * Controller for deleting user by id route
  */
 async function deleteUserById(req, res, next) {
-    const id = req.body.id;
-    const password = req.body.password;
+    const userId = req.body.userId;
+    const reqPassword = req.body.reqPassword;
 
-    if (!id || !password) {
+    if (!userId || !reqPassword) {
         return res.status(400).send();
     }
 
     // confirm that user exists
-    const user = await db.findUserById(db.User, id);
+    const user = await db.findUserById(db.User, userId);
 
     // user does not exist in database
     if (user === null) {
@@ -56,13 +56,13 @@ async function deleteUserById(req, res, next) {
     }
 
     // password is not correct
-    if (!encryption.verifyPassword(user.password, password)) {
-        return res.status(404).send();
+    if (!encryption.verifyPassword(user.password, reqPassword)) {
+        return res.status(403).send();
     }
 
     // remove the user from the database
     try {
-        await db.deleteUserById(db.User, id);
+        await db.deleteUserById(db.User, userId);
         return res.send();
     } catch (err) {
         console.log(err);

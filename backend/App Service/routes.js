@@ -11,5 +11,6 @@ router.post('/getAllUserCollections', controller.getAllUserCollections);
 router.post('/editApp', controller.editApplication);
 router.post('/deleteApp', controller.deleteApplication);
 router.post('/deleteCollection', controller.deleteCollection);
+router.post('/deleteUser', controller.deleteUser);
 
 module.exports = router;
