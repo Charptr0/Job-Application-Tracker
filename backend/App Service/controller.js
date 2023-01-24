@@ -167,6 +167,21 @@ async function deleteCollection(req, res, next) {
     }
 }
 
+async function deleteUser(req, res, next) {
+    const userId = req.body.userId;
+
+    try {
+        const response = await db.deleteUser(userId);
+
+        if (response === null) return res.status(404).send();
+
+        return res.send();
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send();
+    }
+}
+
 module.exports = {
     addApplication,
     addCollection,
@@ -175,4 +190,5 @@ module.exports = {
     deleteCollection,
     editApplication,
     getAllUserCollections,
+    deleteUser
 }

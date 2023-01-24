@@ -28,9 +28,8 @@ async function fetchAllApplications(userId) {
 async function fetchAllCollections(userId) {
     try {
         const user = await User.findOne({ userId: userId });
-
-        // user DNE or the user do not have any applications
-        if (user === null || user.applications.length === 0) {
+        // user DNE or the user do not have any collections
+        if (user === null || user.collections.length === 0) {
             return null;
         }
 

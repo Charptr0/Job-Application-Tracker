@@ -139,23 +139,6 @@ async function deleteUserByEmail(req, res, next) {
 }
 
 /**
- * Controller for  deleting a user in the database given ID
- */
-async function deleteUserById(req, res, next) {
-    if (req.body === undefined) {
-        return res.status(400).send();
-    }
-
-    try {
-        await axios.delete(process.env.USER_SERVICE_HOST + "/deleteUserById", req.body);
-        return res.send();
-
-    } catch (err) {
-        return res.status(getHTTPStatus(err)).send();
-    }
-}
-
-/**
  * Controller for checking if a email exist
  */
 async function checkEmailExist(req, res, next) {
@@ -213,7 +196,7 @@ async function updateUserUsername(req, res, next) {
 async function updateUserPassword(req, res, next) {
     const userId = req.body.id;
     const newPassword = req.body.newPassword;
-    const reqPassword = req.body.reqPassword;;
+    const reqPassword = req.body.reqPassword;
 
     if (!userId || !newPassword || !reqPassword) return res.status(400).send();
 
@@ -228,6 +211,26 @@ async function updateUserPassword(req, res, next) {
         return res.status(getHTTPStatus(err)).send();
     }
 
+}
+
+async function deleteUserById(req, res, next) {
+    const userId = req.body.id;
+    const reqPassword = req.body.password;
+
+    if (!userId || !reqPassword) return res.status(400).send();
+
+    try {
+        // remove entry from user db
+        await axios.post(process.env.USER_SERVICE_HOST + "/deleteUserById", { userId, reqPassword });
+
+        // remove entry from the app db
+        await axios.post(process.env.APP_SERVICE_HOST + "/deleteUser", { userId });
+
+        await axios.post(process.env.AUTH_SERVICE_HOST + "/removeTokenById", { userId });
+        return res.send();
+    } catch (err) {
+        return res.status(getHTTPStatus(err)).send();
+    }
 }
 
 module.exports = {

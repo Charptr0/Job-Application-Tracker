@@ -97,8 +97,8 @@ export default function CollectionTable() {
             </table>
 
             <div className={tableStyles.btnContainer}>
+                <button onClick={() => { setSampleCollections([]); setSampleContainer([]); setDisplayApplication([]); setCurrentCollection(""); }}>Reset</button>
                 <button onClick={createCollectionHandler}>Create</button>
-                <button onClick={() => setSampleCollections([])}>Reset</button>
             </div>
         </>
     )

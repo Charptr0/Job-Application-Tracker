@@ -21,10 +21,10 @@ router.put("/insertUser", insertController.insertUser);
 router.post("/login", authController.verifyLogin);
 
 // delete a user from the database using its email
-router.delete("/deleteUserByEmail", deleteController.deleteUserByEmail);
+router.post("/deleteUserByEmail", deleteController.deleteUserByEmail);
 
 // delete a user from the database using its id
-router.delete("/deleteUserById", deleteController.deleteUserById);
+router.post("/deleteUserById", deleteController.deleteUserById);
 
 // update a user's email 
 router.post("/updateUserEmail", updateController.updateUserEmail);

@@ -11,7 +11,7 @@ async function deleteUserByEmail(table, email) {
 
 async function deleteUserById(table, id) {
     try {
-        await table.create({
+        await table.destroy({
             where: { id: id },
         });
 

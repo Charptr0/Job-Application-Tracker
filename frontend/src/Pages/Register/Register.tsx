@@ -90,7 +90,7 @@ function reducer(state: IRegisterWarningMessages, action: IAction): IRegisterWar
         case ERR_TYPE.USERNAME_TOO_SHORT:
             return {
                 email: { ...state.email, visible: false },
-                username: { visible: true, message: "The username is too short (Must be more than 3 characters)" },
+                username: { visible: true, message: "The username is too short (Must be more than 1 character)" },
                 password: { ...state.password, visible: false },
                 confirmPassword: { ...state.confirmPassword, visible: false }
             }
@@ -129,8 +129,6 @@ interface IProps {
 
 
 export default function Register(props: IProps) {
-    const navigate = useNavigate();
-
     // references
     const usernameRef = useRef<HTMLInputElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
@@ -208,7 +206,7 @@ export default function Register(props: IProps) {
 
         try {
             await registerUserRequest(req);
-            navigate("/login");
+            props.switchBackToLogin(true);
         } catch (err: any) {
             const statusCode: number = err.response?.status;
 

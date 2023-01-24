@@ -2,7 +2,7 @@ const { init } = require("./init");
 const { User } = require("./UserSchema");
 const { addApplication, addCollection } = require("./insert");
 const { fetchAllApplications, fetchAllCollections } = require("./fetch");
-const { deleteApplication, deleteCollection } = require("./delete");
+const { deleteApplication, deleteCollection, deleteUser } = require("./delete");
 const { updateApplication } = require("./update");
 
 
@@ -17,4 +17,5 @@ module.exports = {
     deleteCollection,
     updateApplication,
     fetchAllCollections,
+    deleteUser,
 }

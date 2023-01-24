@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
 import { authUserRequest } from "../../Utils/Requests/auth";
 import { logoutRequest } from "../../Utils/Requests/logout";
+import { getCollection } from "../../Utils/Storage/getCollection";
 import { getToken } from "../../Utils/Storage/getToken";
 import { setToken } from "../../Utils/Storage/setToken";
 import ApplicationList from "./Components/ApplicationList/ApplicationList";
@@ -27,10 +28,12 @@ export default function Dashboard() {
     async function logoutHandler() {
         try {
             await logoutRequest();
-            localStorage.removeItem('token'); // remove token
         } catch (err) {
             console.error(err);
         }
+
+        localStorage.removeItem('token'); // remove token
+        localStorage.removeItem('collection'); // remove collection
 
         // route back to the main page
         navigate("/");
@@ -43,6 +46,7 @@ export default function Dashboard() {
 
             // no token 
             if (!token) {
+                localStorage.removeItem('collection'); // remove collection
                 navigate("/");
                 return;
             }
@@ -62,12 +66,33 @@ export default function Dashboard() {
             } catch (err: any) {
                 // route back to login screen
                 localStorage.removeItem('token');
+                localStorage.removeItem('collection'); // remove collection
                 updateUser({});
                 navigate("/");
             }
         }
         auth();
     }, [navigate, updateUser]);
+
+    function addApplicationHandler() {
+        if (getCollection() !== 'All') {
+            showCreateApplicationScreen(true)
+        }
+
+        else {
+            alert(`You cannot add a new application in the "All" collection`);
+        }
+    }
+
+    function removeCollectionHandler() {
+        if (getCollection() !== 'All') {
+            showRemoveCollection(true)
+        }
+
+        else {
+            alert(`You cannot remove the collection named "All"`);
+        }
+    }
 
     if (!currentUser) {
         return <div>Loading...</div>
@@ -91,9 +116,9 @@ export default function Dashboard() {
         </div>
 
         <div className={styles.flexContainer}>
-            <button onClick={() => showCreateApplicationScreen(true)} className={styles.btnStyles}>Add a New Application</button>
-            <button onClick={() => showCreateNewCollection(true)} className={styles.btnStyles} >Add a New Collection</button>
-            <button onClick={() => showRemoveCollection(true)} className={styles.btnStyles}>Remove Collection</button>
+            <button onClick={addApplicationHandler} className={styles.btnStyles}>Add a New Application</button>
+            <button onClick={() => showCreateNewCollection(true)} className={styles.btnStyles} >Create a New Collection</button>
+            <button onClick={removeCollectionHandler} className={styles.btnStyles}>Remove Collection</button>
         </div>
     </div>
 }
