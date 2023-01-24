@@ -78,10 +78,11 @@ export default function Settings(props: IProps) {
         // authenticate the user
         try {
             const token = getToken();
-            if (!token) return navigate("/");
+            if (!token) { localStorage.removeItem('collection'); navigate("/"); return; }
 
             await authUserRequest(token);
         } catch (err) {
+            localStorage.removeItem('collection');
             navigate("/");
         }
 
@@ -99,6 +100,8 @@ export default function Settings(props: IProps) {
 
                 try {
                     await changeEmailRequest(currentUser.id, newEmail, currentPassword);
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('collection');
                     navigate("/");
                 } catch (err: any) {
                     const statusCode = getStatusCode(err);
@@ -120,6 +123,8 @@ export default function Settings(props: IProps) {
 
                 try {
                     await changeUsernameRequest(currentUser.id, newUsername, currentPassword);
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('collection');
                     navigate("/");
                 } catch (err) {
                     const statusCode = getStatusCode(err);
@@ -145,6 +150,8 @@ export default function Settings(props: IProps) {
 
                 try {
                     await changePasswordRequest(currentUser.id, newPassword, currentPassword);
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('collection');
                     navigate("/");
                 } catch (err) {
                     const statusCode = getStatusCode(err);
@@ -166,6 +173,8 @@ export default function Settings(props: IProps) {
 
                 try {
                     await deleteUserRequest(currentUser.id, currentPassword);
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('collection');
                     navigate("/");
                 } catch (err) {
                     const statusCode = getStatusCode(err);

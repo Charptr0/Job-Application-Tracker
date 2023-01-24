@@ -28,10 +28,12 @@ export default function Dashboard() {
     async function logoutHandler() {
         try {
             await logoutRequest();
-            localStorage.removeItem('token'); // remove token
         } catch (err) {
             console.error(err);
         }
+
+        localStorage.removeItem('token'); // remove token
+        localStorage.removeItem('collection'); // remove collection
 
         // route back to the main page
         navigate("/");
@@ -44,6 +46,7 @@ export default function Dashboard() {
 
             // no token 
             if (!token) {
+                localStorage.removeItem('collection'); // remove collection
                 navigate("/");
                 return;
             }
@@ -63,6 +66,7 @@ export default function Dashboard() {
             } catch (err: any) {
                 // route back to login screen
                 localStorage.removeItem('token');
+                localStorage.removeItem('collection'); // remove collection
                 updateUser({});
                 navigate("/");
             }
