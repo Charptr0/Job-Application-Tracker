@@ -57,7 +57,7 @@ async function deleteUserById(req, res, next) {
 
     // password is not correct
     if (!encryption.verifyPassword(user.password, reqPassword)) {
-        return res.status(403).send();
+        return res.status(401).send();
     }
 
     // remove the user from the database

@@ -1,10 +1,12 @@
 import { useContext, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../../Context/UserContext";
+import { authUserRequest } from "../../../../Utils/Requests/auth";
 import { changeEmailRequest } from "../../../../Utils/Requests/changeEmail";
 import { changePasswordRequest } from "../../../../Utils/Requests/changePassword";
 import { changeUsernameRequest } from "../../../../Utils/Requests/changeUsername";
 import { deleteUserRequest } from "../../../../Utils/Requests/deleteUser";
+import { getToken } from "../../../../Utils/Storage/getToken";
 import styles from "./Settings.module.scss";
 
 enum SettingTypes {
@@ -13,6 +15,12 @@ enum SettingTypes {
 
 interface IProps {
     hideSettings: Function,
+}
+
+function getStatusCode(err: any) {
+    if (!err) return null;
+
+    return err.response?.status;
 }
 
 export default function Settings(props: IProps) {
@@ -24,6 +32,8 @@ export default function Settings(props: IProps) {
     const [settingMode, setSettingMode] = useState<SettingTypes>(SettingTypes.NONE);
 
     const [warningMessage, setWarningMessage] = useState<string>("");
+
+    const [disableSubmitButton, setDisableSubmitButton] = useState(false);
 
     const settingRef = {
         emailRef: useRef<HTMLInputElement>(null),
@@ -63,32 +73,63 @@ export default function Settings(props: IProps) {
             return;
         }
 
+        setDisableSubmitButton(true);
+
+        // authenticate the user
+        try {
+            const token = getToken();
+            if (!token) return navigate("/");
+
+            await authUserRequest(token);
+        } catch (err) {
+            navigate("/");
+        }
+
         switch (currentSetting) {
             case SettingTypes.EMAIL:
                 const newEmail = settingRef.emailRef.current?.value;
 
-                if (newEmail === null || newEmail === undefined) return;
-                if (newEmail === "") return setWarningMessage("This field cannot be empty");
+                if (newEmail === null || newEmail === undefined) { setDisableSubmitButton(false); return; }
+                if (newEmail === "") { setDisableSubmitButton(false); setWarningMessage("This field cannot be empty"); return; }
 
+                const emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+                // email is invalid
+                if (!newEmail.match(emailRegex)) { setDisableSubmitButton(false); setWarningMessage("Invalid email address"); return; }
 
                 try {
                     await changeEmailRequest(currentUser.id, newEmail, currentPassword);
                     navigate("/");
-                } catch (err) {
-                    console.log(err);
+                } catch (err: any) {
+                    const statusCode = getStatusCode(err);
+
+                    if (!statusCode) setWarningMessage("Internal Server Error");
+                    else if (statusCode === 404) setWarningMessage("This user does not exist");
+                    else if (statusCode === 401) setWarningMessage("The current password is incorrect");
+                    else if (statusCode === 409) setWarningMessage("This email address is already in use");
+                    else setWarningMessage("Internal Server Error");
+
+                    setDisableSubmitButton(false);
                 }
 
                 return;
             case SettingTypes.USERNAME:
                 const newUsername = settingRef.usernameRef.current?.value;
-                if (newUsername === undefined || newUsername === null) return;
-                if (newUsername === "") return setWarningMessage("This field cannot be empty");
+                if (newUsername === undefined || newUsername === null) { setDisableSubmitButton(false); return; }
+                if (newUsername === "") { setDisableSubmitButton(false); setWarningMessage("This field cannot be empty"); return; }
 
                 try {
                     await changeUsernameRequest(currentUser.id, newUsername, currentPassword);
                     navigate("/");
                 } catch (err) {
-                    console.log(err);
+                    const statusCode = getStatusCode(err);
+
+                    if (!statusCode) setWarningMessage("Internal Server Error");
+                    else if (statusCode === 404) setWarningMessage("This user does not exist");
+                    else if (statusCode === 401) setWarningMessage("The current password is incorrect");
+                    else setWarningMessage("Internal Server Error");
+
+                    setDisableSubmitButton(false);
                 }
 
                 return;
@@ -96,37 +137,50 @@ export default function Settings(props: IProps) {
                 const newPassword = settingRef.newPasswordRef.current?.value;
                 const confirmPassword = settingRef.confirmPasswordRef.current?.value;
 
-                if (newPassword === undefined || newPassword === null) return;
-                if (confirmPassword === undefined || confirmPassword === null) return;
-                if (newPassword === "" || confirmPassword === "") return setWarningMessage("One of these field is empty");
-                if (newPassword.length < 8) return setWarningMessage("Password must be at least 8 characters");
-                if (newPassword !== confirmPassword) return setWarningMessage("Password does not match");
+                if (newPassword === undefined || newPassword === null) { setDisableSubmitButton(false); return; }
+                else if (confirmPassword === undefined || confirmPassword === null) { setDisableSubmitButton(false); return; }
+                else if (newPassword === "" || confirmPassword === "") { setDisableSubmitButton(false); setWarningMessage("One of these field is empty"); return; }
+                else if (newPassword.length < 8) { setDisableSubmitButton(false); setWarningMessage("Password must be at least 8 characters"); return; }
+                else if (newPassword !== confirmPassword) { setDisableSubmitButton(false); setWarningMessage("Password does not match"); return; }
 
                 try {
                     await changePasswordRequest(currentUser.id, newPassword, currentPassword);
                     navigate("/");
                 } catch (err) {
-                    console.log(err);
+                    const statusCode = getStatusCode(err);
+
+                    if (!statusCode) setWarningMessage("Internal Server Error");
+                    else if (statusCode === 404) setWarningMessage("This user does not exist");
+                    else if (statusCode === 401) setWarningMessage("The current password is incorrect");
+                    else setWarningMessage("Internal Server Error");
+
+                    setDisableSubmitButton(false);
                 }
 
                 return;
             case SettingTypes.DELETE_ACCOUNT:
                 const confirmMessage = settingRef.deleteAccountRef.current?.value;
 
-                if (confirmMessage === undefined || confirmMessage === null) return;
-                if (confirmMessage !== currentUser.username) return setWarningMessage("Username does not match");
+                if (confirmMessage === undefined || confirmMessage === null) { setDisableSubmitButton(false); return; }
+                if (confirmMessage !== currentUser.username) { setDisableSubmitButton(false); setWarningMessage("Username does not match"); return; }
 
                 try {
                     await deleteUserRequest(currentUser.id, currentPassword);
                     navigate("/");
                 } catch (err) {
-                    console.log(err);
+                    const statusCode = getStatusCode(err);
+
+                    if (!statusCode) setWarningMessage("Internal Server Error");
+                    else if (statusCode === 404) setWarningMessage("This user does not exist");
+                    else if (statusCode === 401) setWarningMessage("The current password is incorrect");
+                    else setWarningMessage("Internal Server Error");
+
+                    setDisableSubmitButton(false);
                 }
 
                 return;
             default: return;
         }
-
     }
 
     return (
@@ -147,7 +201,7 @@ export default function Settings(props: IProps) {
                     {settingMode === SettingTypes.EMAIL && <div className={styles.wrapper}>
                         <div className={styles.innerContainer}>
                             <label>New Email: </label>
-                            <input defaultValue={currentUser.email} ref={settingRef.emailRef} /><br></br>
+                            <input defaultValue={currentUser.email} ref={settingRef.emailRef} type="email" /><br></br>
                         </div>
                         {warningMessage.length > 0 && <div className={styles.warningMessage}>{warningMessage}</div>}
                     </div>}
@@ -175,7 +229,7 @@ export default function Settings(props: IProps) {
                     {settingMode === SettingTypes.DELETE_ACCOUNT && <div className={styles.wrapper}>
                         <div className={`${styles.innerContainer} ${styles.flexCol}`}>
                             <label>Enter your <span style={{ "color": "green" }}>username</span> to confirm this action </label>
-                            <input ref={settingRef.deleteAccountRef} />
+                            <input ref={settingRef.deleteAccountRef} defaultValue="" />
                         </div>
                         {warningMessage.length > 0 && <div className={styles.warningMessage}>{warningMessage}</div>}
                     </div>}
@@ -184,11 +238,11 @@ export default function Settings(props: IProps) {
 
                 {settingMode !== SettingTypes.NONE && <div className={styles.confirmActionContainer}>
                     <label>Current Password:</label>
-                    <input type="password" ref={settingRef.passwordRef} />
+                    <input type="password" ref={settingRef.passwordRef} defaultValue="" />
 
                     <div className={styles.btnContainer}>
-                        <button type="button" onClick={() => props.hideSettings()}>Cancel</button>
-                        <button>Perform Action</button>
+                        <button type="button" onClick={() => props.hideSettings()} disabled={disableSubmitButton}>Cancel</button>
+                        <button disabled={disableSubmitButton}>Perform Action</button>
                     </div>
                 </div>}
 
