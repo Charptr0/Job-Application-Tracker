@@ -90,7 +90,7 @@ function reducer(state: IRegisterWarningMessages, action: IAction): IRegisterWar
         case ERR_TYPE.USERNAME_TOO_SHORT:
             return {
                 email: { ...state.email, visible: false },
-                username: { visible: true, message: "The username is too short (Must be more than 2 characters)" },
+                username: { visible: true, message: "The username is too short (Must be more than 1 character)" },
                 password: { ...state.password, visible: false },
                 confirmPassword: { ...state.confirmPassword, visible: false }
             }

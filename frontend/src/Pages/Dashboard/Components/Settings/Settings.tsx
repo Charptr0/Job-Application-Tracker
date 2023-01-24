@@ -132,7 +132,7 @@ export default function Settings(props: IProps) {
     return (
         <div>
             <form onSubmit={submitHandler} className={styles.settingContainer}>
-                <h2>Settings</h2>
+                <div className={styles.title}>Settings</div>
                 <div className={styles.changeOptionsContainer}><span>I want to </span>
                     <select ref={settingOptionRef} onClick={changeSettingOptionHandler}>
                         <option></option>

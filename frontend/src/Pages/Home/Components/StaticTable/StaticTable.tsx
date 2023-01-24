@@ -46,8 +46,8 @@ export default function StaticTable() {
             </table>
 
             <div className={tableStyles.btnContainer}>
-                <button onClick={createApplicationHandler}>Create</button>
                 <button onClick={() => setSampleApplications([])}>Reset</button>
+                <button onClick={createApplicationHandler}>Create</button>
             </div>
         </>
     )
