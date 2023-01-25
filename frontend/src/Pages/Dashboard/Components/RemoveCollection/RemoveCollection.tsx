@@ -10,7 +10,7 @@ interface IProps {
 }
 
 export default function RemoveCollection(props: IProps) {
-    const { currentUser, updateUser } = useContext<any>(UserContext);
+    const { currentUser } = useContext<any>(UserContext);
 
     async function confirmRemoveHandler() {
         const collectionName = document.getElementById("current-collection")?.textContent;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Login from "../Login/Login";
 import Register from "../Register/Register";
 import CollectionTable from "./Components/CollectionTable/CollectionTable";
@@ -8,6 +8,10 @@ import { siGithub } from "simple-icons";
 
 export default function Home() {
     const [loginMode, setLoginMode] = useState(true);
+
+    useEffect(() => {
+        document.title = "Job Application Tracker";
+    }, [])
 
     return (
         <>

@@ -14,7 +14,7 @@ export default function Application(props: IProps) {
         <td className={parentStyles.jobTitle}>{props.application.jobTitle}</td>
         <td className={parentStyles.jobType}>{props.application.jobType}</td>
         <td className={parentStyles.location}>{props.application.location}</td>
-        <td className={parentStyles.appLink}><a href={props.application.link}>Link</a></td>
+        <td className={parentStyles.appLink}><a href={props.application.link} target="_blank" rel="noreferrer">Link</a></td>
         <td className={parentStyles.status}>{props.application.status}</td>
     </tr>)
 }

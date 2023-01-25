@@ -1,5 +1,4 @@
 import { useReducer, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { registerUserRequest } from "../../Utils/Requests/register";
 import { verifyUsername } from "./Utils/verify/verifyUsername";
 import { ERR_TYPE } from "./Utils/types/error_types";

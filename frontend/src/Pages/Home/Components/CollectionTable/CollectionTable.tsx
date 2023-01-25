@@ -67,7 +67,7 @@ export default function CollectionTable() {
                 <option>{currentCollection}</option>
 
                 {sampleCollections.map((collection, i) => {
-                    if (collection === currentCollection) return <></>;
+                    if (collection === currentCollection) return null;
 
                     return <option key={i} defaultValue="true">{collection}</option>
                 })}
@@ -83,17 +83,17 @@ export default function CollectionTable() {
                         <th className={tableStyles.col5}>Application Link</th>
                         <th className={tableStyles.col6}>Status</th>
                     </tr>
+                    {displayApplication.map((app, i) => {
+                        return <tr key={i}>
+                            <td className={tableStyles.col1}>{app.companyName}</td>
+                            <td className={tableStyles.col2}>{app.jobTitle}</td>
+                            <td className={tableStyles.col3}>{app.jobType}</td>
+                            <td className={tableStyles.col4}>{app.location}</td>
+                            <td className={tableStyles.col5}><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noreferrer">Link</a></td>
+                            <td className={tableStyles.col6}>{app.status}</td>
+                        </tr>
+                    })}
                 </tbody>
-                {displayApplication.map((app, i) => {
-                    return <tr key={i}>
-                        <td className={tableStyles.col1}>{app.companyName}</td>
-                        <td className={tableStyles.col2}>{app.jobTitle}</td>
-                        <td className={tableStyles.col3}>{app.jobType}</td>
-                        <td className={tableStyles.col4}>{app.location}</td>
-                        <td className={tableStyles.col5}><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noreferrer">Link</a></td>
-                        <td className={tableStyles.col6}>{app.status}</td>
-                    </tr>
-                })}
             </table>
 
             <div className={tableStyles.btnContainer}>

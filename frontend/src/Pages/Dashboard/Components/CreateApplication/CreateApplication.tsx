@@ -11,7 +11,7 @@ interface IProps {
 }
 
 export default function CreateApplication(props: IProps) {
-    const { currentUser, updateUser } = useContext<any>(UserContext);
+    const { currentUser } = useContext<any>(UserContext);
     const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
 
     const [state, dispatch] = useReducer(applicationWarningMessagesReducer, applicationWarningMessagesInitState);
@@ -120,7 +120,7 @@ export default function CreateApplication(props: IProps) {
 
     return <div className={modalStyles.backdrop}>
         <div className={modalStyles.modal}>
-            <h1>Create a New Record</h1>
+            <div className={styles.title}>Create a New Record</div>
             <form onSubmit={submitHandler} className={modalStyles.container}>
                 <label>Company Name*</label>
                 <input ref={formRefs.companyNameRef} placeholder="Google, Amazon, Microsoft..." />
@@ -181,8 +181,8 @@ export default function CreateApplication(props: IProps) {
                 <textarea ref={formRefs.notesRef} style={{ "height": "100px" }} />
 
                 <div className={modalStyles.btnContainer}>
-                    <button type="button" onClick={() => props.setVisible(false)}>Cancel</button>
-                    <button type="submit" disabled={submitButtonDisabled}>Submit</button>
+                    <button type="button" onClick={() => props.setVisible(false)} className={modalStyles.btn}>Cancel</button>
+                    <button type="submit" disabled={submitButtonDisabled} className={modalStyles.btn}>Submit</button>
                 </div>
             </form>
         </div>

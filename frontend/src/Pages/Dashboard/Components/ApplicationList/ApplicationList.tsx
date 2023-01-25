@@ -27,9 +27,6 @@ export default function ApplicationList() {
     // loading states
     const [loading, setLoading] = useState(true);
 
-    // filter modes
-    const [enterDateMode, setEnterDateMode] = useState(false);
-
     // collection states
     const [currentCollection, setCurrentCollection] = useState("All");
     const [collections, setCollections] = useState<string[]>([]);
@@ -41,7 +38,7 @@ export default function ApplicationList() {
     const [currentFilterType, setCurrentFilterType] = useState("");
 
     // context
-    const { currentUser, updateUser } = useContext<any>(UserContext);
+    const { currentUser } = useContext<any>(UserContext);
 
     const [showJobDetails, setShowJobDetails] = useState<IJobDetails>({
         visible: false,
@@ -73,6 +70,7 @@ export default function ApplicationList() {
                 const resCollections = await fetchAllCollectionsRequest(userId);
                 setCollections(resCollections);
                 setCurrentCollection(defaultCollection);
+                setCollection(defaultCollection);
 
                 setLoading(false);
 
@@ -119,13 +117,22 @@ export default function ApplicationList() {
         const filterType = filterTypeRef.current?.value;
         const inputRef = filterInputRef.current;
 
-        if (!filterType || filterType === currentFilterType) return;
+        if (filterType === undefined || filterType === currentFilterType) return;
         if (!inputRef) return;
 
         setCurrentFilterType(filterType);
 
         inputRef.value = "";
 
+        const appsBeforeFiltering = currentCollection === "All" ? applications : filterApplicationByCollection(applications, currentCollection);
+        setFilteredApplications(appsBeforeFiltering);
+
+        if (filterType === "No Filter") {
+            inputRef.style.visibility = "hidden";
+            return;
+        }
+
+        inputRef.style.visibility = "visible";
         // switch to date format if date submitted is chosen
         filterType.includes("Date") ? inputRef.type = "date" : inputRef.type = "text";
 
@@ -136,11 +143,11 @@ export default function ApplicationList() {
         const filterType = filterTypeRef.current?.value;
 
         if (value === undefined) return;
-        if (!filterType) return;
+        if (filterType === undefined) return;
 
         const appsBeforeFiltering = currentCollection === "All" ? applications : filterApplicationByCollection(applications, currentCollection);
 
-        if (value === "") {
+        if (value === "" || filterType === "") {
             setFilteredApplications(appsBeforeFiltering);
             return;
         }
@@ -157,8 +164,6 @@ export default function ApplicationList() {
 
             // check if the filter option are dates
             if (currentFilterType.toLowerCase() === "date submitted (before)") {
-                console.log(`here`);
-
                 if (!app.dateSubmitted) return false;
 
                 const appSubmittedDate = new Date(app.dateSubmitted);
@@ -168,8 +173,6 @@ export default function ApplicationList() {
             }
 
             else if (currentFilterType.toLowerCase() === "date submitted (after)") {
-                console.log(`here`);
-
                 if (!app.dateSubmitted) return false;
 
                 const appSubmittedDate = new Date(app.dateSubmitted);
@@ -198,7 +201,7 @@ export default function ApplicationList() {
         <div className={styles.filterContainer}>
             <div className={styles.title}>Filter Result</div>
             <select ref={filterTypeRef} onClick={filterTypeHandler} className={styles.filterSelections}>
-                <option className={styles.filterOptions}></option>
+                <option className={styles.filterOptions}>No Filter</option>
                 <option className={styles.filterOptions}>Company Name</option>
                 <option className={styles.filterOptions}>Job Title</option>
                 <option className={styles.filterOptions}>Location</option>

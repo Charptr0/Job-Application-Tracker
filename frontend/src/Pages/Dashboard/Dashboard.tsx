@@ -21,6 +21,7 @@ export default function Dashboard() {
     const [createNewCollection, showCreateNewCollection] = useState(false);
     const [removeCollection, showRemoveCollection] = useState(false);
     const [settings, showSettings] = useState(false);
+    document.title = "Dashboard";
 
     /**
      * Log the user out
