@@ -124,9 +124,10 @@ export default function ApplicationList() {
 
         inputRef.value = "";
 
+        const appsBeforeFiltering = currentCollection === "All" ? applications : filterApplicationByCollection(applications, currentCollection);
+        setFilteredApplications(appsBeforeFiltering);
+
         if (filterType === "No Filter") {
-            const appsBeforeFiltering = currentCollection === "All" ? applications : filterApplicationByCollection(applications, currentCollection);
-            setFilteredApplications(appsBeforeFiltering);
             inputRef.style.visibility = "hidden";
             return;
         }

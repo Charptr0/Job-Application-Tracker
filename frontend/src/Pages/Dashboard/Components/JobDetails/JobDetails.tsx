@@ -259,9 +259,9 @@ export default function JobDetails(props: IProps) {
                     <textarea defaultValue={props.currentApplication.notes} style={{ "height": "100px" }} />
 
                     <div className={modalStyles.btnContainer}>
-                        <button type="button" onClick={() => props.setApplicationDetails({ ...props.currentApplication, visible: false })}>Cancel</button>
-                        <button type="button" onClick={removeRecordHandler} disabled={disableButtons}>Remove Record</button>
-                        <button type="submit" disabled={disableButtons}>Submit</button>
+                        <button type="button" className={modalStyles.btn} onClick={() => props.setApplicationDetails({ ...props.currentApplication, visible: false })}>Cancel</button>
+                        <button type="button" className={modalStyles.btn} onClick={removeRecordHandler} disabled={disableButtons}>Remove Record</button>
+                        <button type="submit" className={modalStyles.btn} disabled={disableButtons}>Submit</button>
                     </div>
                 </form>
             </div>}
