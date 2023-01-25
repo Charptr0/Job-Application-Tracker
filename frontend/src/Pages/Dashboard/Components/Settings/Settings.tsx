@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../../Context/UserContext";
 import { authUserRequest } from "../../../../Utils/Requests/auth";
@@ -44,6 +44,9 @@ export default function Settings(props: IProps) {
         passwordRef: useRef<HTMLInputElement>(null),
     }
 
+    useEffect(() => {
+        document.title = "Settings";
+    }, [])
 
     function changeSettingOptionHandler() {
         const option = settingOptionRef.current?.value;

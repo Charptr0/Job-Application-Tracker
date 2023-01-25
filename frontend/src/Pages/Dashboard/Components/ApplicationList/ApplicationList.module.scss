@@ -96,6 +96,7 @@
     width: var(--filter-input-size);
     height: 35px;
     font-size: 20px;
+    visibility: hidden;
 }
 
 @media screen and (max-width: 1530px) {

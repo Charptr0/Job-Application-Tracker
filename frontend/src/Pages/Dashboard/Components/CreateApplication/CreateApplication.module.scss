@@ -1,4 +1,21 @@
+.title {
+    font-size: 40px;
+    font-weight: bold;
+}
+
 .warningMessage {
     color: red;
     font-size: 20px;
+}
+
+@media screen and (max-width: 600px) {
+    .title {
+        font-size: 30px;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .title {
+        font-size: 25px;
+    }
 }
